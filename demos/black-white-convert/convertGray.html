@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gray image</title>
+</head>
+<body>
+    <h1>Gray image demo.</h1>
+    <form action="">
+        <label for="file">Please specify a file, or a set of files:</label>
+        <input id="file" class="input-file" type="file" name="datafile" multiple size="40">
+        <label for="endgeOfConvert">Endge of convert</label>
+        <input id="endgeOfConvert"  type="number">
+        <button type='button' class="action-gray">Make black-white</button>
+    </form>
+    <canvas id="load-image"></canvas>
+    <canvas id="convert-image"></canvas>
+    <script src="grayImage.js"></script>
+</body>
+</html>
