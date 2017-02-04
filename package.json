@@ -1,0 +1,26 @@
+{
+  "name": "signe",
+  "version": "1.0.0",
+  "description": "the project of my academic match work",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vovakulikov/signe.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vovakulikov/signe/issues"
+  },
+  "homepage": "https://github.com/vovakulikov/signe#readme"
+}
