@@ -32,7 +32,7 @@ function fileSelect(evt,img){
         }
         var reader = new FileReader();
         reader.onload = function(e){
-            pic.src = e.target.result;
+            img.src = e.target.result;
             //console.log(img);
         };
         reader.readAsDataURL(f);
