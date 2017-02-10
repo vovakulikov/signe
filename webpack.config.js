@@ -12,11 +12,20 @@ module.exports = [
         },
         {
             entry: {
-                index: "./index.js"
+                index: "./src/app.js"
             },
             output: {
                 path: path.resolve(__dirname, './src/'),
-                filename: '[name].js'
+                filename: '[name].bundle.js'
+            },
+            module: {
+                loaders: [
+                    {
+                        test: /\.jsx?$/,
+                        exclude: /node_modules/,
+                        loaders: ["babel-loader"]
+                    }
+                ]
             }
         }
     ]
