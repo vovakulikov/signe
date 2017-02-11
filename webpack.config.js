@@ -6,7 +6,7 @@ module.exports = [
                 demo2 : "./demos/sobel_operator/sob_operator.js"
             },
             output: {
-                path: path.resolve(__dirname, './demos/src/'),
+                path: path.resolve(__dirname, './demos/dist/'),
                 filename: '[name].js'
             }
         },
