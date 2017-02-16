@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    ._fullInfo{
+        display:none;
+    }
+</style>
+<body>
+    <h1>LoG filter</h1>
+    <mark>Laplassian of Gaussian</mark>
+    <form action="">
+        <label for="file">Please specify a file, or a set of files:</label>
+        <input id="file" class="input-file" type="file" name="datafile" size="40">
+        <button type="button" class="getInfo">Generate pixels</button>
+    </form>
+    <canvas class="_show_image"></canvas>
+    <canvas class="_fullInfo"></canvas>
+
+    <script src="index_logFilter.bundle.js"></script>
+</body>
+</html>
