@@ -37,14 +37,15 @@ export function draw(canvas,img,type){
     var copyContext = canvasCopy.getContext("2d");
 
     var ctx = canvas.getContext('2d');
+
     var ratio = 1;
 
     let options = {
         'drawImage': function(){
-            if(img.width > 700)
-                ratio = 700/img.width;
-            else if(img.height>500)
-                ratio = 500/img.height;
+            if(img.width > 1000)
+                ratio = 1000/img.width;
+            else if(img.height>800)
+                ratio = 800/img.height;
 
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
@@ -63,6 +64,31 @@ export function draw(canvas,img,type){
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.putImageData(img, 0, 0);
+        },
+        'drawRAWImage':function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.drawImage(img,0,0);
+        },
+        'paintPixelsToSizing': function(){
+
+            if(img.width > 500)
+                ratio = 800/img.width;
+            else if(img.height>400)
+                ratio = 400/img.height;
+
+            canvasCopy.width = img.width;
+            canvasCopy.height = img.height;
+
+            canvas.width = img.width * ratio;
+            canvas.height = img.height * ratio;
+
+            copyContext.putImageData(img, 0, 0);
+
+            ctx.drawImage(canvasCopy, 0, 0,
+                canvasCopy.width, canvasCopy.height, 0, 0,
+                canvas.width, canvas.height);
         }
     }
     options[type]();
@@ -73,3 +99,4 @@ export function getInfoCanvas(canvas){
 
     return ctx.getImageData(0,0,canvas.width,canvas.height);
 }
+
