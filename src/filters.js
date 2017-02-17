@@ -6,7 +6,7 @@ export default class Filters{
         this._heightImage = imageData.height;
 
 
-       this.LoG_mask = [
+        /*  this.LoG_mask = [
             [0,1,1,2,2,2,1,1,0],
             [1,2,4,5,5,5,4,2,1],
             [1,4,5,3,0,3,5,4,1],
@@ -18,7 +18,7 @@ export default class Filters{
             [0,1,1,2,2,2,1,1,0]
 
         ]
-        /*
+
         this.LoG_mask = [
             [0,0,0,-1,-1,-2,-1,-1,0,0,0],
             [0,0,-2,-4,-8,-9,-8,-4,-2,0,0],
@@ -37,6 +37,13 @@ export default class Filters{
             [1,-4,1],
             [0,1,0]
         ]*/
+        this.LoG_mask = [
+            [0,0,1,0,0],
+            [0,1,2,1,0],
+            [1,2,-16,2,1],
+            [0,1,2,1,0],
+            [0,0,1,0,0]
+        ]
         console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage)
     }
 
@@ -138,17 +145,31 @@ export default class Filters{
         let i,j;
         let r = [];
         for( i = 0; i < this._widthImage; i++){
-            r[i] = [];
+          r[i] = [];
             for( j = 0; j < this._heightImage; j++){
                 let response = this.overlayMask(i,j);
-                r[i][j] = Math.round(response);
+               // this.setCurrentPixel(i,j,[r,r,r,255])
+            r[i][j] = Math.round(response);
             }
         }
         console.log(r.concat());
+       // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
         for(i = 0; i < r.length-1; i++){
            // console.log('dfs')
-            for( j = 0; j < r[0].length; j++ ){
-                if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
+
+             for( j = 0; j < r[0].length; j++ ){
+                 /*if(r[i][j]<0){
+                     r[i][j] = 0;
+                 }
+                  if((r[i][j]*r[i][j+1] <= 0) || (r[i][j]*r[i+1][j+1] <= 0) ||
+                     (r[i][j]*r[i+1][j] <= 0)
+                 ){
+                     r[i][j] = 0;
+                 }
+                 else{
+                     r[i][j] = 255;
+                 }
+                 if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
                     (r[i][j] > 0 && r[i+1][j] < 0) || (r[i][j] < 0 && r[i+1][j] > 0) ||
                     (r[i][j] > 0 && r[i+1][j+1] < 0) || (r[i][j] < 0 && r[i+1][j+1] > 0)
                 ){
@@ -156,13 +177,15 @@ export default class Filters{
                         //r[i][j] = 255;
                         //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
                     }
-
+                   // r[i][j] = 255;
+                    //console.log(r[i][j])
 
                 }
                 else {
                     r[i][j] = 0;
                     //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],128]);
-                }
+                }*/
+                //if(r[i][j]/(r[i][j]+1) )
                 this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
               //  this.setCurrentPixel(i,j+1,[r[i][j+1],r[i][j+1],r[i][j+1],255]);
                 //console.log('somethidn')

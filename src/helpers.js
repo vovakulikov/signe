@@ -1,14 +1,13 @@
 export function fileSelect(evt,callback){
     //get list of current files
     return new Promise((resolve,reject) => {
-            var files = evt.target.files;
+            var files = evt
             //Пройдемся по массиву с файлами
             let length = files.length, i,f;
-            for(i=0; i < length; i++){
                 // если файл не имеет формат изображения, то выброс
-                f = files[i];
+                f = files[0];
                 if (!f.type.match('image.*')) {
-                    continue;
+                    return;
                 }
 
                 //Создаем новый ридер для чтение файла изображение.
@@ -18,9 +17,10 @@ export function fileSelect(evt,callback){
 
                 //Загрузка файла
                 reader.onload = function(e){
+                   // console.log('Thats is eeeee', e)
                     resolve(e.target.result)
                 };
-            }
+
     })
 }
 export function createImage(source){

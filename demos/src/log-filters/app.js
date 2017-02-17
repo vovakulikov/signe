@@ -9,11 +9,12 @@ let canvas = document.querySelector('._show_image');
 let fullCanvas = document.querySelector('._fullInfo');
 
 let handler = (evt)=>{
-    fileSelect(evt)
+    fileSelect(evt.target.files)
         .then(data=>{
         return createImage(data);
     })
     .then(picture=>{
+            //console.log('Thats we get from fileselect promise', picture)
             draw(canvas,picture,'drawImage');
             draw(fullCanvas,picture,'drawRAWImage');
     })
@@ -21,7 +22,7 @@ let handler = (evt)=>{
 
 function genHandler(evt){
     let d = Date.now()
-    console.log(d)
+    //console.log(d)
     console.log('Данные из свернутого холста (сжатого)', getInfoCanvas(canvas));
     console.log('Данные из полноразмерного холста', getInfoCanvas(fullCanvas));
     let info = getInfoCanvas(canvas);
@@ -37,9 +38,30 @@ function genHandler(evt){
    // filter.overlayMask()
     draw(canvas,info,'paintPixels');
     console.log(Date.now() - d)
+
+    info = getInfoCanvas(canvas);
+    console.log('Постданные ',info);
 }
 
 
 
 document.querySelector(".input-file").addEventListener('change',handler,false);
 document.querySelector('.getInfo').addEventListener('click',genHandler,false);
+document.querySelector('.info').addEventListener('click',function (evt) {
+    let info = getInfoCanvas(canvas);
+    console.log('from image info ',info);
+})
+var target = document.querySelector(".drop-target");
+target.addEventListener("dragover", function(e){e.preventDefault();}, true);
+target.addEventListener("drop", function(e){
+    e.preventDefault();
+    fileSelect(e.dataTransfer.files)
+        .then(data=>{
+            return createImage(data);
+        })
+        .then(picture=>{
+            //console.log('Thats we get from fileselect promise', picture)
+            draw(canvas,picture,'drawImage');
+            draw(fullCanvas,picture,'drawRAWImage');
+        })
+}, true);/**/

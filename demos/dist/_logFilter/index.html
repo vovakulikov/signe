@@ -8,6 +8,11 @@
     ._fullInfo{
         display:none;
     }
+    .drop-target{
+        width:400px;
+        height: 200px;
+        background: orangered;
+    }
 </style>
 <body>
     <h1>LoG filter</h1>
@@ -16,7 +21,9 @@
         <label for="file">Please specify a file, or a set of files:</label>
         <input id="file" class="input-file" type="file" name="datafile" size="40">
         <button type="button" class="getInfo">Generate pixels</button>
+        <button type="button" class="info">info</button>
     </form>
+    <div class="drop-target"></div>
     <canvas class="_show_image"></canvas>
     <canvas class="_fullInfo"></canvas>
 

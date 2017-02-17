@@ -92,9 +92,18 @@ var Filters = function () {
         this._widthImage = imageData.width;
         this._heightImage = imageData.height;
 
-        this.LoG_mask = [[0, 1, 1, 2, 2, 2, 1, 1, 0], [1, 2, 4, 5, 5, 5, 4, 2, 1], [1, 4, 5, 3, 0, 3, 5, 4, 1], [2, 5, 3, -12, -24, -12, 3, 5, 2], [2, 5, 0, -24, -40, -24, 0, 5, 2], [2, 5, 3, -12, -24, -12, 3, 5, 2], [1, 4, 5, 3, 0, 3, 5, 4, 1], [1, 2, 4, 5, 5, 5, 4, 2, 1], [0, 1, 1, 2, 2, 2, 1, 1, 0]];
-        /*
-        this.LoG_mask = [
+        /*  this.LoG_mask = [
+            [0,1,1,2,2,2,1,1,0],
+            [1,2,4,5,5,5,4,2,1],
+            [1,4,5,3,0,3,5,4,1],
+            [2,5,3,-12,-24,-12,3,5,2],
+            [2,5,0,-24,-40,-24,0,5,2],
+            [2,5,3,-12,-24,-12,3,5,2],
+            [1,4,5,3,0,3,5,4,1],
+            [1,2,4,5,5,5,4,2,1],
+            [0,1,1,2,2,2,1,1,0]
+          ]
+          this.LoG_mask = [
             [0,0,0,-1,-1,-2,-1,-1,0,0,0],
             [0,0,-2,-4,-8,-9,-8,-4,-2,0,0],
             [0,-2,-7,-15,-22,-23,-22,-15,-7,-2,0],
@@ -112,6 +121,7 @@ var Filters = function () {
             [1,-4,1],
             [0,1,0]
         ]*/
+        this.LoG_mask = [[0, 0, 1, 0, 0], [0, 1, 2, 1, 0], [1, 2, -16, 2, 1], [0, 1, 2, 1, 0], [0, 0, 1, 0, 0]];
         console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage);
     }
 
@@ -242,22 +252,43 @@ var Filters = function () {
                 r[i] = [];
                 for (j = 0; j < this._heightImage; j++) {
                     var response = this.overlayMask(i, j);
+                    // this.setCurrentPixel(i,j,[r,r,r,255])
                     r[i][j] = Math.round(response);
                 }
             }
             console.log(r.concat());
+            // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
             for (i = 0; i < r.length - 1; i++) {
                 // console.log('dfs')
+
                 for (j = 0; j < r[0].length; j++) {
-                    if (r[i][j] > 0 && r[i][j + 1] < 0 || r[i][j] < 0 && r[i][j + 1] > 0 || r[i][j] > 0 && r[i + 1][j] < 0 || r[i][j] < 0 && r[i + 1][j] > 0 || r[i][j] > 0 && r[i + 1][j + 1] < 0 || r[i][j] < 0 && r[i + 1][j + 1] > 0) {
-                        if (r[i][j] < 0 && r[i][j + 1] == 0) {
-                            //r[i][j] = 255;
-                            //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
-                        }
-                    } else {
+                    /*if(r[i][j]<0){
                         r[i][j] = 0;
-                        //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],128]);
                     }
+                     if((r[i][j]*r[i][j+1] <= 0) || (r[i][j]*r[i+1][j+1] <= 0) ||
+                        (r[i][j]*r[i+1][j] <= 0)
+                    ){
+                        r[i][j] = 0;
+                    }
+                    else{
+                        r[i][j] = 255;
+                    }
+                    if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
+                       (r[i][j] > 0 && r[i+1][j] < 0) || (r[i][j] < 0 && r[i+1][j] > 0) ||
+                       (r[i][j] > 0 && r[i+1][j+1] < 0) || (r[i][j] < 0 && r[i+1][j+1] > 0)
+                    ){
+                       if((r[i][j] < 0 && r[i][j+1] == 0)  ){
+                           //r[i][j] = 255;
+                           //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
+                       }
+                      // r[i][j] = 255;
+                       //console.log(r[i][j])
+                     }
+                    else {
+                       r[i][j] = 0;
+                       //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],128]);
+                    }*/
+                    //if(r[i][j]/(r[i][j]+1) )
                     this.setCurrentPixel(i, j, [r[i][j], r[i][j], r[i][j], 255]);
                     //  this.setCurrentPixel(i,j+1,[r[i][j+1],r[i][j+1],r[i][j+1],255]);
                     //console.log('somethidn')
@@ -317,28 +348,27 @@ exports.getInfoCanvas = getInfoCanvas;
 function fileSelect(evt, callback) {
     //get list of current files
     return new Promise(function (resolve, reject) {
-        var files = evt.target.files;
+        var files = evt;
         //Пройдемся по массиву с файлами
         var length = files.length,
             i = void 0,
             f = void 0;
-        for (i = 0; i < length; i++) {
-            // если файл не имеет формат изображения, то выброс
-            f = files[i];
-            if (!f.type.match('image.*')) {
-                continue;
-            }
-
-            //Создаем новый ридер для чтение файла изображение.
-            var reader = new FileReader();
-            //Читаем файл в виде dataUrl
-            reader.readAsDataURL(f);
-
-            //Загрузка файла
-            reader.onload = function (e) {
-                resolve(e.target.result);
-            };
+        // если файл не имеет формат изображения, то выброс
+        f = files[0];
+        if (!f.type.match('image.*')) {
+            return;
         }
+
+        //Создаем новый ридер для чтение файла изображение.
+        var reader = new FileReader();
+        //Читаем файл в виде dataUrl
+        reader.readAsDataURL(f);
+
+        //Загрузка файла
+        reader.onload = function (e) {
+            // console.log('Thats is eeeee', e)
+            resolve(e.target.result);
+        };
     });
 }
 function createImage(source) {
@@ -431,9 +461,10 @@ var canvas = document.querySelector('._show_image');
 var fullCanvas = document.querySelector('._fullInfo');
 
 var handler = function handler(evt) {
-    (0, _helpers.fileSelect)(evt).then(function (data) {
+    (0, _helpers.fileSelect)(evt.target.files).then(function (data) {
         return (0, _helpers.createImage)(data);
     }).then(function (picture) {
+        //console.log('Thats we get from fileselect promise', picture)
         (0, _helpers.draw)(canvas, picture, 'drawImage');
         (0, _helpers.draw)(fullCanvas, picture, 'drawRAWImage');
     });
@@ -441,7 +472,7 @@ var handler = function handler(evt) {
 
 function genHandler(evt) {
     var d = Date.now();
-    console.log(d);
+    //console.log(d)
     console.log('Данные из свернутого холста (сжатого)', (0, _helpers.getInfoCanvas)(canvas));
     console.log('Данные из полноразмерного холста', (0, _helpers.getInfoCanvas)(fullCanvas));
     var info = (0, _helpers.getInfoCanvas)(canvas);
@@ -456,10 +487,31 @@ function genHandler(evt) {
     // filter.overlayMask()
     (0, _helpers.draw)(canvas, info, 'paintPixels');
     console.log(Date.now() - d);
+
+    info = (0, _helpers.getInfoCanvas)(canvas);
+    console.log('Постданные ', info);
 }
 
 document.querySelector(".input-file").addEventListener('change', handler, false);
 document.querySelector('.getInfo').addEventListener('click', genHandler, false);
+document.querySelector('.info').addEventListener('click', function (evt) {
+    var info = (0, _helpers.getInfoCanvas)(canvas);
+    console.log('from image info ', info);
+});
+var target = document.querySelector(".drop-target");
+target.addEventListener("dragover", function (e) {
+    e.preventDefault();
+}, true);
+target.addEventListener("drop", function (e) {
+    e.preventDefault();
+    (0, _helpers.fileSelect)(e.dataTransfer.files).then(function (data) {
+        return (0, _helpers.createImage)(data);
+    }).then(function (picture) {
+        //console.log('Thats we get from fileselect promise', picture)
+        (0, _helpers.draw)(canvas, picture, 'drawImage');
+        (0, _helpers.draw)(fullCanvas, picture, 'drawRAWImage');
+    });
+}, true); /**/
 
 /***/ })
 /******/ ]);
