@@ -120,13 +120,19 @@ var Filters = function () {
             [0,1,0],
             [1,-4,1],
             [0,1,0]
+        ]
+            this.LoG_mask = [
+            [-1,-2,-1],
+            [0,0,0],
+            [1,2,1]
         ]*/
+
         this.LoG_mask = [[0, 0, 1, 0, 0], [0, 1, 2, 1, 0], [1, 2, -16, 2, 1], [0, 1, 2, 1, 0], [0, 0, 1, 0, 0]];
-        console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage);
+        // console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage)
     }
 
     _createClass(Filters, [{
-        key: 'convertToGray',
+        key: "convertToGray",
         value: function convertToGray() {
             var imageLength = this._widthImage * this._heightImage * 4;
             var d = this._data;
@@ -142,7 +148,7 @@ var Filters = function () {
             return this;
         }
     }, {
-        key: 'invert',
+        key: "invert",
         value: function invert() {
             var imageLength = this._widthImage * this._heightImage * 4;
             var d = this._data;
@@ -160,13 +166,13 @@ var Filters = function () {
             return this;
         }
     }, {
-        key: 'sobelOperator',
+        key: "sobelOperator",
         value: function sobelOperator() {
             var imageLength = this._widthImage * this._heightImage * 4;
             var d = this._data;
         }
     }, {
-        key: 'getCurrentPixel',
+        key: "getCurrentPixel",
         value: function getCurrentPixel(x, y) {
             var correctPixel = (x + y * this._widthImage) * 4;
             var d = this._data;
@@ -174,7 +180,7 @@ var Filters = function () {
             return [d[correctPixel], d[correctPixel + 1], d[correctPixel + 2], d[correctPixel + 3]];
         }
     }, {
-        key: 'setCurrentPixel',
+        key: "setCurrentPixel",
         value: function setCurrentPixel(x, y, data) {
             var correctPixel = (x + y * this._widthImage) * 4;
             var d = this._data;
@@ -184,12 +190,12 @@ var Filters = function () {
             d[correctPixel + 3] = data[3];
         }
     }, {
-        key: 'getImageData',
+        key: "getImageData",
         value: function getImageData() {
             return this.imageData;
         }
     }, {
-        key: 'customFilter',
+        key: "customFilter",
         value: function customFilter(callback) {
             var cb = callback.bind(this);
             for (var i = 0; i < this._widthImage; i++) {
@@ -201,7 +207,7 @@ var Filters = function () {
             }
         }
     }, {
-        key: 'overlayMask',
+        key: "overlayMask",
         value: function overlayMask(x, y) {
             var centerMask = (this.LoG_mask.length - 1) / 2;
             var relay = 0;
@@ -243,7 +249,7 @@ var Filters = function () {
             return relay;
         }
     }, {
-        key: 'LoGfilter',
+        key: "LoGfilter",
         value: function LoGfilter() {
             var i = void 0,
                 j = void 0;
@@ -256,29 +262,25 @@ var Filters = function () {
                     r[i][j] = Math.round(response);
                 }
             }
-            console.log(r.concat());
+            console.log(r.concat([]));
             // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
             for (i = 0; i < r.length - 1; i++) {
                 // console.log('dfs')
 
                 for (j = 0; j < r[0].length; j++) {
-                    /*if(r[i][j]<0){
-                        r[i][j] = 0;
+
+                    /*  if(r[i][j]*r[i][j+1] < 0 || r[i][j]*r[i+1][j] < 0 || r[i][j]*r[i+1][j+1] < 0 ){
+                        r[i][j] = 255
                     }
-                     if((r[i][j]*r[i][j+1] <= 0) || (r[i][j]*r[i+1][j+1] <= 0) ||
-                        (r[i][j]*r[i+1][j] <= 0)
-                    ){
-                        r[i][j] = 0;
-                    }
-                    else{
-                        r[i][j] = 255;
+                    else {
+                        r[i][j] = 0
                     }
                     if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
                        (r[i][j] > 0 && r[i+1][j] < 0) || (r[i][j] < 0 && r[i+1][j] > 0) ||
                        (r[i][j] > 0 && r[i+1][j+1] < 0) || (r[i][j] < 0 && r[i+1][j+1] > 0)
                     ){
                        if((r[i][j] < 0 && r[i][j+1] == 0)  ){
-                           //r[i][j] = 255;
+                           r[i][j] = 255;
                            //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
                        }
                       // r[i][j] = 255;
@@ -294,9 +296,14 @@ var Filters = function () {
                     //console.log('somethidn')
                 }
             }
+
+            return this;
         }
     }, {
-        key: 'brigFilter',
+        key: "getMatrInf",
+        value: function getMatrInf() {}
+    }, {
+        key: "brigFilter",
         value: function brigFilter(inform) {
             for (var i = 0; i < inform.length; i++) {
                 for (var j = 0; j < inform[0].length; j++) {
@@ -305,7 +312,7 @@ var Filters = function () {
             }
         }
     }, {
-        key: 'getBrightness',
+        key: "getBrightness",
         value: function getBrightness() {
             var brightnessMatrix = [];
             for (var i = 0; i < this._widthImage; i++) {
@@ -390,7 +397,7 @@ function draw(canvas, img, type) {
 
     var options = {
         'drawImage': function drawImage() {
-            if (img.width > 1000) ratio = 1000 / img.width;else if (img.height > 800) ratio = 800 / img.height;
+            if (img.width > 500) ratio = 500 / img.width;else if (img.height > 500) ratio = 500 / img.height;
 
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
@@ -420,8 +427,8 @@ function draw(canvas, img, type) {
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
 
-            canvas.width = img.width * ratio;
-            canvas.height = img.height * ratio;
+            //canvas.width = img.width * ratio;
+            //canvas.height = img.height * ratio;
 
             copyContext.putImageData(img, 0, 0);
 

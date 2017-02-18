@@ -4,7 +4,7 @@
 
 import {createImage,fileSelect,draw,getInfoCanvas} from '../../../src/helpers.js';
 import Filters from '../../../src/filters.js';
-
+import './critical.css';
 let canvas = document.querySelector('._show_image');
 let fullCanvas = document.querySelector('._fullInfo');
 
@@ -23,12 +23,12 @@ let handler = (evt)=>{
 function genHandler(evt){
     let d = Date.now()
     //console.log(d)
-    console.log('Данные из свернутого холста (сжатого)', getInfoCanvas(canvas));
-    console.log('Данные из полноразмерного холста', getInfoCanvas(fullCanvas));
+   // console.log('Данные из свернутого холста (сжатого)', getInfoCanvas(canvas));
+    //console.log('Данные из полноразмерного холста', getInfoCanvas(fullCanvas));
     let info = getInfoCanvas(canvas);
     let filter = new Filters(info);
     //let br = filter.getBrightness();
-    filter.convertToGray().LoGfilter();
+    filter.convertToGray().LoGfilter().invert();
     //filter.brigFilter(br);
 
     /*filter.customFilter(function([R,G,B,A]){
@@ -36,11 +36,11 @@ function genHandler(evt){
           return[0,24,240,255];
     })*/
    // filter.overlayMask()
-    draw(canvas,info,'paintPixels');
+    draw(canvas,info,'paintPixelsToSizing');
     console.log(Date.now() - d)
 
     info = getInfoCanvas(canvas);
-    console.log('Постданные ',info);
+   // console.log('Постданные ',info);
 }
 
 
@@ -48,7 +48,12 @@ function genHandler(evt){
 document.querySelector(".input-file").addEventListener('change',handler,false);
 document.querySelector('.getInfo').addEventListener('click',genHandler,false);
 document.querySelector('.info').addEventListener('click',function (evt) {
+    let d = Date.now()
     let info = getInfoCanvas(canvas);
+    let filter = new Filters(info);
+    filter.convertToGray()
+    draw(canvas,info,'paintPixels');
+    console.log(Date.now() - d)
     console.log('from image info ',info);
 })
 var target = document.querySelector(".drop-target");

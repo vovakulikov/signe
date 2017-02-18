@@ -42,10 +42,10 @@ export function draw(canvas,img,type){
 
     let options = {
         'drawImage': function(){
-            if(img.width > 1000)
-                ratio = 1000/img.width;
-            else if(img.height>800)
-                ratio = 800/img.height;
+            if(img.width > 500)
+                ratio = 500/img.width;
+            else if(img.height>500)
+                ratio = 500/img.height;
 
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
@@ -81,8 +81,8 @@ export function draw(canvas,img,type){
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
 
-            canvas.width = img.width * ratio;
-            canvas.height = img.height * ratio;
+            //canvas.width = img.width * ratio;
+            //canvas.height = img.height * ratio;
 
             copyContext.putImageData(img, 0, 0);
 

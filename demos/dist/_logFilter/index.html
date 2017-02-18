@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="./critical.css">
 </head>
 <style>
     ._fullInfo{
@@ -15,7 +16,71 @@
     }
 </style>
 <body>
-    <h1>LoG filter</h1>
+
+    <main class="main">
+
+        <header class="header">
+            <h1 class="header__name">Laplacian of Gaussian filter (LoG)</h1>
+            <p class="header__caption">
+                The Laplacian is a 2-D isotropic measure of the 2nd spatial derivative of an image.
+                The Laplacian of an <mark>image highlights regions of rapid intensity change</mark> and is therefore often
+                used for edge detection (see zero crossing edge detectors).
+                The Laplacian is often applied to an image that has first been smoothed with
+                something approximating a Gaussian smoothing filter in order to reduce its sensitivity to noise,
+                and hence the two variants will be described together here. The operator normally takes a single
+                graylevel image as input and produces another graylevel image as output.
+                <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/log.htm">Check details here.</a>
+            </p>
+        </header>
+
+        <section class="cntrls-filter">
+
+                <div class="cntrls-filter__setting">
+
+                    <div>
+                        <label for="file">Select a file</label>
+                        <input id="file" class="input-file" type="file" name="datafile"  size="40">
+                    </div>
+
+                    <button type="button" class="getInfo">Generate pixels</button>
+
+                    <label for="set_bl">Setting</label>
+                    <input id="set_bl" class="setting_checkbox" type="checkbox">
+
+
+                    <div class="setting-block">
+                        <h3 class="setting-block__name">Setting</h3>
+                        <div>
+                            <label for="debug">Debugging</label>
+                            <input id="debug" class="" type="checkbox">
+                        </div>
+                        <div>
+                            <label for="matrSize">LoG matrix size</label>
+                            <input id="matrSize" class="matrix_size" type="number">
+                        </div>
+                        <div>
+                            <label for="gistogramm">Show gistogramm</label>
+                            <input id="gistogramm" class="" type="checkbox">
+                        </div>
+                        <div>
+                            <label for="">Select method</label>
+                            <select>
+                                <option>Пункт 1</option>
+                                <option>Пункт 2</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+        </section>
+        <div class="cntrls-filter__dropdown-file">
+            <span>You can just drag your file on this block and drop.</span>
+        </div>
+
+    </main>
+
+    <!--<h1>LoG filter</h1>
     <mark>Laplassian of Gaussian</mark>
     <form action="">
         <label for="file">Please specify a file, or a set of files:</label>
@@ -25,7 +90,7 @@
     </form>
     <div class="drop-target"></div>
     <canvas class="_show_image"></canvas>
-    <canvas class="_fullInfo"></canvas>
+    <canvas class="_fullInfo"></canvas>-->
 
     <script src="index_logFilter.bundle.js"></script>
 </body>

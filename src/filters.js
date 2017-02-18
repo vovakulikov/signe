@@ -36,7 +36,15 @@ export default class Filters{
             [0,1,0],
             [1,-4,1],
             [0,1,0]
+        ]
+
+
+        this.LoG_mask = [
+            [-1,-2,-1],
+            [0,0,0],
+            [1,2,1]
         ]*/
+
         this.LoG_mask = [
             [0,0,1,0,0],
             [0,1,2,1,0],
@@ -44,7 +52,7 @@ export default class Filters{
             [0,1,2,1,0],
             [0,0,1,0,0]
         ]
-        console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage)
+       // console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage)
     }
 
     convertToGray(){
@@ -152,29 +160,25 @@ export default class Filters{
             r[i][j] = Math.round(response);
             }
         }
-        console.log(r.concat());
+       console.log(r.concat([]));
        // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
         for(i = 0; i < r.length-1; i++){
            // console.log('dfs')
 
              for( j = 0; j < r[0].length; j++ ){
-                 /*if(r[i][j]<0){
-                     r[i][j] = 0;
+
+                 /*  if(r[i][j]*r[i][j+1] < 0 || r[i][j]*r[i+1][j] < 0 || r[i][j]*r[i+1][j+1] < 0 ){
+                     r[i][j] = 255
                  }
-                  if((r[i][j]*r[i][j+1] <= 0) || (r[i][j]*r[i+1][j+1] <= 0) ||
-                     (r[i][j]*r[i+1][j] <= 0)
-                 ){
-                     r[i][j] = 0;
+                 else {
+                     r[i][j] = 0
                  }
-                 else{
-                     r[i][j] = 255;
-                 }
-                 if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
+                if((r[i][j] > 0 && r[i][j+1] < 0) || (r[i][j] < 0 && r[i][j+1] > 0) ||
                     (r[i][j] > 0 && r[i+1][j] < 0) || (r[i][j] < 0 && r[i+1][j] > 0) ||
                     (r[i][j] > 0 && r[i+1][j+1] < 0) || (r[i][j] < 0 && r[i+1][j+1] > 0)
                 ){
                     if((r[i][j] < 0 && r[i][j+1] == 0)  ){
-                        //r[i][j] = 255;
+                        r[i][j] = 255;
                         //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
                     }
                    // r[i][j] = 255;
@@ -192,9 +196,11 @@ export default class Filters{
             }
         }
 
+    return this;
+    }
+    getMatrInf(){
 
     }
-
     brigFilter(inform){
         for(let i = 0; i < inform.length; i++){
             for(let j = 0; j < inform[0].length; j++){
