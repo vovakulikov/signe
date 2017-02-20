@@ -8,7 +8,18 @@
     max-width:1100px;
     margin:0 auto;
     line-height: 1.2;
+    animation: NAME-YOUR-ANIMATION 0.4s ease;
 }
+@keyframes NAME-YOUR-ANIMATION {
+    0%   {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    100% { opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
 .header{
     margin-top:25px;
 }
@@ -55,6 +66,17 @@
     position: absolute;
     opacity: 0;
 }
+.fake__setting-block{
+    transition: height 2s ease;
+    width: 100%;
+    background: olive;
+}
+.setting-block_is_show{
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+    position: static;
+}
 
 .setting-block__name{
     width: 100%;
@@ -71,17 +93,38 @@
 
 /*---------------dropdownFile-------------*/
 
-.cntrls-filter__dropdown-file{
+.filter__drop-field,filter__images-cavas{
     margin-top:40px;
-    height:300px;
+}
+.cntrls-filter__dropdown-file{
+    min-height:300px;
     width:100%;
     border:3px dashed gray;
     display: flex;
+
 }
 .cntrls-filter__dropdown-file>span{
     margin:auto;
     font-size:40px;
     color:gray;
 }
+.cntrls-filter__dropdown-file_with_images{
+    border:none;
+}
+.cntrls-filter__dropdown-file_with_images .filter__images-cavas{
+    display: block;
+}
 
+/*---------filters-image-canvases-------*/
+
+.filter__images-cavas{
+    display: none;
+    overflow: hidden;
+    width:100%;
+}
+.filter__images-cavas div{
+    float: left;
+    margin-right:20px;
+    width: calc(50% - 20px);
+}
 
