@@ -5,7 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var titles = {
    // '_loadImage': "./demos/src/correct-filters/app.js",
-    '_logFilter': "./demos/src/log-filters/app.js"
+    '_logFilter': "./demos/src/log-filters/_app.js"
 }
 module.exports = [
       /*  {
@@ -47,8 +47,7 @@ module.exports = [
             },
            plugins: [
                new ExtractTextPlugin({
-                   filename:"./demos/dist/[name]/critical.css",
-
+                   filename:"./demos/dist/[name]/critical.css"
                })
            ]
         }
