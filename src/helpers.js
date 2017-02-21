@@ -3,9 +3,8 @@ export function fileSelect(evt,callback){
     return new Promise((resolve,reject) => {
             var files = evt
             //Пройдемся по массиву с файлами
-            let length = files.length, i,f;
                 // если файл не имеет формат изображения, то выброс
-                f = files[0];
+                let f = files[0];
                 if (!f.type.match('image.*')) {
                     return;
                 }
@@ -32,20 +31,31 @@ export function createImage(source){
         }
     })
 }
-export function draw(canvas,img,type){
+export function draw(canvas,img,type, size){
     var canvasCopy = document.createElement("canvas");
     var copyContext = canvasCopy.getContext("2d");
 
     var ctx = canvas.getContext('2d');
 
-    var ratio = 1;
+
+
+    let getRation = (width,height) => {
+        var ratio = 1;
+
+        if(img.width > width)
+            ratio = width/img.width;
+        else if(img.height>height)
+            ratio = height/img.height;
+
+
+        console.log('ratio', ratio)
+        return ratio;
+    }
 
     let options = {
         'drawImage': function(){
-            if(img.width > 500)
-                ratio = 500/img.width;
-            else if(img.height>500)
-                ratio = 500/img.height;
+
+            let ratio = getRation(size.width,800);
 
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;
@@ -73,10 +83,7 @@ export function draw(canvas,img,type){
         },
         'paintPixelsToSizing': function(){
 
-            if(img.width > 500)
-                ratio = 800/img.width;
-            else if(img.height>400)
-                ratio = 400/img.height;
+            let ratio = getRation(size.width,500);
 
             canvasCopy.width = img.width;
             canvasCopy.height = img.height;

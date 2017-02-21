@@ -23,7 +23,8 @@ export default class Store {
 
     processingImage(data){
         let filter = new Filters(data);
-        filter.convertToGray().LoGfilter().invert();
+        console.log(filter.pullInfoconsole())
+        filter.convertToGray().LoGfilter();
 
         return data;
     }

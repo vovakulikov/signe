@@ -149,6 +149,16 @@ export default class Filters{
         }
         return relay;
     }
+    pullInfoconsole(){
+            let r = [];
+            for(let i = 0; i < this._widthImage; i++){
+                r[i] = [];
+                for(let j = 0; j < this._heightImage; j++){
+                     r[i][j] = this.getCurrentPixel(i,j);
+                }
+            }
+            console.log('GetInformPixels',r)
+    }
     LoGfilter(){
         let i,j;
         let r = [];
@@ -160,12 +170,19 @@ export default class Filters{
             r[i][j] = Math.round(response);
             }
         }
-       console.log(r.concat([]));
+        console.log('Che',r.concat([]));
        // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
         for(i = 0; i < r.length-1; i++){
            // console.log('dfs')
 
              for( j = 0; j < r[0].length; j++ ){
+
+                 if(r[i][j]<=0){
+                     r[i][j] = 0;
+                 }
+                 else {
+                     r[i][j] = ( r[i][j] >= 255)? 255 :  r[i][j];
+                 }
 
                  /*  if(r[i][j]*r[i][j+1] < 0 || r[i][j]*r[i+1][j] < 0 || r[i][j]*r[i+1][j+1] < 0 ){
                      r[i][j] = 255
@@ -194,7 +211,9 @@ export default class Filters{
               //  this.setCurrentPixel(i,j+1,[r[i][j+1],r[i][j+1],r[i][j+1],255]);
                 //console.log('somethidn')
             }
+
         }
+
 
     return this;
     }

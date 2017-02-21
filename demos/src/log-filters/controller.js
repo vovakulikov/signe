@@ -24,6 +24,7 @@ export default class Controller {
         let pixels = this.store.processingImage(data);
 
         this.view.render('afterFilter', pixels);
+
     }
 
 }
