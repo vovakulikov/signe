@@ -2,7 +2,7 @@
  * Created by Vova on 19.02.2017.
  */
 import './critical.css';
-import {draw,getInfoCanvas} from '../../../src/helpers.js';
+import {draw,getInfoCanvas,getRation} from '../../../src/helpers.js';
 import '../../../node_modules/chart.js/dist/Chart.js'
 export default class View {
     constructor(){
@@ -17,7 +17,9 @@ export default class View {
 
         this.post_canvas = document.querySelector('._post-filter-image');
         this.canvas = document.querySelector('._show_image');
+
         this.canvasWidth = this.canvas.parentNode.offsetWidth;
+        this.canvasWidthFull = this.canvas.parentNode.parentNode.offsetWidth;
 
 
         this.uploadButton = document.querySelector(".input-file");
@@ -47,19 +49,47 @@ export default class View {
     dragFieldHide(){
         this.uploadFiled.querySelector('span').style.display = 'none';
         this.uploadFiled.classList.add("cntrls-filter__dropdown-file_with_images");
+
+        this.canvas.setAttribute('width', 0)
+        this.canvas.setAttribute('height', 0)
+          this.post_canvas.setAttribute('width', 0)
+          this.post_canvas.setAttribute('height', 0)
+
     }
 
     render(type,picture){
+
+        let getConfig = ()=>{
+            let w = this.canvas.parentNode.offsetWidth;
+            let fullyW = this.canvas.parentNode.parentNode.offsetWidth;
+
+            let config = getRation(picture,w);
+            console.log('config before',config.ratio)
+            //config.ratio = (config.ratio > 0.5)? config.ratio : getRation(picture,fullyW).ratio;
+            console.log('config after',config.ratio)
+            return config;
+        }
+
         let action = {
             'firstPaint': ()=>{
                 this.dragFieldHide()
-                let w = this.canvas.parentNode.offsetWidth;
-                draw(this.canvas,picture,'drawImage',{width: w});
+                console.log(this.canvas.parentNode.offsetWidth)
 
+
+                draw(this.canvas,'drawImage',getConfig());
+                document.querySelector('.origin-image')
+                    .setAttribute('src',this.canvas.toDataURL("image/png"))
+                let img = document.querySelector('.origin-image')
+                    img.style.maxWidth = img.offsetWidth + 'px';
 
             },
             'afterFilter': ()=>{
-                draw(this.post_canvas,picture,'paintPixels',{width: this.canvasWidth});
+                draw(this.post_canvas,'paintPixels',getConfig());
+                //let img = this.post_canvas.toDataURL("image/png");
+                document.querySelector('.filter-image')
+                .setAttribute('src',this.post_canvas.toDataURL("image/png"))
+                let img = document.querySelector('.filter-image')
+                img.style.maxWidth = img.offsetWidth + 'px';
             }
         }
 

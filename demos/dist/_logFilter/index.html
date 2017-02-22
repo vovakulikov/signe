@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta content="initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width" name="viewport">
     <link rel="stylesheet" href="./critical.css">
 </head>
 <style>
-    ._fullInfo{
-        display:none;
-    }
-    .drop-target{
-        width:400px;
-        height: 200px;
-        background: orangered;
-    }
 </style>
 <body>
 
@@ -31,6 +24,24 @@
                 graylevel image as input and produces another graylevel image as output.
                 <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/log.htm">Check details here.</a>
             </p>
+           <!-- <p class="header__caption">
+                    In fact, since the convolution operation is associative,
+                    we can convolve the Gaussian smoothing filter with the Laplacian filter
+                    first of all, and then convolve this hybrid filter with the image to achieve
+                    the required result. Doing things this way has two advantages:
+                    <ul class="header__caption">
+                        <li>
+                            Since both the Gaussian and the Laplacian kernels are usually much
+                            smaller than the image, this method usually requires far fewer arithmetic operations.
+                        </li>
+                        <li>
+                            The LoG (`Laplacian of Gaussian') kernel can be precalculated in
+                            advance so only one convolution needs to be performed at run-time on the image.
+                        </li>
+                    </ul>
+
+            </p>-->
+
         </header>
 
         <section class="cntrls-filter">
@@ -42,9 +53,9 @@
                         <input id="file" class="input-file" type="file" name="datafile"  size="40">
                     </div>
 
-                    <button type="button" class="getInfo">Generate pixels</button>
+                    <button type="button" class="cntrls-filter__start-effect">Generate pixels</button>
 
-                    <label for="set_bl">Setting</label>
+                    <label for="set_bl" class="setting-button">Setting</label>
                     <input id="set_bl" class="setting_checkbox" type="checkbox">
 
 
@@ -65,18 +76,36 @@
                         <div>
                             <label for="">Select method</label>
                             <select>
-                                <option>Пункт 1</option>
-                                <option>Пункт 2</option>
+                                <option>LoG filter</option>
+                                <option>LoG with 1 px width</option>
                             </select>
                         </div>
 
                     </div>
-
+                    <div class="fake__setting-block"></div>
                 </div>
         </section>
+
         <div class="cntrls-filter__dropdown-file">
-            <span>You can just drag your file on this block and drop.</span>
+                <span>Drop your file here.</span>
+
+                <div class="filter__images-cavas">
+
+                    <div class="item-canvas dd">
+                        <canvas class="_show_image"></canvas>
+                        <img src="" class="origin-image" alt="">
+                    </div>
+                    <div class="item-canvas">
+                        <canvas class="_post-filter-image"></canvas>
+                        <img src="" class="filter-image" alt="">
+                    </div>
+
+                </div>
         </div>
+
+
+
+
 
     </main>
 
@@ -89,7 +118,7 @@
         <button type="button" class="info">info</button>
     </form>
     <div class="drop-target"></div>
-    <canvas class="_show_image"></canvas>
+
     <canvas class="_fullInfo"></canvas>-->
 
     <script src="index_logFilter.bundle.js"></script>

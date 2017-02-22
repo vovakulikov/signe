@@ -3,10 +3,23 @@
     padding:0;
     box-sizing: border-box;
 }
+html{
+    height: 100%;
+    width: 100%;
+
+}
+body{
+    font-size: 14px;
+    ~font-family: monospace;
+    min-height: 100vh;
+    position: relative;
+   ~font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
 
 .main{
     max-width:1100px;
     margin:0 auto;
+
     line-height: 1.2;
     animation: NAME-YOUR-ANIMATION 0.4s ease;
 }
@@ -63,7 +76,8 @@
     transform: translateY(8px);
     transition: transform 0.25s ease-in-out, opacity 0.3s ease;
     visibility: hidden;
-    position: absolute;
+    position: fixed;
+    width: 100%;
     opacity: 0;
 }
 .fake__setting-block{
@@ -93,14 +107,12 @@
 
 /*---------------dropdownFile-------------*/
 
-.filter__drop-field,filter__images-cavas{
-    margin-top:40px;
-}
 .cntrls-filter__dropdown-file{
     min-height:300px;
     width:100%;
     border:3px dashed gray;
     display: flex;
+    margin-top:40px;
 
 }
 .cntrls-filter__dropdown-file>span{
@@ -111,20 +123,59 @@
 .cntrls-filter__dropdown-file_with_images{
     border:none;
 }
-.cntrls-filter__dropdown-file_with_images .filter__images-cavas{
-    display: block;
-}
 
 /*---------filters-image-canvases-------*/
 
+.cntrls-filter__dropdown-file_with_images .filter__images-cavas{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap; /* NEW */
+    display: -webkit-flex; /* NEW */
+}
+
 .filter__images-cavas{
     display: none;
-    overflow: hidden;
     width:100%;
+    box-sizing: content-box;
 }
-.filter__images-cavas div{
-    float: left;
-    margin-right:20px;
-    width: calc(50% - 20px);
+
+
+
+.item-canvas + .item-canvas{
+
+}
+.item-canvas{
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 300px;
+    width: 50%;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding:20px;
+}
+
+.item-canvas img{
+    margin: auto;
+    display: block;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
+}
+
+.item-canvas canvas{
+    display: none;
+}
+
+
+
+
+
+@media all and (max-width: 400px) {
+    .main{
+        width: 100%;
+        padding: 20px;
+    }
 }
 
