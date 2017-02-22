@@ -1,3 +1,5 @@
+var fixOrientation = require('fix-orientation');
+
 export function fileSelect(evt,callback){
     //get list of current files
     return new Promise((resolve,reject) => {
@@ -17,7 +19,10 @@ export function fileSelect(evt,callback){
                 //Загрузка файла
                 reader.onload = function(e){
                    // console.log('Thats is eeeee', e)
-                    resolve(e.target.result)
+                    fixOrientation(e.target.result,{img:true},function(fixed,image){
+                        resolve(fixed)
+                    })
+
                 };
 
     })
@@ -27,11 +32,28 @@ export function createImage(source){
         let picture = new Image();
         picture.src = source;
         picture.onload = ()=>{
+            console.log('Из загрузчика',picture)
             resolve(picture);
         }
     })
 }
-export function draw(canvas,img,type, size){
+export function getRation(img,width,height=400){
+    var ratio = 1
+
+    if(img.width > width) {
+        ratio = width / img.width;
+    }
+    else if(img.height>height)
+        ratio = height/img.height;
+
+    //var ratio = (ratioH > ratioW)? ratioW: ratioH;
+    return {
+        'ratio' : ratio,
+        'img':img
+    }
+}
+
+export function draw(canvas,type,config){
     var canvasCopy = document.createElement("canvas");
     var copyContext = canvasCopy.getContext("2d");
 
@@ -39,31 +61,19 @@ export function draw(canvas,img,type, size){
 
 
 
-    let getRation = (width,height) => {
-        var ratio = 1;
-
-        if(img.width > width)
-            ratio = width/img.width;
-        else if(img.height>height)
-            ratio = height/img.height;
-
-
-        console.log('ratio', ratio)
-        return ratio;
-    }
 
     let options = {
         'drawImage': function(){
 
-            let ratio = getRation(size.width,800);
+           // let ratio = getRation(size.width,800);
 
-            canvasCopy.width = img.width;
-            canvasCopy.height = img.height;
+            canvasCopy.width = config.img.width;
+            canvasCopy.height = config.img.height;
 
-            canvas.width = img.width * ratio;
-            canvas.height = img.height * ratio;
+            canvas.width = config.img.width * config.ratio;
+            canvas.height = config.img.height * config.ratio;
 
-            copyContext.drawImage(img, 0, 0);
+            copyContext.drawImage(config.img, 0, 0);
             ctx.drawImage(canvasCopy, 0, 0,
                 canvasCopy.width, canvasCopy.height, 0, 0,
                 canvas.width, canvas.height);
@@ -71,27 +81,27 @@ export function draw(canvas,img,type, size){
         },
         'paintPixels':function(){
            // console.log(img)
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.putImageData(img, 0, 0);
+            canvas.width = config.img.width;
+            canvas.height = config.img.height;
+            ctx.putImageData(config.img, 0, 0);
         },
         'drawRAWImage':function(){
-            canvas.width = img.width;
-            canvas.height = img.height;
+            canvas.width = config.img.width;
+            canvas.height = config.img.height;
 
-            ctx.drawImage(img,0,0);
+            ctx.drawImage(config.img,0,0);
         },
         'paintPixelsToSizing': function(){
 
             let ratio = getRation(size.width,500);
 
-            canvasCopy.width = img.width;
-            canvasCopy.height = img.height;
+            canvasCopy.width = config.img.width;
+            canvasCopy.height = config.img.height;
 
             //canvas.width = img.width * ratio;
             //canvas.height = img.height * ratio;
 
-            copyContext.putImageData(img, 0, 0);
+            copyContext.putImageData(config.img, 0, 0);
 
             ctx.drawImage(canvasCopy, 0, 0,
                 canvasCopy.width, canvasCopy.height, 0, 0,
