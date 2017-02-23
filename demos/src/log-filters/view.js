@@ -4,6 +4,10 @@
 import './critical.css';
 import {draw,getInfoCanvas,getRation} from '../../../src/helpers.js';
 import '../../../node_modules/chart.js/dist/Chart.js'
+
+
+var colorThief = new ColorThief();
+
 export default class View {
     constructor(){
         console.log('View is active')
@@ -81,6 +85,9 @@ export default class View {
                     .setAttribute('src',this.canvas.toDataURL("image/png"));
                 let img = document.querySelector('.origin-image')
                     img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
+                    //console.log('Акцидентный цвет',colorThief.getColor(img));
+                    var c = colorThief.getColor(img)
+                    img.parentNode.parentNode.style.backgroundColor = `rgb(${c[0]},${c[1]},${c[2]})`
 
             },
             'afterFilter': ()=>{
@@ -90,6 +97,7 @@ export default class View {
                 .setAttribute('src',this.post_canvas.toDataURL("image/png"));
                 let img = document.querySelector('.filter-image')
                 img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
+                img.parentNode.parentNode.style.backgroundColor = 'black'
             }
         }
 

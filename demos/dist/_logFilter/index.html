@@ -91,16 +91,41 @@
 
                 <div class="filter__images-cavas">
 
-                    <div class="item-canvas dd">
-                        <canvas class="_show_image"></canvas>
-                        <img src="" class="origin-image" alt="">
-                    </div>
                     <div class="item-canvas">
-                        <canvas class="_post-filter-image"></canvas>
-                        <img src="" class="filter-image" alt="">
+
+                        <div class="item-canvas__image">
+
+                            <div class="item-canvas__icon-controll">
+                                <button>Download image</button>
+                                <button>debug</button>
+                                <button>Full size</button>
+                            </div>
+
+                            <canvas class="_show_image"></canvas>
+                            <img src="" class="origin-image" alt="">
+
+                        </div>
+                        <div class="filter_debug">Debug</div>
+                    </div>
+
+                    <div class="item-canvas ">
+                        <div class="item-canvas__image">
+
+                            <div class="item-canvas__icon-controll">
+                                <button>Download image</button>
+                                <button>debug</button>
+                                <button>Full size</button>
+                            </div>
+
+                            <canvas class="_post-filter-image"></canvas>
+                            <img src="" class="filter-image" alt="">
+
+                        </div>
+                        <div class="filter_debug">Debug</div>
                     </div>
 
                 </div>
+
         </div>
 
 
@@ -120,7 +145,7 @@
     <div class="drop-target"></div>
 
     <canvas class="_fullInfo"></canvas>-->
-
+    <script src="../../..//node_modules/thief-color/color-thief.min.js"></script>
     <script src="index_logFilter.bundle.js"></script>
 </body>
 </html>
