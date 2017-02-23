@@ -147,6 +147,7 @@ body{
 }
 .item-canvas{
     display: flex;
+    flex-wrap: wrap;
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 300px;
@@ -155,7 +156,9 @@ body{
     margin-bottom: 10px;
     padding:20px;
 }
-
+.item-cavas_debug_active{
+    flex-basis: 100%;
+}
 .item-canvas img{
     margin: auto;
     display: block;
@@ -167,10 +170,16 @@ body{
 .item-canvas canvas{
     display: none;
 }
+.item-canvas__image{
+    margin:auto
+}
+/*-------filter-debugging--------*/
 
-
-
-
+.filter_debug{
+    background: orangered;
+    flex-grow: 1;
+    flex-basis: 300px;
+}
 
 @media all and (max-width: 400px) {
     .main{
