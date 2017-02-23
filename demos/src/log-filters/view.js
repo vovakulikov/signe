@@ -60,7 +60,7 @@ export default class View {
     render(type,picture){
 
         let getConfig = ()=>{
-            let w = this.canvas.parentNode.offsetWidth;
+            let w = document.querySelector('.item-canvas').offsetWidth;
             let fullyW = this.canvas.parentNode.parentNode.offsetWidth;
 
             let config = getRation(picture,w);
@@ -78,55 +78,22 @@ export default class View {
 
                 draw(this.canvas,'drawImage',getConfig());
                 document.querySelector('.origin-image')
-                    .setAttribute('src',this.canvas.toDataURL("image/png"))
+                    .setAttribute('src',this.canvas.toDataURL("image/png"));
                 let img = document.querySelector('.origin-image')
-                    img.style.maxWidth = img.offsetWidth + 'px';
+                    img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
 
             },
             'afterFilter': ()=>{
                 draw(this.post_canvas,'paintPixels',getConfig());
                 //let img = this.post_canvas.toDataURL("image/png");
                 document.querySelector('.filter-image')
-                .setAttribute('src',this.post_canvas.toDataURL("image/png"))
+                .setAttribute('src',this.post_canvas.toDataURL("image/png"));
                 let img = document.querySelector('.filter-image')
-                img.style.maxWidth = img.offsetWidth + 'px';
+                img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
             }
         }
 
         action[type]();
     }
 
-    //Animate setting menu with fake block
-    animateSetting(){
-
-    }
-
-    //The function for animate a main block slow down and show block setting
-    /*showSettingNormalize(evt){
-        evt.preventDefault();
-        let heigth;
-
-        let actionHandler = (evt)=>{
-            this.setting_block.classList.add('setting-block_is_show')
-            this.canvasesBlock.removeEventListener("transitionend", actionHandler);
-            this.canvasesBlock.style = 'none'
-            this.canvasesBlock.style.transform = `translateY(0)`;
-        }
-
-        this.setting_label.classList.toggle('setting-block_is_active');
-
-        if(this.setting_label.classList.contains('setting-block_is_active')){
-            heigth = this.setting_block.clientHeight;
-            this.canvasesBlock.style = 'transition: transform 0.3s ease;'
-            this.canvasesBlock.style.transform = `translateY(${heigth+40}px)`;
-
-            this.canvasesBlock.addEventListener("transitionend", actionHandler, false);
-
-        }
-        else{
-            this.setting_block.classList.remove('setting-block_is_show')
-            this.canvasesBlock.style.transform = `translateY(0)`;
-        }
-
-    }*/
 }
