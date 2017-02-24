@@ -2,7 +2,7 @@
  * Created by Vova on 19.02.2017.
  */
 import './critical.css';
-import {draw,getInfoCanvas,getRation} from '../../../src/helpers.js';
+import {draw,getInfoCanvas,getRation,closest} from '../../../src/helpers.js';
 import '../../../node_modules/chart.js/dist/Chart.js'
 
 
@@ -29,11 +29,17 @@ export default class View {
         this.uploadButton = document.querySelector(".input-file");
         this.uploadFiled = document.querySelector(".cntrls-filter__dropdown-file");
 
+
+        this.debugBtn = document.querySelector(".debug__btn");
+
         this.standartEvent()
     }
 
     standartEvent(){
         this.setting_label.addEventListener('click',(evt)=>{
+
+        })
+        this.debugBtn.addEventListener('click',(evt)=>{
 
         })
     }
@@ -69,7 +75,7 @@ export default class View {
 
             let config = getRation(picture,w);
             console.log('config before',config.ratio)
-            //config.ratio = (config.ratio > 0.5)? config.ratio : getRation(picture,fullyW).ratio;
+           // config.ratio = (config.ratio > 0.5)? config.ratio : getRation(picture,fullyW).ratio;
             console.log('config after',config.ratio)
             return config;
         }
@@ -88,7 +94,7 @@ export default class View {
                     //console.log('Акцидентный цвет',colorThief.getColor(img));
                     var c = colorThief.getColor(img)
                     img.parentNode.parentNode.style.backgroundColor = `rgb(${c[0]},${c[1]},${c[2]})`
-
+                document.querySelector('.filtered-image').classList.add('item-canvas_hide')
             },
             'afterFilter': ()=>{
                 draw(this.post_canvas,'paintPixels',getConfig());
@@ -97,11 +103,14 @@ export default class View {
                 .setAttribute('src',this.post_canvas.toDataURL("image/png"));
                 let img = document.querySelector('.filter-image')
                 img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
-                img.parentNode.parentNode.style.backgroundColor = 'black'
+                img.parentNode.parentNode.style.backgroundColor = 'black';
+
+                document.querySelector('.filtered-image').classList.remove('item-canvas_hide')
             }
         }
 
         action[type]();
+
     }
 
 }

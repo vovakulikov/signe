@@ -159,6 +159,9 @@ body{
 .item-cavas_debug_active{
     flex-basis: 100%;
 }
+.item-canvas_hide{
+    visibility: hidden;
+}
 .item-canvas img{
     margin: auto;
     display: block;
