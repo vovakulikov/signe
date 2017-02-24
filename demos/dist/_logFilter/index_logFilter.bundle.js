@@ -81,6 +81,7 @@ exports.createImage = createImage;
 exports.getRation = getRation;
 exports.draw = draw;
 exports.getInfoCanvas = getInfoCanvas;
+exports.closest = closest;
 var fixOrientation = __webpack_require__(10);
 
 function fileSelect(evt, callback) {
@@ -188,6 +189,18 @@ function getInfoCanvas(canvas) {
     var ctx = canvas.getContext('2d');
 
     return ctx.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+function closest(el, selector) {
+    var matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+
+    while (el) {
+        if (matchesSelector.call(el, selector)) {
+            break;
+        }
+        el = el.parentElement;
+    }
+    return el;
 }
 
 /***/ }),
@@ -329,6 +342,8 @@ __webpack_require__(5);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var colorThief = new ColorThief();
+
 var View = function () {
     function View() {
         _classCallCheck(this, View);
@@ -351,6 +366,8 @@ var View = function () {
         this.uploadButton = document.querySelector(".input-file");
         this.uploadFiled = document.querySelector(".cntrls-filter__dropdown-file");
 
+        this.debugBtn = document.querySelector(".debug__btn");
+
         this.standartEvent();
     }
 
@@ -358,6 +375,7 @@ var View = function () {
         key: 'standartEvent',
         value: function standartEvent() {
             this.setting_label.addEventListener('click', function (evt) {});
+            this.debugBtn.addEventListener('click', function (evt) {});
         }
     }, {
         key: 'bindUploadImage',
@@ -395,12 +413,12 @@ var View = function () {
             var _this2 = this;
 
             var getConfig = function getConfig() {
-                var w = _this2.canvas.parentNode.offsetWidth;
+                var w = document.querySelector('.item-canvas').offsetWidth;
                 var fullyW = _this2.canvas.parentNode.parentNode.offsetWidth;
 
                 var config = (0, _helpers.getRation)(picture, w);
                 console.log('config before', config.ratio);
-                //config.ratio = (config.ratio > 0.5)? config.ratio : getRation(picture,fullyW).ratio;
+                // config.ratio = (config.ratio > 0.5)? config.ratio : getRation(picture,fullyW).ratio;
                 console.log('config after', config.ratio);
                 return config;
             };
@@ -413,49 +431,26 @@ var View = function () {
                     (0, _helpers.draw)(_this2.canvas, 'drawImage', getConfig());
                     document.querySelector('.origin-image').setAttribute('src', _this2.canvas.toDataURL("image/png"));
                     var img = document.querySelector('.origin-image');
-                    img.style.maxWidth = img.offsetWidth + 'px';
+                    img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
+                    //console.log('Акцидентный цвет',colorThief.getColor(img));
+                    var c = colorThief.getColor(img);
+                    img.parentNode.parentNode.style.backgroundColor = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
+                    document.querySelector('.filtered-image').classList.add('item-canvas_hide');
                 },
                 'afterFilter': function afterFilter() {
                     (0, _helpers.draw)(_this2.post_canvas, 'paintPixels', getConfig());
                     //let img = this.post_canvas.toDataURL("image/png");
                     document.querySelector('.filter-image').setAttribute('src', _this2.post_canvas.toDataURL("image/png"));
                     var img = document.querySelector('.filter-image');
-                    img.style.maxWidth = img.offsetWidth + 'px';
+                    img.style.maxWidth = document.querySelector('.item-canvas').offsetWidth + 'px';
+                    img.parentNode.parentNode.style.backgroundColor = 'black';
+
+                    document.querySelector('.filtered-image').classList.remove('item-canvas_hide');
                 }
             };
 
             action[type]();
         }
-
-        //Animate setting menu with fake block
-
-    }, {
-        key: 'animateSetting',
-        value: function animateSetting() {}
-
-        //The function for animate a main block slow down and show block setting
-        /*showSettingNormalize(evt){
-            evt.preventDefault();
-            let heigth;
-              let actionHandler = (evt)=>{
-                this.setting_block.classList.add('setting-block_is_show')
-                this.canvasesBlock.removeEventListener("transitionend", actionHandler);
-                this.canvasesBlock.style = 'none'
-                this.canvasesBlock.style.transform = `translateY(0)`;
-            }
-              this.setting_label.classList.toggle('setting-block_is_active');
-              if(this.setting_label.classList.contains('setting-block_is_active')){
-                heigth = this.setting_block.clientHeight;
-                this.canvasesBlock.style = 'transition: transform 0.3s ease;'
-                this.canvasesBlock.style.transform = `translateY(${heigth+40}px)`;
-                  this.canvasesBlock.addEventListener("transitionend", actionHandler, false);
-              }
-            else{
-                this.setting_block.classList.remove('setting-block_is_show')
-                this.canvasesBlock.style.transform = `translateY(0)`;
-            }
-          }*/
-
     }]);
 
     return View;
