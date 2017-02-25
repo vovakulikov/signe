@@ -32,19 +32,20 @@ export function createImage(source){
         let picture = new Image();
         picture.src = source;
         picture.onload = ()=>{
-            console.log('Из загрузчика',picture)
             resolve(picture);
         }
     })
 }
-export function getRation(img,width,height=400){
+export function getRation(img,width,height=650){
     var ratio = 1
 
-    if(img.width > width) {
+    if(img.height>height)
+    ratio = height/img.height;
+
+    else if(img.width > width) {
         ratio = width / img.width;
     }
-    else if(img.height>height)
-        ratio = height/img.height;
+
 
     //var ratio = (ratioH > ratioW)? ratioW: ratioH;
     return {
@@ -116,6 +117,32 @@ export function getInfoCanvas(canvas){
 
     return ctx.getImageData(0,0,canvas.width,canvas.height);
 }
+
+
+
+export function qs(selector, scope) {
+    return (scope || document).querySelector(selector);
+}
+export function $on(target, type, callback, capture) {
+    target.addEventListener(type, callback, !!capture);
+}
+export function $delegate(target, selector, type, handler, capture) {
+    const dispatchEvent = event => {
+        const targetElement = event.target;
+        const potentialElements = target.querySelectorAll(selector);
+        let i = potentialElements.length;
+
+        while (i--) {
+            if (potentialElements[i] === targetElement) {
+                handler.call(targetElement, event);
+                break;
+            }
+        }
+    };
+
+    $on(target, type, dispatchEvent, !!capture);
+}
+
 
 
 export function closest(el, selector) {

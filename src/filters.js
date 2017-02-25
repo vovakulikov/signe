@@ -157,7 +157,7 @@ export default class Filters{
                      r[i][j] = this.getCurrentPixel(i,j);
                 }
             }
-            console.log('GetInformPixels',r)
+           // console.log('GetInformPixels',r)
     }
     LoGfilter(){
         let i,j;
@@ -170,7 +170,7 @@ export default class Filters{
             r[i][j] = Math.round(response);
             }
         }
-        console.log('Che',r.concat([]));
+       // console.log('Che',r.concat([]));
        // if(r[i][j] > 0 && (r[i][j+1] < 0 || ))
         for(i = 0; i < r.length-1; i++){
            // console.log('dfs')
