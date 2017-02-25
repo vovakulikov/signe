@@ -108,7 +108,7 @@ body{
 /*---------------dropdownFile-------------*/
 
 .cntrls-filter__dropdown-file{
-    min-height:300px;
+    min-height:400px;
     width:100%;
     border:3px dashed gray;
     display: flex;
@@ -159,8 +159,11 @@ body{
 .item-cavas_debug_active{
     flex-basis: 100%;
 }
+.item-cavas_debug_active .filter_debug{
+    display: block;
+}
 .item-canvas_hide{
-    visibility: hidden;
+    display: none;
 }
 .item-canvas img{
     margin: auto;
@@ -197,6 +200,9 @@ body{
     background: orangered;
     flex-grow: 1;
     flex-basis: 300px;
+    display: none;
+}
+.filter__graph{
     display: none;
 }
 
