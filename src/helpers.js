@@ -54,6 +54,37 @@ export function getRation(img,width,height=650){
     }
 }
 
+//Тормоз-функция.
+export function throttle(func, ms) {
+
+    var isThrottled = false,
+        savedArgs,
+        savedThis;
+
+    function wrapper() {
+
+        if (isThrottled) { // (2)
+            savedArgs = arguments;
+            savedThis = this;
+            return;
+        }
+
+        func.apply(this, arguments); // (1)
+
+        isThrottled = true;
+
+        setTimeout(function() {
+            isThrottled = false; // (3)
+            if (savedArgs) {
+                wrapper.apply(savedThis, savedArgs);
+                savedArgs = savedThis = null;
+            }
+        }, ms);
+    }
+
+    return wrapper;
+}
+
 export function draw(canvas,type,config){
     var canvasCopy = document.createElement("canvas");
     var copyContext = canvasCopy.getContext("2d");
@@ -61,16 +92,13 @@ export function draw(canvas,type,config){
     var ctx = canvas.getContext('2d');
 
 
-
-
     let options = {
         'drawImage': function(){
-
-           // let ratio = getRation(size.width,800);
 
             canvasCopy.width = config.img.width;
             canvasCopy.height = config.img.height;
 
+            console.log('helper', config.img.width * config.ratio)
             canvas.width = config.img.width * config.ratio;
             canvas.height = config.img.height * config.ratio;
 
