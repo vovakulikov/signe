@@ -12,10 +12,12 @@ export default class Controller {
     }
 
     uploadImage(evt){
+        //this.view.loadSpin()
         this.store.loadImage(evt)
             .then(picture=>{
                 this.view.render('firstPaint',picture);
             })
+
     }
     processingImage(data){
         let pixels = this.store.processingImage(data);

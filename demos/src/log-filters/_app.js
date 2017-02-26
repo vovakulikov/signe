@@ -5,6 +5,6 @@ import Store from './store';
 const store = new Store();
 const view = new View();
 
-const controller = new Controller(store,view);
+new Controller(store,view);
 
 
