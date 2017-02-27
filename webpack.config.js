@@ -19,11 +19,14 @@ module.exports = [
             }
         },*/
        {
-            entry: titles,
+            entry: {
+                app: path.resolve(__dirname, './demos/src/log-filters/_app.js'),
+               // worker:  path.resolve(__dirname, './demos/src/log-filters/worker.js')
+            },
             output: {
-                path: path.resolve(__dirname),
-                publicPath:"/",
-                filename: './demos/dist/[name]/index[name].bundle.js'
+                path: path.resolve(__dirname, './demos/dist/_logFilter'),
+                publicPath:'/demos/dist/_logFilter/',
+                filename: '[name].bundle.js'
             },
             module: {
                 loaders: [
@@ -47,7 +50,15 @@ module.exports = [
             },
            plugins: [
                new ExtractTextPlugin({
-                   filename:"./demos/dist/[name]/critical.css"
+                   filename:"critical.css"
+               }),
+               new webpack.LoaderOptionsPlugin({
+                   worker:{
+                       output:{
+                           filename: 'hash.worker.js',
+                           chunkFilename: "[id].hash.worker.js"
+                       }
+                   }
                })
            ]
         }
