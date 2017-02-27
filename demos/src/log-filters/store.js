@@ -4,9 +4,16 @@
 
 import {createImage,fileSelect,getInfoCanvas} from '../../../src/helpers.js';
 import Filters from '../../../src/filters.js';
+import worker from "worker-loader!./worker.js";
+
+
 export default class Store {
     constructor(){
-
+            this.worker = new worker();
+            this.worker.onmessage = (e)=>{
+            console.log(e.data)
+        }
+        this.worker.postMessage('Hello World')
     }
 
     loadImage(evt){
