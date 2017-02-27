@@ -20,8 +20,19 @@ export default class Controller {
 
     }
     processingImage(data){
-        let pixels = this.store.processingImage(data);
-        this.view.render('afterFilter', pixels);
+        //console.log('to arg controller',data)
+       /* let pixels = this.store.processingImage(data);
+        this.view.render('afterFilter', pixels);*/
+        //console.log('main Thread',data);
+       this.store.processingImageWorker({
+            "func":'processingImage',
+            'infoPixel':data
+        })
+            .then(d=>{
+                console.log('worker thread',d)
+                this.view.render('afterFilter', d.resposne);
+            })
+
     }
 
 }
