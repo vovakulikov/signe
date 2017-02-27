@@ -6,14 +6,10 @@ import {createImage,fileSelect,getInfoCanvas} from '../../../src/helpers.js';
 import Filters from '../../../src/filters.js';
 import worker from "worker-loader!./worker.js";
 
-
+console.log('dfsfa')
 export default class Store {
     constructor(){
             this.worker = new worker();
-            this.worker.onmessage = (e)=>{
-            console.log(e.data)
-        }
-        this.worker.postMessage('Hello World')
     }
 
     loadImage(evt){
@@ -30,4 +26,15 @@ export default class Store {
         filter.convertToGray().LoGfilter();
         return data;
     }
+
+    processingImageWorker(data){
+        return new Promise((resolve,reject)=>{
+            this.worker.postMessage(data);
+            this.worker.onmessage = (e)=>{
+                console.log('Responce from worker in store.js',e.data)
+                resolve(e.data);
+            }
+        })
+    }
+
 }
