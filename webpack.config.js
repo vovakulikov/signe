@@ -53,13 +53,20 @@ module.exports = [
                    filename:"critical.css"
                }),
                new webpack.LoaderOptionsPlugin({
-                   worker:{
-                       output:{
-                           filename: 'hash.worker.js',
-                           chunkFilename: "[id].hash.worker.js"
+                   options: {
+                       worker: {
+                           output: {
+                               filename: "hash.worker.js",
+                               chunkFilename: "[id].hash.worker.js"
+                           }
                        }
                    }
                })
-           ]
+           ],
+           devServer: {
+               contentBase: "./demos/dist/_logFilter/",
+               hot: false
+           },
+           watch: true
         }
     ]
