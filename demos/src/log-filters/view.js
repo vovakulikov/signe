@@ -4,11 +4,13 @@
 import './critical.css';
 import {draw,getInfoCanvas,getRation,closest,$delegate,qs} from '../../../src/helpers.js';
 
-import Chart from 'chart.js';
-console.log(Chart)
+//import Chart from 'chart.js';
+//console.log(Chart)
 import Template from './template.js';
+console.log('sf')
 
-var colorThief = new ColorThief();
+
+import {getAverageRGB} from '../../../src/helpers.js';
 
 export default class View {
     constructor(){
@@ -87,7 +89,7 @@ export default class View {
                     .setAttribute('src',this.canvas.toDataURL("image/png"));
                 let img = document.querySelector('.origin-image')
                    setTimeout(()=>{
-                       let c = colorThief.getColor(img)
+                       let c = getAverageRGB(img)
                        img.parentNode.parentNode.style.backgroundColor = `rgb(${c[0]},${c[1]},${c[2]})`
                    },0)
             },
