@@ -2,11 +2,10 @@
  * Created by Vova on 19.02.2017.
  */
 import './critical.css';
-import {draw,getInfoCanvas,getRation,closest,$delegate,qs} from '../../../src/helpers.js';
+import {draw,getInfoCanvas,getRation,closest,$delegate,qs,$off,$removeEvent} from '../../../src/helpers.js';
 
 //import Chart from 'chart.js';
 //console.log(Chart)
-import Template from './template.js';
 console.log('sf')
 
 
@@ -30,29 +29,26 @@ export default class View {
         this.filteredImage =  qs('.filtered-image')
 
         this.debugBtn = qs(".debug__btn");
-        this.standartEvent()
 
-        this.template = new Template();
+
+
+        this.toogleDebugWindow = this.toogleDebugWindow.bind(this);
+
+        this.standartEvent()
     }
 
     standartEvent(){
-        $delegate( this.imagesBlock, '.debug__btn', 'click', ({target})=>{
-            let rootImgEl = closest(target, '.item-canvas');
-            rootImgEl.classList.toggle('item-cavas_debug_active')
-            let grid = qs('.debug__gridPixel',rootImgEl)
-            if(!grid.hasChildNodes()){
-                grid.insertAdjacentHTML('beforeend', this.template.getGridList(3));
-                console.log(this.template.getGridList(3))
-            }
-        },false)
-
-        $delegate( this.imagesBlock, '.debug__close-icon', 'click', ({target})=>{
-            let rootImgEl = closest(target, '.item-canvas')
-            rootImgEl.classList.remove('item-cavas_debug_active')
-        },false)
+        $delegate( this.imagesBlock, '.debug__btn', 'click', this.toogleDebugWindow,false)
+        $delegate( this.imagesBlock, '.debug__close-icon', 'click',this.toogleDebugWindow,false)
+        $delegate( this.imagesBlock, '.full_width', 'click', ({target})=>{
+            this.imagesBlock.classList.toggle('items-full-width_active')
+        })
 
     }
-
+    toogleDebugWindow({target}){
+        let rootImgEl = closest(target, '.item-canvas');
+        rootImgEl.classList.toggle('item-cavas_debug_active')
+    }
     bindUploadImage(handler){
         this.uploadButton.addEventListener('change',handler);
         this.uploadFiled.addEventListener('drop',handler);
@@ -72,6 +68,8 @@ export default class View {
         this.uploadFiled.querySelector('span').style.display = 'none';
         this.uploadFiled.classList.add("cntrls-filter__dropdown-file_with_images");
         this.filteredImage.classList.add('item-canvas_hide')
+
+       // let items = qs('item-canvas').
     }
     render(type,picture){
 

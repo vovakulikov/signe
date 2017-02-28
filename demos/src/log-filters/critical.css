@@ -134,6 +134,9 @@
 .item-canvas + .item-canvas{
 
 }
+.items-full-width_active .item-canvas{
+    flex-basis: 100%;
+}
 .item-canvas{
     display: flex;
     flex-wrap: wrap;
@@ -145,6 +148,7 @@
     margin-bottom: 10px;
 
 }
+
 .item-cavas_debug_active{
     flex-basis: 100%;
 }
@@ -182,6 +186,10 @@
     padding:20px;
     position: relative;
     padding-top:60px;
+}
+
+.block-fully-width{
+    flex-basis: 100%;
 }
 /*-------filter-debugging--------*/
 
