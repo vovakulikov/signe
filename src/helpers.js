@@ -146,6 +146,14 @@ export function getInfoCanvas(canvas){
     return ctx.getImageData(0,0,canvas.width,canvas.height);
 }
 
+export function removeMany(selector,scope,cls){
+    let elements =  Array.from((scope || document).querySelectorAll(selector));
+
+    elements.forEach((item,i,arr)=>{
+        item.classList.remove(cls)
+    })
+
+}
 
 
 export function qs(selector, scope) {
@@ -170,7 +178,25 @@ export function $delegate(target, selector, type, handler, capture) {
 
     $on(target, type, dispatchEvent, !!capture);
 }
+export function $removeEvent(target, selector, type, handler, capture) {
+    const dispatchEvent = event => {
+        const targetElement = event.target;
+        const potentialElements = target.querySelectorAll(selector);
+        let i = potentialElements.length;
 
+        while (i--) {
+            if (potentialElements[i] === targetElement) {
+                handler.call(targetElement, event);
+                break;
+            }
+        }
+    };
+
+    $off(target, type, dispatchEvent, !!capture);
+}
+export function $off(target, type, callback) {
+    target.removeEventListener(type, callback);
+}
 
 
 export function closest(el, selector) {
