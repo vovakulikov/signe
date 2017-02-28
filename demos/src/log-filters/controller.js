@@ -9,6 +9,7 @@ export default class Controller {
 
         view.bindUploadImage(this.uploadImage.bind(this));
         view.bindStartFiltering(this.processingImage.bind(this));
+        view.bindRenderingLineChart(this.getGistogrammInfo.bind(this));
     }
 
     uploadImage(evt){
@@ -18,12 +19,15 @@ export default class Controller {
                 this.view.render('firstPaint',picture);
             })
 
+
     }
     processingImage(data){
         //console.log('to arg controller',data)
        /* let pixels = this.store.processingImage(data);
         this.view.render('afterFilter', pixels);*/
         //console.log('main Thread',data);
+
+
        this.store.processingImageWorker({
             "func":'processingImage',
             'infoPixel':data
@@ -31,8 +35,32 @@ export default class Controller {
             .then(d=>{
                 console.log('worker thread',d)
                 this.view.render('afterFilter', d.resposne);
+                //return Promise.resolve();
             })
+           /*.then(()=>{
+               return this.store.processingImageWorker({
+                   "func":'gistogrammPrepare',
+                   'infoPixel':data
+               })
+           })
+           .then((d)=>{
+               console.log('gistogramm is',d.resposne);
+               console.log('Hello world ')
+           })*/
 
+
+    }
+
+    getGistogrammInfo(data){
+        console.log(data);
+        this.store.processingImageWorker({
+            "func":'gistogrammPrepare',
+            'infoPixel':data
+        })
+            .then(d=>{
+                //console.log('gistogramm is', d)
+                this.view.renderLineChart(d)
+            })
     }
 
 }

@@ -5,6 +5,7 @@
     flex-basis: 300px;
     display: none;
     position: relative;
+    max-width: 100%;
 }
 .debug__number-color{
     background: yellow;

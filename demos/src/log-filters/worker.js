@@ -9,10 +9,21 @@ self.onmessage = function(e) {
 
         case ('processingImage'):{
             let filter = new Filters(e.data.infoPixel);
-            filter.convertToGray().LoGfilter();
+            let pixels = filter.convertToGray().LoGfilter().getImageData();
 
             self.postMessage({
-                'resposne': e.data.infoPixel
+                'func': e.data.func,
+                'resposne': pixels
+            });
+            break;
+        }
+        case('gistogrammPrepare'):{
+            let filter = new Filters(e.data.infoPixel);
+            let g = filter.getGistogrammInfo();
+            console.log(g)
+            self.postMessage({
+                'func': e.data.func,
+                'resposne': g
             });
             break;
         }

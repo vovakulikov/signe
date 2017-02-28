@@ -130,10 +130,6 @@
 }
 
 
-
-.item-canvas + .item-canvas{
-
-}
 .items-full-width_active .item-canvas{
     flex-basis: 100%;
 }
@@ -156,7 +152,7 @@
     display: block;
 }
 .item-canvas_hide{
-    display: none;
+    visibility: hidden;
 }
 .item-canvas img{
     margin: auto;
@@ -178,7 +174,7 @@
 
 }
 
-.item-canvas canvas{
+.item-canvas .virtual-canvas{
     display: none;
 }
 .item-canvas__image{

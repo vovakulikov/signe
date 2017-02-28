@@ -32,9 +32,11 @@ export default class Store {
             this.worker.postMessage(data);
             this.worker.onmessage = (e)=>{
                 console.log('Responce from worker in store.js',e.data)
-                resolve(e.data);
+                if(data.func == e.data.func)
+                    resolve(e.data);
             }
         })
     }
+
 
 }

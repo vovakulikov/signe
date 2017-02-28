@@ -2,9 +2,9 @@
  * Created by Vova on 19.02.2017.
  */
 import './critical.css';
-import {draw,getInfoCanvas,getRation,closest,$delegate,qs,$off,$removeEvent} from '../../../src/helpers.js';
+import {draw,getInfoCanvas,getRation,closest,$delegate,qs,$off,$removeEvent,removeMany} from '../../../src/helpers.js';
 
-//import Chart from 'chart.js';
+import Chart from 'chart.js';
 //console.log(Chart)
 console.log('sf')
 
@@ -38,8 +38,7 @@ export default class View {
     }
 
     standartEvent(){
-        $delegate( this.imagesBlock, '.debug__btn', 'click', this.toogleDebugWindow,false)
-        $delegate( this.imagesBlock, '.debug__close-icon', 'click',this.toogleDebugWindow,false)
+        $delegate( this.imagesBlock, '.debug__close-icon', 'click', this.toogleDebugWindow,false)
         $delegate( this.imagesBlock, '.full_width', 'click', ({target})=>{
             this.imagesBlock.classList.toggle('items-full-width_active')
         })
@@ -48,7 +47,34 @@ export default class View {
     toogleDebugWindow({target}){
         let rootImgEl = closest(target, '.item-canvas');
         rootImgEl.classList.toggle('item-cavas_debug_active')
+
+        console.log(Chart);
+        let CHART = qs("#lineChart",rootImgEl);
+        if(!CHART.dataset.rendering_chart){
+            CHART.dataset.rendering_chart = 'open'
+            let canvas = qs('canvas', rootImgEl);
+            this.renderChart = this.factoryRenderChart(CHART)
+            //return this.renderLineChart(canvas,CHART);
+            return getInfoCanvas(canvas);
+        }
     }
+    factoryRenderChart(CHART){
+        return function(){
+            console.log(CHART)
+        }
+    }
+    renderLineChart(data){
+        console.log(data)
+        this.renderChart()
+    }
+    bindRenderingLineChart(handler){
+        $delegate( this.imagesBlock, '.debug__btn', 'click', ({target})=>{
+            let infoPixel = this.toogleDebugWindow({target});
+            if(infoPixel)
+                handler(infoPixel)
+        },false)
+    }
+
     bindUploadImage(handler){
         this.uploadButton.addEventListener('change',handler);
         this.uploadFiled.addEventListener('drop',handler);
@@ -68,7 +94,8 @@ export default class View {
         this.uploadFiled.querySelector('span').style.display = 'none';
         this.uploadFiled.classList.add("cntrls-filter__dropdown-file_with_images");
         this.filteredImage.classList.add('item-canvas_hide')
-
+        this.imagesBlock.classList.remove('items-full-width_active')
+        removeMany('.item-canvas',this.imagesBlock,'item-cavas_debug_active');
        // let items = qs('item-canvas').
     }
     render(type,picture){
