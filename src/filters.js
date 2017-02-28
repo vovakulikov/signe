@@ -243,5 +243,19 @@ export default class Filters{
         }
         return brightnessMatrix;
     }
-
+    getGistogrammInfo(){
+        let d = this._data;
+        let ar = [];
+        for(let i = 0; i < this._widthImage; i++){
+            for(let j = 0; j < this._heightImage; j++){
+               let [R,G,B,A] = this.getCurrentPixel(i,j);
+               let bright = Math.floor(0.299*R + 0.587*G + 0.114*B);
+               ar[bright] = (ar[bright])? ar[bright]+1: 1;
+            }
+        }
+        for(let i = 0; i <=255; i++){
+            ar[i] = (ar[i])? ar[i] : 0;
+        }
+        return ar;
+    }
 }
