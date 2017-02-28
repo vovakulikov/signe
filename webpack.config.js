@@ -25,7 +25,7 @@ module.exports = [
             },
             output: {
                 path: path.resolve(__dirname, './demos/dist/_logFilter'),
-                publicPath:'/demos/dist/_logFilter/',
+                publicPath:'/static/',
                 filename: '[name].bundle.js'
             },
             module: {
@@ -56,8 +56,8 @@ module.exports = [
                    options: {
                        worker: {
                            output: {
-                               filename: "hash.worker.js",
-                               chunkFilename: "[id].hash.worker.js"
+                               filename: "[name].worker.js",
+                             //  chunkFilename: "[id].hash.worker.js"
                            }
                        }
                    }
