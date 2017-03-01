@@ -121,6 +121,7 @@
     flex-wrap: wrap;
     -webkit-flex-wrap: wrap; /* NEW */
     display: -webkit-flex; /* NEW */
+    align-items: flex-start;
 }
 
 .filter__images-cavas{
@@ -187,14 +188,16 @@
 .block-fully-width{
     flex-basis: 100%;
 }
+
+.block-lineChart{
+    min-width: 250px;
+    width: 100%;
+    max-height:250px;
+    max-width: 400px;
+}
 /*-------filter-debugging--------*/
 
-.filter_debug{
 
-}
-.filter__graph{
-    display: none;
-}
 
 @media all and (max-width: 400px) {
     .main{

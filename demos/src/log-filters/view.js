@@ -3,8 +3,8 @@
  */
 import './critical.css';
 import {draw,getInfoCanvas,getRation,closest,$delegate,qs,$off,$removeEvent,removeMany} from '../../../src/helpers.js';
+import {configLineChart} from './lineChart.js'
 
-import Chart from 'chart.js';
 //console.log(Chart)
 console.log('sf')
 
@@ -60,12 +60,16 @@ export default class View {
     }
     factoryRenderChart(CHART){
         return function(){
-            console.log(CHART)
+            return CHART;
         }
     }
+
     renderLineChart(data){
         console.log(data)
-        this.renderChart()
+        let CHART = this.renderChart()
+        let config = configLineChart(data.resposne);
+        console.log(config)
+        let newLineChart = new Chart(CHART,config);
     }
     bindRenderingLineChart(handler){
         $delegate( this.imagesBlock, '.debug__btn', 'click', ({target})=>{
@@ -76,13 +80,19 @@ export default class View {
     }
 
     bindUploadImage(handler){
-        this.uploadButton.addEventListener('change',handler);
-        this.uploadFiled.addEventListener('drop',handler);
+        this.uploadButton.addEventListener('change',(e)=>{
+            this.loadSpin()
+            handler(e)
+        });
+        this.uploadFiled.addEventListener('drop',(e)=>{
+            this.loadSpin()
+            handler(e)
+        });
         this.uploadFiled.addEventListener("dragover", function(e){e.preventDefault();}, true);
     }
     bindStartFiltering(handler){
         this.startEffect.addEventListener('click',(e)=>{
-
+            this.loadSpin()
             let information = getInfoCanvas(this.canvas)
             handler(information);
         });
@@ -130,6 +140,7 @@ export default class View {
         }
 
         action[type]();
+        this.loadSpinner.style.visibility = 'hidden';
         /*setTimeout(()=>{
             this.loadSpinner.style.visibility = 'hidden';
         },100)*/

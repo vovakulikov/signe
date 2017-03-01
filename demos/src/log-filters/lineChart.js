@@ -1,16 +1,17 @@
 /**
  * Created by Vova on 28.02.2017.
  */
-
+let interv = genInterval();
 let data = {
     type: 'line',
+
     data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: interv,
         datasets: [
                     {
-                        label: "My First dataset",
-                        fill: false,
-                        lineTension: 0.1,
+                        label: "Gistogramm of image",
+                        fill: true,
+                        lineTension: 0.5,
                         backgroundColor: "rgba(75,192,192,0.4)",
                         borderColor: "rgba(75,192,192,1)",
                         borderCapStyle: 'butt',
@@ -30,9 +31,25 @@ let data = {
                         spanGaps: true,
                     }
                 ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                override: {
+                    stacked: true
+                }
+            }]
+        }
     }
 }
-
+function genInterval(){
+    let inter = [];
+    for(let i = 0; i < 255;i=i+1){
+        inter.push(i)
+    }
+    return inter
+}
 export function configLineChart(config){
-    Object.assign(config,data)
+    data.data.datasets[0].data = config;
+    return data;
 }

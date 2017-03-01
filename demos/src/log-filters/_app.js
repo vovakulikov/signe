@@ -7,4 +7,8 @@ const view = new View();
 
 new Controller(store,view);
 
+let Chart;
 
+require.ensure(['chart.js'], function() {
+    Chart = require('chart.js')
+})

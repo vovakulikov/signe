@@ -4,12 +4,19 @@
 
 import {createImage,fileSelect,getInfoCanvas} from '../../../src/helpers.js';
 import Filters from '../../../src/filters.js';
-import worker from "worker-loader!./worker.js";
+//import worker from "worker-loader!./worker.js";
+
+
+
 
 console.log('dfsfa')
 export default class Store {
     constructor(){
+        require.ensure(['worker-loader!./worker.js'], ()=> {
+            let worker = require('worker-loader!./worker.js')
             this.worker = new worker();
+        })
+
     }
 
     loadImage(evt){
