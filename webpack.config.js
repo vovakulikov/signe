@@ -22,6 +22,7 @@ module.exports = [
             entry: {
                 app: path.resolve(__dirname, './demos/src/log-filters/_app.js'),
                // worker:  path.resolve(__dirname, './demos/src/log-filters/worker.js')
+                // 'vendor.js': 'chart.js'
             },
             output: {
                 path: path.resolve(__dirname, './demos/dist/_logFilter'),
@@ -56,12 +57,14 @@ module.exports = [
                    options: {
                        worker: {
                            output: {
-                               filename: "[name].worker.js",
-                             //  chunkFilename: "[id].hash.worker.js"
+                               filename: "./workers/[name].worker.js",
+                               chunkFilename: "[id].hash.worker.js"
                            }
                        }
                    }
-               })
+               }),
+              new webpack.optimize.UglifyJsPlugin({minimize: true}),
+              //new webpack.optimize.CommonsChunkPlugin({name:"vendor",filename:"vendor.bundle.js"})
            ],
            devServer: {
                contentBase: "./demos/dist/_logFilter/",
