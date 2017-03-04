@@ -6,14 +6,14 @@ let data = {
     type: 'line',
 
     data: {
-        labels: interv,
+        //labels: interv,
         datasets: [
                     {
                         label: "Gistogramm of image",
                         fill: true,
-                        lineTension: 0.5,
+                        lineTension: 1,
                         backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
+                        borderColor: "rgba(75,192,192,0)",
                         borderCapStyle: 'butt',
                         borderDash: [],
                         borderDashOffset: 0.0,
@@ -44,7 +44,7 @@ let data = {
 }
 function genInterval(){
     let inter = [];
-    for(let i = 0; i < 255;i=i+1){
+    for(let i = 0; i < 255;i=i+2){
         inter.push(i)
     }
     return inter

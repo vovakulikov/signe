@@ -1,0 +1,57 @@
+/*-------cntrls-filter---------*/
+.cntrls-filter{
+    padding-top:40px;
+    max-width: 500px;
+}
+
+.cntrls-filter__setting{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.setting_checkbox{
+    display: none;
+}
+.setting_checkbox:checked~.setting-block{
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+    position: static;
+}
+.setting-block{
+
+    display:flex;
+    padding:10px;
+    margin-top:10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: lightgray;
+
+    transform: translateY(8px);
+    transition: transform 0.25s ease-in-out, opacity 0.3s ease;
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    opacity: 0;
+}
+.setting-block_is_show{
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+    position: static;
+}
+
+.setting-block__name{
+    width: 100%;
+    padding-bottom:15px;
+}
+.setting-block div{
+    margin-right:15px;
+    padding:5px 0px;
+}
+
+.matrix_size{
+    width:50px;
+}
