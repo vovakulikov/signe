@@ -84,6 +84,20 @@
     flex-grow:1;
     flex-shrink:1;
 }
+.details__table{
+    width: 100%;
+    max-width:500px;
+    table-layout: fixed;
+}
+
+.details__table__caption{
+    text-align: left;
+    font-weight: bold;
+}
+.details__lineChart canvas{
+    width: 100% !important;
+    max-width: 500px;
+}
 .hide{
     display: none;
 }

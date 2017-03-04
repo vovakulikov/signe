@@ -16,7 +16,7 @@ export default class Controller {
     uploadImage(evt){
         //this.view.loadSpin()
         this.store.loadImage(evt)
-            .then(picture=>{
+            .then((picture)=>{
                 //this.store.makeImpression()
                 this.view.render('add-item-image',picture);
             })
@@ -34,7 +34,8 @@ export default class Controller {
             'infoPixel':this.store.gitImageSmall
         })
             .then(d=>{
-                //console.log('worker thread',d)
+                console.log('worker thread',d)
+
                 this.view.render('add-item-image',d);
                 //this.view.render('afterFilter', d.resposne);
                 //return Promise.resolve();
@@ -61,6 +62,7 @@ export default class Controller {
         })
             .then(d=>{
                 //console.log('gistogramm is', d)
+                Object.assign(d,{sizing:{}})
                 this.view.renderLineChart(d)
             })
     }
