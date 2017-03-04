@@ -40,18 +40,14 @@ export function getRation(img,width,height=650){
     var ratio = 1
 
     if(img.height>height)
-    ratio = height/img.height;
-
+        ratio = height/img.height;
     else if(img.width > width) {
         ratio = width / img.width;
     }
 
 
     //var ratio = (ratioH > ratioW)? ratioW: ratioH;
-    return {
-        'ratio' : ratio,
-        'img':img
-    }
+    return ratio;
 }
 
 //Тормоз-функция.
@@ -84,7 +80,65 @@ export function throttle(func, ms) {
 
     return wrapper;
 }
+export function convertTo(type,picture){
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
 
+
+    /*let canvasCopy = document.createElement('canvas');
+    let ctxCopy = canvasCopy.getContext('2d');*/
+
+
+    /*canvasCopy.width = picture.width;
+    canvasCopy.height = picture.height;
+
+    let ratio = getRation(picture,picture.width);*/
+    canvas.width =  picture.width;
+    canvas.height = picture.height;
+
+
+
+    /*ctx.drawImage(canvasCopy, 0, 0,
+        canvasCopy.width, canvasCopy.height, 0, 0,
+        canvas.width, canvas.height);*/
+    switch(type){
+        case 'imageData':{
+            ctx.drawImage(picture, 0, 0);
+            let data = ctx.getImageData(0,0,canvas.width,canvas.height)
+            return data;
+        }
+        case 'URL':{
+            ctx.putImageData(picture, 0, 0);
+            return canvas.toDataURL('image/png');
+        }
+        case "resizeImg":{
+            let canvasCopy = document.createElement('canvas');
+            let ctxCopy = canvasCopy.getContext('2d');
+
+
+             canvasCopy.width = picture.width;
+             canvasCopy.height = picture.height;
+
+            let ratio = getRation(picture,picture.width);
+            canvas.width =  picture.width*ratio;
+            canvas.height = picture.height*ratio;
+
+
+            ctxCopy.drawImage(picture, 0, 0);
+
+
+             ctx.drawImage(canvasCopy, 0, 0,
+             canvasCopy.width, canvasCopy.height, 0, 0,
+             canvas.width, canvas.height);
+
+
+             return canvas.toDataURL('image/png');
+        }
+    }
+
+
+
+}
 export function draw(canvas,type,config){
     var canvasCopy = document.createElement("canvas");
     var copyContext = canvasCopy.getContext("2d");
@@ -92,7 +146,23 @@ export function draw(canvas,type,config){
     var ctx = canvas.getContext('2d');
 
 
+
+
     let options = {
+        'getRatioImage':()=>{
+            canvasCopy.width = config.img.width;
+            canvasCopy.height = config.img.height;
+
+            console.log('helper', config.img.width * config.ratio)
+            canvas.width = config.img.width * config.ratio;
+            canvas.height = config.img.height * config.ratio;
+
+
+            let inf = copyContext.getImageData(0,0,canvasCopy.width,canvasCopy.height);
+            console.log('Info from copy CANVAS',inf)
+            copyContext.drawImage(config.img, 0, 0);
+
+        },
         'drawImage': function(){
 
             canvasCopy.width = config.img.width;
@@ -102,8 +172,11 @@ export function draw(canvas,type,config){
             canvas.width = config.img.width * config.ratio;
             canvas.height = config.img.height * config.ratio;
 
+
+            let inf = copyContext.getImageData(0,0,canvasCopy.width,canvasCopy.height);
+            console.log('Info from copy CANVAS',inf)
             copyContext.drawImage(config.img, 0, 0);
-            ctx.drawImage(canvasCopy, 0, 0,
+                ctx.drawImage(canvasCopy, 0, 0,
                 canvasCopy.width, canvasCopy.height, 0, 0,
                 canvas.width, canvas.height);
 
