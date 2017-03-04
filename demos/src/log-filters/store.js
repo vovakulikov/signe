@@ -26,7 +26,8 @@ export default class Store {
 
         let sizing = {}
         return fileSelect(path)
-            .then(data=>{
+            .then(({data,file})=>{
+                console.log(file)
                 return createImage(data);
             })
             .then(picture =>{
@@ -39,7 +40,6 @@ export default class Store {
 
                 let smIMG = convertTo('resizeImg',picture);
                 return createImage(smIMG);
-               // return Promise.resolve(this.gitImageSmall);
             })
             .then(picture=>{
                 console.log(picture)

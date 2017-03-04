@@ -19,8 +19,8 @@ export function fileSelect(evt,callback){
                 //Загрузка файла
                 reader.onload = function(e){
                    // console.log('Thats is eeeee', e)
-                    fixOrientation(e.target.result,{img:true},function(fixed,image){
-                        resolve(fixed)
+                    fixOrientation(e.target.result,{img:true},function(data,image){
+                        resolve({data,file:f})
                     })
 
                 };
