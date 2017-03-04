@@ -83,85 +83,22 @@
                         </div>
 
                     </div>
-                    <div class="fake__setting-block"></div>
                 </div>
         </section>
 
         <div class="cntrls-filter__dropdown-file">
                 <span>Drop your file here.</span>
 
-                <div class="filter__images-cavas">
-
-                    <div class="item-canvas">
-
-                        <div class="item-canvas__image">
-
-                            <div class="item-canvas__icon-controll">
-                                <button>Download image</button>
-                                <button class="debug__btn">debug</button>
-                                <button>Full size</button>
-                            </div>
-
-                            <canvas class="_show_image"></canvas>
-                            <img src="" class="origin-image _img" alt="">
-
-                        </div>
-                        <div class="filter_debug">
-                           <i class="debug__close-icon">Close</i>
-                           <h2 class="debug__name">Info about current pixel</h2>
-
-                            <div class="debug__color">
-                                <span class="debug__caption-color">The color of current pixel is</span>
-                                <span class="debug__number-color"></span>
-                                <span class="debug__color-block"></span>
-                            </div>
-
-                            <div class="debug__gridPixel"></div>
-                            <div>
-                                <div class="filter__graph">This will be a graph</div>
-                            </div>
-                        </div>
-
+                <div class="filter-blocks">
+                    <div class="filter-blocks__view">
+                        <button class="full_width">Full size</button>
                     </div>
-
-                    <div class="item-canvas  filtered-image item-canvas_hide">
-                            <div class="item-canvas__image">
-
-                                <div class="item-canvas__icon-controll">
-                                    <button>Download image</button>
-                                    <button class="debug__btn">debug</button>
-                                    <button>Full size</button>
-                                </div>
-
-                                <canvas class="_post-filter-image"></canvas>
-                                <img src="" class="filter-image _img" alt="">
-
-                            </div>
-                            <div class="filter_debug">
-                                <i class="debug__close-icon">Close</i>
-                                <h2 class="debug__name">Info about current pixel</h2>
-
-                                <div class="debug__color">
-                                    <span class="debug__caption-color">The color of current pixel is</span>
-                                    <span class="debug__number-color"></span>
-                                    <span class="debug__color-block"></span>
-                                </div>
-
-                                <div class="debug__gridPixel"></div>
-                                <div>
-                                    <div class="filter__graph">This will be a graph</div>
-                                </div>
-
-                            </div>
-
-                    </div>
-
+                    <div class="filter-items"></div>
                 </div>
 
             <div class="loading-spin">
-                <div class="loader">Loading...</div>
-            </div>
-
+                    <div class="loader">Loading...</div>
+                </div>
         </div>
 
 
@@ -181,7 +118,8 @@
     <div class="drop-target"></div>
 
     <canvas class="_fullInfo"></canvas>-->
-    <script src="../../..//node_modules/thief-color/color-thief.min.js"></script>
-    <script src="index_logFilter.bundle.js"></script>
+
+    <script src="app.bundle.js"></script>
+
 </body>
 </html>
