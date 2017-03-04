@@ -62,8 +62,8 @@ module.exports = [
                            }
                        }
                    }
-               }),
-              new webpack.optimize.UglifyJsPlugin({minimize: true}),
+               })
+              //new webpack.optimize.UglifyJsPlugin({minimize: true}),
               //new webpack.optimize.CommonsChunkPlugin({name:"vendor",filename:"vendor.bundle.js"})
            ],
            devServer: {
