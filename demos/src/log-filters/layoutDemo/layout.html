@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lauout</title>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
+    }
+    section{
+        max-width:1000px;
+        margin:0 auto;
+    }
+    .filter-blocks{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction:row;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .filter__item{
+        flex-basis: 500px;
+        flex-grow:1;
+        flex-shrink:1;
+
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    .item__img{
+        align-self: center;
+        margin:auto;
+        max-width: 100%;
+
+    }
+
+    .item__details-block{
+        flex-basis: 300px;
+        flex-grow:1;
+        flex-shrink:1;
+    }
+    .hide{
+        display: none;
+    }
+</style>
+<body>
+    <section>
+        <div class="filter-blocks">
+            <div class="filter__item">
+                <div>
+                    <img class="item__img" src="./images/ex1.jpg" alt="">
+                </div>
+
+                <div class="item__details-block hide"class="img-details hide">
+                    this is details about image.
+                </div>
+            </div>
+
+            <div class="filter__item">
+                <div>
+                    <img class="item__img" src="./images/ex1.jpg" alt="">
+                </div>
+                <div class="item__details-block hide"class="img-details hide">
+                    this is details about image.
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
