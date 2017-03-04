@@ -20,7 +20,7 @@ module.exports = [
         },*/
        {
             entry: {
-                app: path.resolve(__dirname, './demos/src/log-filters/_app.js'),
+                app: path.resolve(__dirname, './demos/src/log-filters/js/_app.js'),
                // worker:  path.resolve(__dirname, './demos/src/log-filters/worker.js')
                 // 'vendor.js': 'chart.js'
             },
