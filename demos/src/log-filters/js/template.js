@@ -15,18 +15,17 @@ export default class Template {
                             <div class="item__image-wrap">
                                <div class="item__controll-image">
                                     <button>Download</button>
-                                    <button>Details</button>
+                                    <button class="item__details">Details</button>
                                 </div>
                                <img class="item__img" src="${data.picture.src}" alt="">   
                             </div>
-                            <div class="item__details-block"class="img-details hide">
-                                <header class="details__header">
-                                    <h2>Details</h2>
-                                 </header>
-                                ${_sizeBlock}
-                                <div class="details__lineChart">
+                            <div class="item__details-block" >
+                                 <div class="details__close"></div>
+                                 <div class="details__lineChart">
+                                     <h2>Gistogramm graph</h2>
                                      <canvas class="myChart" ></canvas>
-                                </div>
+                                 </div>
+                                ${_sizeBlock}
                             </div>
                      </div>`
 
@@ -38,7 +37,10 @@ export default class Template {
         for (let key in data) {
             tables = tables + this.convertToTable(data[key]);
         }
-        return `<div class="details__info-block">
+        return `<header class="details__header">
+                    <h2>Details</h2>
+                </header>
+                <div class="details__info-block">
                     ${tables}
                 </div>`
     }

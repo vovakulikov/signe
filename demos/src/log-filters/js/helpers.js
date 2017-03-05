@@ -251,6 +251,23 @@ export function $delegate(target, selector, type, handler, capture) {
 
     $on(target, type, dispatchEvent, !!capture);
 }
+
+export function $deleg(target,type,cl){
+
+    target.addEventListener(type,(e)=>{
+        var tar = e.target;
+        while (tar != target) {
+            if (tar.classList.contains(cl)) {
+                console.log(tar);
+                return;
+            }
+            target = target.parentNode;
+        }
+    })
+
+
+
+}
 export function $removeEvent(target, selector, type, handler, capture) {
     const dispatchEvent = event => {
         const targetElement = event.target;

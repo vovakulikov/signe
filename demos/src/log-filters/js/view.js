@@ -21,10 +21,60 @@ export default class View {
         this.uploadFiled = qs(".cntrls-filter__dropdown-file");
 
         this.itemsBlock = qs('.filter-items');
+
+        this.viewButtonBlock = qs('.usual_width');
+        this.viewButtonList = qs('.full_width');
+
+
         this.temp = new Template();
 
-    }
 
+        this.standartEvents()
+    }
+    standartEvents(){
+        let activeViewButton = this.viewButtonBlock;
+        this.viewButtonBlock.addEventListener('click',(e)=>{
+            this.imagesBlock.classList.remove('filter-block_item-image_full-width')
+            let clickButton = closest(e.target, '.button-view-style');
+            console.log(activeViewButton)
+
+            if(!(activeViewButton == clickButton)){
+                activeViewButton.classList.remove('button-view-style_active')
+                clickButton.classList.add('button-view-style_active')
+                activeViewButton = clickButton
+            }
+        })
+        this.viewButtonList.addEventListener('click',(e)=>{
+            this.imagesBlock.classList.add('filter-block_item-image_full-width')
+            let clickButton = closest(e.target, '.button-view-style');
+            console.log(activeViewButton)
+
+            if(!(activeViewButton == clickButton)){
+                activeViewButton.classList.remove('button-view-style_active')
+                clickButton.classList.add('button-view-style_active')
+                activeViewButton = clickButton
+            }
+        })
+
+
+        $delegate(this.imagesBlock,'.item__details','click',({target})=>{
+            let item = closest(target,'.filter__item')
+            item.style.flexBasis = '100%'
+            let details = qs('.item__details-block',item)
+            console.log(details);
+            details.classList.add('item__details-block_active')
+            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
+        })
+
+        $delegate(this.imagesBlock,'.details__close','click',({target})=>{
+            let details = closest(target,'.item__details-block')
+            let item = closest(target,'.filter__item')
+            item.style.flexBasis = ''
+            console.log(details);
+            details.classList.remove('item__details-block_active')
+            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
+        })
+    }
     bindUploadImage(handler){
         this.uploadButton.addEventListener('change',(e)=>{
             this.render('clearDropDownZone',null);

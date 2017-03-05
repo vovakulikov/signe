@@ -2,7 +2,7 @@
 @import "./load.css";
 @import "./main.css";
 @import "./setting-block.css";
-
+@import "./icons.css";
 
 /*---------------dropdownFile-------------*/
 
@@ -38,12 +38,25 @@
 
     display: none;
 }
+
 .filter-block_active{
     display: flex;
 }
+.filter-block_item-image_full-width .filter__item{
+    flex-basis: 100%;
+}
+
+
+
+
+
 .filter-blocks__view{
     width:100%;
 }
+
+
+
+
 .filter-items{
     display: flex;
     flex-wrap: wrap;
@@ -56,22 +69,26 @@
     flex-basis: 500px;
     flex-grow:1;
     flex-shrink:1;
-
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    background: goldenrod;
+    margin-top:25px ;
 }
+
+
+
 .item__image-wrap{
     display: flex;
-    margin: auto;
-    position: relative;
     flex-wrap:wrap;
+    margin:auto;
     padding-top: 35px;
+    position: relative;
 }
 .item__controll-image{
-    width:100%;
     position:absolute;
-    top:0;
+    top:0px;
+    right:0;
 }
 .item__img{
     align-self: center;
@@ -80,10 +97,31 @@
 }
 
 .item__details-block{
-    flex-basis: 300px;
+    flex-basis: 450px;
     flex-grow:1;
     flex-shrink:1;
+
+    position: relative;
+    background: #fff1a8;
+    padding: 20px;
+    padding-top: 35px;
+    display: none;
 }
+.item__details-block_active{
+    display: block;
+}
+
+.details__close{
+    width:20px;
+    height: 20px;
+    position:absolute;
+    top:0;
+    right: 0;
+
+
+    background: mediumvioletred;
+}
+
 .details__table{
     width: 100%;
     max-width:500px;
