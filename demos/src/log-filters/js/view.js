@@ -5,7 +5,7 @@ import '../css/critical.css';
 import {draw,getInfoCanvas,getRatioImage,getRation,closest,$delegate,qs,$off,$removeEvent,removeMany} from './../../../../src/helpers.js';
 import Template from  './template.js';
 
-
+import {$bubble} from './helpers.js';
 
 import {getAverageRGB} from './../../../../src/helpers.js';
 
@@ -29,51 +29,77 @@ export default class View {
         this.temp = new Template();
 
 
+        this.lineCharts = {};
+
         this.standartEvents()
     }
     standartEvents(){
-        let activeViewButton = this.viewButtonBlock;
-        this.viewButtonBlock.addEventListener('click',(e)=>{
-            this.imagesBlock.classList.remove('filter-block_item-image_full-width')
-            let clickButton = closest(e.target, '.button-view-style');
-            console.log(activeViewButton)
+        let activeViewButton = qs('.button-view-style_active');
 
-            if(!(activeViewButton == clickButton)){
+       /* this.imagesBlock.addEventListener('click',(e)=>{
+            let currentBut = closest(e.target, '.button-view-style');
+            if(!currentBut) return;
+            if(currentBut.dataset.type == 'block'){
+                this.imagesBlock.classList.remove('filter-block_item-image_full-width')
+            }
+            else if(currentBut.dataset.type == 'list'){
+                this.imagesBlock.classList.add('filter-block_item-image_full-width')
+            }
+            if(!(activeViewButton == currentBut)){
                 activeViewButton.classList.remove('button-view-style_active')
-                clickButton.classList.add('button-view-style_active')
-                activeViewButton = clickButton
+                currentBut.classList.add('button-view-style_active')
+                activeViewButton = currentBut
+            }
+        })*/
+
+        $bubble(this.imagesBlock,'click','.button-view-style',({matchTarget})=>{
+            if(matchTarget.dataset.type == 'block'){
+                this.imagesBlock.classList.remove('filter-block_item-image_full-width')
+            }
+            else if(matchTarget.dataset.type == 'list'){
+                this.imagesBlock.classList.add('filter-block_item-image_full-width')
+            }
+            if(!(activeViewButton == matchTarget)){
+                activeViewButton.classList.remove('button-view-style_active')
+                matchTarget.classList.add('button-view-style_active')
+                activeViewButton = matchTarget;
             }
         })
-        this.viewButtonList.addEventListener('click',(e)=>{
-            this.imagesBlock.classList.add('filter-block_item-image_full-width')
-            let clickButton = closest(e.target, '.button-view-style');
-            console.log(activeViewButton)
+        $bubble(this.imagesBlock,'click','.item__details',({matchTarget})=>{
+            let item = closest(matchTarget,'.filter__item')
+            item.style.flexBasis = '100%'
+            let details = qs('.item__details-block',item)
 
-            if(!(activeViewButton == clickButton)){
-                activeViewButton.classList.remove('button-view-style_active')
-                clickButton.classList.add('button-view-style_active')
-                activeViewButton = clickButton
-            }
+            details.classList.add('item__details-block_active')
         })
 
-
-        $delegate(this.imagesBlock,'.item__details','click',({target})=>{
+        /*$delegate(this.imagesBlock,'.item__details','click',({target})=>{
             let item = closest(target,'.filter__item')
             item.style.flexBasis = '100%'
             let details = qs('.item__details-block',item)
-            console.log(details);
-            details.classList.add('item__details-block_active')
-            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-        })
 
-        $delegate(this.imagesBlock,'.details__close','click',({target})=>{
+            details.classList.add('item__details-block_active')
+
+
+
+
+            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
+        })*/
+        $bubble(this.imagesBlock,'click','.details__close',({matchTarget})=>{
+            let details = closest(matchTarget,'.item__details-block')
+            let item = closest(matchTarget,'.filter__item')
+            item.style.flexBasis = ''
+            console.log(details);
+            details.classList.remove('item__details-block_active')
+        })
+       /* $delegate(this.imagesBlock,'.details__close','click',({target})=>{
             let details = closest(target,'.item__details-block')
             let item = closest(target,'.filter__item')
             item.style.flexBasis = ''
             console.log(details);
             details.classList.remove('item__details-block_active')
             //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-        })
+        })*/
     }
     bindUploadImage(handler){
         this.uploadButton.addEventListener('change',(e)=>{
@@ -191,6 +217,8 @@ export default class View {
                 }
             }
         })
+
+        this.lineCharts[canvas] = myLineChart;
     }
 
 }

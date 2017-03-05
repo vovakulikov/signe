@@ -300,7 +300,14 @@ export function closest(el, selector) {
     }
     return el;
 }
+export function $bubble(target,type,match,handler){
+    target.addEventListener(type,(e)=>{
+        let currentBut = closest(e.target,match);
+        if(!currentBut) return;
 
+        handler({matchTarget:currentBut,e});
+    })
+}
 export function getAverageRGB(imgEl) {
 
     var blockSize = 5, // only visit every 5 pixels
