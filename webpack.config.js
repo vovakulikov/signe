@@ -41,6 +41,10 @@ module.exports = [
                         exclude: /node_modules/,
                         loader:  ExtractTextPlugin.extract({fallback:'style-loader',
                                                             use: 'css-loader'})
+                    },
+                    {
+                        test: /\.svg?$/,
+                        loader:  'file-loader?name=[name].[ext]'
                     }
                     /*{
                         test: /\.html$/,
