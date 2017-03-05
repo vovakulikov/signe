@@ -10,3 +10,15 @@
 .button-view-style_active{
     fill:#000;
 }
+
+.small-icon{
+    width:15px;
+    height: 15px;
+    margin-left:5px;
+}
+.small-icon_alone{
+    margin-left:0;
+}
+.icon_trans{
+    background: none;
+}
