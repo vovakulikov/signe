@@ -11,7 +11,7 @@ export default class Template {
     getDomImage(data) {
         console.log(data)
         let _sizeBlock = (!data.sizing) ? '' : this.details(data.sizing)
-        let _temp = `<div class="filter__item">
+        let _temp = `<div class="filter__item" style="background-color:${data.background}">
                             <div class="item__image-wrap">
                                <div class="item__controll-image">
                                     <button class="sup-item-button">

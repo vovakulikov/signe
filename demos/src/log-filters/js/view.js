@@ -9,8 +9,12 @@ import {$bubble} from './helpers.js';
 
 import {getAverageRGB} from './../../../../src/helpers.js';
 
+import ColorThief from "./color-thief.js";
+
 export default class View {
     constructor(){
+
+        this.thief = new ColorThief();
 
         this.loadSpinner = qs('.loading-spin');
 
@@ -114,24 +118,37 @@ export default class View {
     }
 
     bindStartFiltering(handler){
-        this.startEffect.addEventListener('click',handler);
+        this.startEffect.addEventListener('click',(e)=>{
+            this.loadSpinner.classList.add('loading-spin_active');
+            handler(e)
+        });
     }
     disabledDropdownZone(){
         this.uploadFiled.classList.add('cntrls-filter__dropdown-file_disabled');
         this.imagesBlock.classList.add('filter-block_active');
     }
     render(type,picture){
-
+        console.log(picture)
         let types = {
             'clearDropDownZone':()=>{
                 console.log('clear!!!!')
                 this.itemsBlock.innerHTML = '';
+                this.loadSpinner.classList.add('loading-spin_active');
             },
             'add-item-image': ()=>{
                 console.log('View data has type is ', picture)
                 this.disabledDropdownZone()
                 //Обрезаем изображение сжимем его.
                 //let ratioImg = getRatioImage(picture)
+                let colors = null;
+                if(!!picture['picture'].alt){
+                    colors = this.thief.getColor(picture['picture'])
+                }
+                else{
+                    colors = [0,0,0];
+                }
+
+                picture.background = `rgb(${colors[0]},${colors[1]},${colors[2]})`;
                 let DOM_token = this.temp.getDomImage(picture)
 
 
@@ -139,10 +156,10 @@ export default class View {
                     let el = this.itemsBlock.lastChild;
                     this.itemsBlock.removeChild(el)
                 }
-
+                this.loadSpinner.classList.remove('loading-spin_active');
                 let d = this.itemsBlock.insertAdjacentHTML('beforeend',DOM_token)
                 let c = qs('.myChart',this.itemsBlock.lastChild);
-
+                //console.log('The color of IMAGE', )
                  setTimeout(()=>{
                      this.initLineChart(c,picture.data)
                  },0)

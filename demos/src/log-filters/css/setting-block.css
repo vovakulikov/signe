@@ -14,6 +14,17 @@
 .cntrl__take-file{
     margin-bottom: 10px;
 }
+.input-file{
+    border: none;
+    background: rgb(187, 187, 187);
+}
+
+.input-file::-webkit-file-upload-button{
+    background: gainsboro;
+    border: none;
+    padding: 7px 5px;
+    cursor:pointer
+}
 .setting_checkbox{
     display: none;
 }

@@ -15,6 +15,14 @@
     color:#0054b9;
     fill: #0054b9;
 }
-.setting-button{
-    height:17px;
+
+
+.controll-button{
+    background: gainsboro;
+    border: none;
+    padding: 7px 5px;
+}
+
+.input-file,label,button{
+    cursor: pointer;
 }

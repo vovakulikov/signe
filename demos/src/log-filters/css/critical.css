@@ -4,6 +4,7 @@
 @import "./setting-block.css";
 @import "./icons.css";
 @import "./button.css";
+@import "./animations.css";
 /*---------------dropdownFile-------------*/
 
 
@@ -24,6 +25,7 @@
 }
 .cntrls-filter__dropdown-file_disabled{
     border:none;
+    margin-top: 10px;
 }
 .cntrls-filter__dropdown-file_disabled> .dropdown__placeholder{
     display: none;
@@ -75,6 +77,8 @@
     background: goldenrod;
     margin-top: 30px;
     margin-bottom: 10px;
+
+    animation: 0.3s move;
 }
 
 
