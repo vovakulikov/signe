@@ -6,13 +6,17 @@
 @import "./button.css";
 @import "./animations.css";
 /*---------------dropdownFile-------------*/
-
+@font-face {
+    font-family: OpenType; /* Имя шрифта */
+    src: url(./../fonts/OpenSans-Regular.ttf); /* Путь к файлу со шрифтом */
+}
 
 .cntrls-filter__dropdown-file{
     min-height:400px;
     width:100%;
     border:3px dashed gray;
     margin-top:40px;
+    overflow: hidden;
     position: relative;
 }
 .cntrls-filter__dropdown-file>.dropdown__placeholder{

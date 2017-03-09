@@ -2,19 +2,18 @@
  * Created by Vova on 19.02.2017.
  */
 import '../css/critical.css';
-import {draw,getInfoCanvas,getRatioImage,getRation,closest,$delegate,qs,$off,$removeEvent,removeMany} from './../../../../src/helpers.js';
 import Template from  './template.js';
 
-import {$bubble} from './helpers.js';
+import {$bubble,getRatioImage,qs,closest} from './helpers.js';
 
 import {getAverageRGB} from './../../../../src/helpers.js';
 
-import ColorThief from "./color-thief.js";
+//import ColorThief from "./color-thief.js";
 
 export default class View {
     constructor(){
 
-        this.thief = new ColorThief();
+       // this.thief = new ColorThief();
 
         this.loadSpinner = qs('.loading-spin');
 
@@ -141,13 +140,13 @@ export default class View {
                 //Обрезаем изображение сжимем его.
                 //let ratioImg = getRatioImage(picture)
                 let colors = null;
-                if(!!picture['picture'].alt){
+                /*if(!!picture['picture'].alt){
                     colors = this.thief.getColor(picture['picture'])
                 }
                 else{
                     colors = [0,0,0];
-                }
-
+                }*/
+                colors = [0,0,0];
                 picture.background = `rgb(${colors[0]},${colors[1]},${colors[2]})`;
                 let DOM_token = this.temp.getDomImage(picture)
 

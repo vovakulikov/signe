@@ -2,7 +2,7 @@
  * Created by Vova on 19.02.2017.
  */
 
-import {createImage,fileSelect,getInfoCanvas,convertTo} from '../../../../src/helpers.js';
+import {createImage,fileSelect,getInfoCanvas,convertTo} from './helpers.js';
 import Filters from '../../../../src/filters.js';
 //import worker from "worker-loader!./worker.js";
 
