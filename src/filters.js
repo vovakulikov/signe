@@ -17,8 +17,8 @@ export default class Filters{
             [1,2,4,5,5,5,4,2,1],
             [0,1,1,2,2,2,1,1,0]
 
-        ]
-
+        ]*/
+        /*
         this.LoG_mask = [
             [0,0,0,-1,-1,-2,-1,-1,0,0,0],
             [0,0,-2,-4,-8,-9,-8,-4,-2,0,0],
@@ -36,15 +36,15 @@ export default class Filters{
             [0,1,0],
             [1,-4,1],
             [0,1,0]
-        ]
-
+        ]*/
+/*
 
         this.LoG_mask = [
             [-1,-2,-1],
             [0,0,0],
             [1,2,1]
-        ]*/
-
+        ]
+ */
         this.LoG_mask = [
             [0,0,1,0,0],
             [0,1,2,1,0],
@@ -177,13 +177,21 @@ export default class Filters{
 
              for( j = 0; j < r[0].length; j++ ){
 
-                 if(r[i][j]<=0){
+                if(r[i][j]<=0){
                      r[i][j] = 0;
                  }
                  else {
                      r[i][j] = ( r[i][j] >= 255)? 255 :  r[i][j];
+                    //r[i][j] = ( r[i][j]/80 >= 255)? 255 : 0;
                  }
-
+                 /*
+                 if(r[i][j]*r[i][j+1] < 0 ){
+                     r[i][j] = 255;
+                 }
+                 else {
+                     r[i][j] = 0;
+                 }*/
+                 this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
                  /*  if(r[i][j]*r[i][j+1] < 0 || r[i][j]*r[i+1][j] < 0 || r[i][j]*r[i+1][j+1] < 0 ){
                      r[i][j] = 255
                  }
@@ -207,15 +215,29 @@ export default class Filters{
                     //this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],128]);
                 }*/
                 //if(r[i][j]/(r[i][j]+1) )
-                this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
+               // this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
               //  this.setCurrentPixel(i,j+1,[r[i][j+1],r[i][j+1],r[i][j+1],255]);
                 //console.log('somethidn')
             }
 
         }
+        console.log('sdfsdfsdf',r)
+       /* for(i = 0; i < r.length-1; i++) {
+            // console.log('dfs')
+
+            for (j = 0; j < r[0].length-1; j++) {
+                if(r[i][j]*r[i][j+1] < 0  || r[i][j]*r[i+1][j+1] < 0 || r[i][j]*r[i+1][j] < 0 ){
+                    r[i][j] = 255;
+                }
+                else {
+                    r[i][j] = 0;
+                }
+                this.setCurrentPixel(i,j,[r[i][j],r[i][j],r[i][j],255]);
+            }
+        }*/
 
 
-    return this;
+                return this;
     }
     getMatrInf(){
 

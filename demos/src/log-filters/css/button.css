@@ -1,0 +1,28 @@
+.sup-item-button{
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    border:none;
+    height: 30px;
+    align-items: center;
+    color:
+}
+
+.sup-item-button + .sup-item-button{
+    margin-left:10px;
+}
+.details-button_contrast{
+    color:#0054b9;
+    fill: #0054b9;
+}
+
+
+.controll-button{
+    background: gainsboro;
+    border: none;
+    padding: 7px 5px;
+}
+
+.input-file,label,button{
+    cursor: pointer;
+}

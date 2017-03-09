@@ -9,32 +9,35 @@ export default class Controller {
 
         view.bindUploadImage(this.uploadImage.bind(this));
         view.bindStartFiltering(this.processingImage.bind(this));
-        view.bindRenderingLineChart(this.getGistogrammInfo.bind(this));
+
+
     }
 
     uploadImage(evt){
         //this.view.loadSpin()
         this.store.loadImage(evt)
-            .then(picture=>{
-                this.view.render('firstPaint',picture);
+            .then((picture)=>{
+                //this.store.makeImpression()
+                this.view.render('add-item-image',picture);
             })
 
 
     }
-    processingImage(data){
+    processingImage(){
         //console.log('to arg controller',data)
        /* let pixels = this.store.processingImage(data);
         this.view.render('afterFilter', pixels);*/
         //console.log('main Thread',data);
 
-
        this.store.processingImageWorker({
             "func":'processingImage',
-            'infoPixel':data
+            'infoPixel':this.store.gitImageSmall
         })
             .then(d=>{
                 console.log('worker thread',d)
-                this.view.render('afterFilter', d.resposne);
+
+                this.view.render('add-item-image',d);
+                //this.view.render('afterFilter', d.resposne);
                 //return Promise.resolve();
             })
            /*.then(()=>{
@@ -59,6 +62,7 @@ export default class Controller {
         })
             .then(d=>{
                 //console.log('gistogramm is', d)
+                Object.assign(d,{sizing:{}})
                 this.view.renderLineChart(d)
             })
     }

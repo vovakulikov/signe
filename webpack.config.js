@@ -20,7 +20,7 @@ module.exports = [
         },*/
        {
             entry: {
-                app: path.resolve(__dirname, './demos/src/log-filters/_app.js'),
+                app: path.resolve(__dirname, './demos/src/log-filters/js/_app.js'),
                // worker:  path.resolve(__dirname, './demos/src/log-filters/worker.js')
                 // 'vendor.js': 'chart.js'
             },
@@ -41,6 +41,10 @@ module.exports = [
                         exclude: /node_modules/,
                         loader:  ExtractTextPlugin.extract({fallback:'style-loader',
                                                             use: 'css-loader'})
+                    },
+                    {
+                        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                        loader:  'file-loader?name=[name].[ext]'
                     }
                     /*{
                         test: /\.html$/,
@@ -62,7 +66,11 @@ module.exports = [
                            }
                        }
                    }
+<<<<<<< HEAD
                })
+=======
+               }),
+>>>>>>> arc
               //new webpack.optimize.UglifyJsPlugin({minimize: true}),
               //new webpack.optimize.CommonsChunkPlugin({name:"vendor",filename:"vendor.bundle.js"})
            ],

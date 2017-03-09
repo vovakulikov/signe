@@ -1,0 +1,24 @@
+.svg-icon__view-type{
+    width: 20px;
+}
+.button-view-style{
+    background-color:#fff;
+    border:none;
+    margin-right:8px;
+    fill: #bbbbbb;
+}
+.button-view-style_active{
+    fill:#000;
+}
+
+.small-icon{
+    width:15px;
+    height: 15px;
+    margin-left:5px;
+}
+.small-icon_alone{
+    margin-left:0;
+}
+.icon_trans{
+    background: none;
+}

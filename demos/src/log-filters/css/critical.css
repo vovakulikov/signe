@@ -1,0 +1,160 @@
+@import "./reset.css";
+@import "./load.css";
+@import "./main.css";
+@import "./setting-block.css";
+@import "./icons.css";
+@import "./button.css";
+@import "./animations.css";
+/*---------------dropdownFile-------------*/
+@font-face {
+    font-family: OpenType; /* Имя шрифта */
+    src: url(./../fonts/OpenSans-Regular.ttf); /* Путь к файлу со шрифтом */
+}
+
+.cntrls-filter__dropdown-file{
+    min-height:400px;
+    width:100%;
+    border:3px dashed gray;
+    margin-top:40px;
+    overflow: hidden;
+    position: relative;
+}
+.cntrls-filter__dropdown-file>.dropdown__placeholder{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size:40px;
+    color:gray;
+}
+.cntrls-filter__dropdown-file_disabled{
+    border:none;
+    margin-top: 10px;
+}
+.cntrls-filter__dropdown-file_disabled> .dropdown__placeholder{
+    display: none;
+}
+/*---------filters-image-canvases-------*/
+.filter-blocks{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    display: none;
+}
+
+.filter-block_active{
+    display: flex;
+}
+.filter-block_item-image_full-width .filter__item{
+    flex-basis: 100%;
+}
+
+
+
+
+
+.filter-blocks__view{
+    width:100%;
+}
+
+
+
+
+.filter-items{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+.filter__item{
+    flex-basis: 500px;
+    flex-grow:1;
+    flex-shrink:1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background: goldenrod;
+    margin-top: 30px;
+    margin-bottom: 10px;
+
+    animation: 0.3s move;
+}
+
+
+
+.item__image-wrap{
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction: column;
+    margin:0 auto;
+    margin-top: -30px;
+}
+.item__controll-image{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.item__img{
+    align-self: center;
+    margin:auto;
+    max-width: 100%;
+}
+
+.item__details-block{
+    flex-basis: 450px;
+    flex-grow:1;
+    flex-shrink:1;
+
+    position: relative;
+    background: #fff1a8;
+    padding: 20px;
+    padding-top: 35px;
+    display: none;
+}
+.item__details-block_active{
+    display: block;
+}
+
+.details__close{
+
+    position:absolute;
+    top:0px;
+    right: 0px;
+
+    background: none;
+    padding: 10px;
+    padding-bottom: 25px;
+}
+
+.details__table{
+    width: 100%;
+    max-width:500px;
+    table-layout: fixed;
+}
+
+.details__table__caption{
+    text-align: left;
+    font-weight: bold;
+}
+.details__lineChart canvas{
+    width: 100% !important;
+    max-width: 500px;
+}
+.hide{
+    display: none;
+}
+
+
+
+@media all and (max-width: 400px) {
+    .main{
+        width: 100%;
+        padding: 20px;
+    }
+}
+

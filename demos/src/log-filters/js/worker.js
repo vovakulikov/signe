@@ -1,7 +1,8 @@
 /**
  * Created by Vova on 27.02.2017.
  */
-import Filters from '../../../src/filters.js';
+import Filters from '../../../../src/filters.js';
+import {convertTo} from '../../../../src/helpers.js';
 self.onmessage = function(e) {
     //console.log(e.data)
     console.log(e.data.func)

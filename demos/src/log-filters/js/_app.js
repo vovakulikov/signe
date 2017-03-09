@@ -1,6 +1,6 @@
 import Controller from './controller.js';
-import View from './view';
-import Store from './store';
+import View from './view.js';
+import Store from './store.js';
 
 const store = new Store();
 const view = new View();

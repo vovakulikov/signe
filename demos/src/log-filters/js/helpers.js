@@ -251,6 +251,23 @@ export function $delegate(target, selector, type, handler, capture) {
 
     $on(target, type, dispatchEvent, !!capture);
 }
+
+export function $deleg(target,type,cl){
+
+    target.addEventListener(type,(e)=>{
+        var tar = e.target;
+        while (tar != target) {
+            if (tar.classList.contains(cl)) {
+                console.log(tar);
+                return;
+            }
+            target = target.parentNode;
+        }
+    })
+
+
+
+}
 export function $removeEvent(target, selector, type, handler, capture) {
     const dispatchEvent = event => {
         const targetElement = event.target;
@@ -283,7 +300,14 @@ export function closest(el, selector) {
     }
     return el;
 }
+export function $bubble(target,type,match,handler){
+    target.addEventListener(type,(e)=>{
+        let currentBut = closest(e.target,match);
+        if(!currentBut) return;
 
+        handler({matchTarget:currentBut,e});
+    })
+}
 export function getAverageRGB(imgEl) {
 
     var blockSize = 5, // only visit every 5 pixels
