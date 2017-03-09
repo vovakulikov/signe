@@ -43,7 +43,7 @@ module.exports = [
                                                             use: 'css-loader'})
                     },
                     {
-                        test: /\.svg?$/,
+                        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
                         loader:  'file-loader?name=[name].[ext]'
                     }
                     /*{
