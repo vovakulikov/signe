@@ -232,6 +232,9 @@ export function removeMany(selector,scope,cls){
 export function qs(selector, scope) {
     return (scope || document).querySelector(selector);
 }
+export function qsa(selector, scope) {
+    return (scope || document).querySelectorAll(selector);
+}
 export function $on(target, type, callback, capture) {
     target.addEventListener(type, callback, !!capture);
 }
@@ -352,4 +355,38 @@ export function getAverageRGB(imgEl) {
 
     return [rgb.r,rgb.g,rgb.b,255];
 
+}
+
+export function pullFromData(form){
+    let currents = qsa('input,select',form);
+    //console.log(arEl)
+    let data = {};
+    [].forEach.call(currents,function (item,i,ar) {
+        dataItem = pulling(item)
+         //console.log(dataItem)
+         if(dataItem){
+         data[item.name] = dataItem;
+         }
+
+    })
+
+    return data;
+}
+
+function pulling(el) {
+   // console.log(el)
+   // console.log('TAGNAME',el.tagName)
+    switch(el.tagName){
+        case "INPUT":{
+            if (el.type == 'checkbox' || el.type == 'radio')
+                return (el.checked)? el.value : false;
+
+            return el.value;
+            break;
+        }
+        case "SELECT":{
+            return el.options[el.selectedIndex].value;
+            break;
+        }
+    }
 }
