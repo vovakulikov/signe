@@ -31,7 +31,11 @@ export default class Controller {
 
        this.store.processingImageWorker({
             "func":'processingImage',
-            'infoPixel':this.store.gitImageSmall
+            'infoPixel':this.store.gitImageSmall,
+            'options':{
+                sizeMatr: 5,
+                typeFilter: 'Log-filter'
+            }
         })
             .then(d=>{
                 console.log('worker thread',d)
