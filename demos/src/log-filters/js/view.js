@@ -24,6 +24,7 @@ export default class View {
         this.uploadFiled = qs(".cntrls-filter__dropdown-file");
 
         this.itemsBlock = qs('.filter-items');
+        this.settingForm = qs('.setting-block__form');
 
         this.viewButtonBlock = qs('.usual_width');
         this.viewButtonList = qs('.full_width');
@@ -35,6 +36,11 @@ export default class View {
         this.lineCharts = {};
 
         this.standartEvents()
+    }
+    getSettings(){
+        let formData = new FormData(this.settingForm)
+        console.log('THis is data from formData',formData.get('sizeOfMatr'))
+        return formData;
     }
     standartEvents(){
         let activeViewButton = qs('.button-view-style_active');
@@ -172,18 +178,16 @@ export default class View {
 
     initLineChart(canvas,data){
 
-        let lab = ()=>{
+        let makelabels = ()=>{
             let ar = [];
             for(let i=0;i<=255;i++){
-
                     ar.push(i)
-
             }
             return ar;
         }
-        console.log(lab())
+        //console.log(lab())
         var _data = {
-            labels: lab(),
+            labels: makelabels(),
             datasets: [
                 {
                     label: "Gistogram",
@@ -217,16 +221,13 @@ export default class View {
                 responsive: true,
                 scales: {
                     xAxes: [{
-
                         ticks: {
                             autoSkip: true,
                             maxTicksLimit: 15
                         }
                     }],
                     yAxes: [{
-
                         ticks: {
-
                             maxTicksLimit: 10
                         }
                     }]
