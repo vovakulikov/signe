@@ -34,7 +34,7 @@ export default class Controller {
             "func":'processingImage',
             'infoPixel':this.store.gitImageSmall,
             'options':{
-                sizeMatr: formData.get('sizeOfMatr'),
+                sizeMatr: formData.get('matrSize'),
                 typeFilter: 'Log-filter'
             }
         })

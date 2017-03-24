@@ -39,7 +39,8 @@ export default class View {
     }
     getSettings(){
         let formData = new FormData(this.settingForm)
-        console.log('THis is data from formData',formData.get('sizeOfMatr'))
+        console.log(this.settingForm);
+        console.log('THis is data from formData',formData.get('matrSize'))
         return formData;
     }
     standartEvents(){
