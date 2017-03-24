@@ -10,7 +10,7 @@ self.onmessage = function(e) {
 
         case ('processingImage'):{
             let filter = new Filters(e.data.infoPixel);
-            let pixels = filter.convertToGray().LoGfilter().getImageData();
+            let pixels = filter.convertToGray().LoGfilter(e.data.options.sizeMatr).getImageData();
 
             self.postMessage({
                 'func': e.data.func,

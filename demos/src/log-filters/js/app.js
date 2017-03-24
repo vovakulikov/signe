@@ -5,6 +5,7 @@
 import {createImage,fileSelect,draw,getInfoCanvas} from '../../../../src/helpers.js';
 import Filters from '../../../../src/filters.js';
 import '../css/critical.css';
+
 let canvas = document.querySelector('._show_image');
 let fullCanvas = document.querySelector('._fullInfo');
 

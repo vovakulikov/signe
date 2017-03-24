@@ -28,12 +28,13 @@ export default class Controller {
        /* let pixels = this.store.processingImage(data);
         this.view.render('afterFilter', pixels);*/
         //console.log('main Thread',data);
-
+        // console.log('обьект с настройками',this.view.getSettings());
+       let formData =  this.view.getSettings()
        this.store.processingImageWorker({
             "func":'processingImage',
             'infoPixel':this.store.gitImageSmall,
             'options':{
-                sizeMatr: 5,
+                sizeMatr: formData.get('sizeOfMatr'),
                 typeFilter: 'Log-filter'
             }
         })
