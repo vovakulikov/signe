@@ -160,6 +160,7 @@ exports.draw = draw;
 exports.getInfoCanvas = getInfoCanvas;
 exports.removeMany = removeMany;
 exports.qs = qs;
+exports.qsa = qsa;
 exports.$on = $on;
 exports.$delegate = $delegate;
 exports.$deleg = $deleg;
@@ -168,6 +169,7 @@ exports.$off = $off;
 exports.closest = closest;
 exports.$bubble = $bubble;
 exports.getAverageRGB = getAverageRGB;
+exports.pullFromData = pullFromData;
 var fixOrientation = __webpack_require__(2);
 
 function fileSelect(evt, callback) {
@@ -376,6 +378,9 @@ function removeMany(selector, scope, cls) {
 function qs(selector, scope) {
     return (scope || document).querySelector(selector);
 }
+function qsa(selector, scope) {
+    return (scope || document).querySelectorAll(selector);
+}
 function $on(target, type, callback, capture) {
     target.addEventListener(type, callback, !!capture);
 }
@@ -495,6 +500,40 @@ function getAverageRGB(imgEl) {
     rgb.b = ~~(rgb.b / count);
 
     return [rgb.r, rgb.g, rgb.b, 255];
+}
+
+function pullFromData(form) {
+    var currents = qsa('input,select', form);
+    //console.log(arEl)
+    var data = {};
+    [].forEach.call(currents, function (item, i, ar) {
+        dataItem = pulling(item);
+        //console.log(dataItem)
+        if (dataItem) {
+            data[item.name] = dataItem;
+        }
+    });
+
+    return data;
+}
+
+function pulling(el) {
+    // console.log(el)
+    // console.log('TAGNAME',el.tagName)
+    switch (el.tagName) {
+        case "INPUT":
+            {
+                if (el.type == 'checkbox' || el.type == 'radio') return el.checked ? el.value : false;
+
+                return el.value;
+                break;
+            }
+        case "SELECT":
+            {
+                return el.options[el.selectedIndex].value;
+                break;
+            }
+    }
 }
 
 /***/ }),
@@ -622,7 +661,11 @@ var Controller = function () {
 
             this.store.processingImageWorker({
                 "func": 'processingImage',
-                'infoPixel': this.store.gitImageSmall
+                'infoPixel': this.store.gitImageSmall,
+                'options': {
+                    sizeMatr: 5,
+                    typeFilter: 'Log-filter'
+                }
             }).then(function (d) {
                 console.log('worker thread', d);
 
@@ -1218,6 +1261,18 @@ var Filters = function () {
                 ]
          */
         this.LoG_mask = [[0, 0, 1, 0, 0], [0, 1, 2, 1, 0], [1, 2, -16, 2, 1], [0, 1, 2, 1, 0], [0, 0, 1, 0, 0]];
+        /*
+                this.LoG_mask = [
+                    [0,1,2,4,4,4,2,1,0],
+                    [1,3,7,10,11,10,7,3,1],
+                    [2,7,11,6,1,6,11,7,2],
+                    [4,10,6,-24,-48,-24,6,10,4],
+                    [4,11,1,-48,-83,-48,1,11,4],
+                    [4,10,6,-24,-48,-24,6,10,4],
+                    [2,7,11,6,1,6,11,7,2],
+                    [1,3,7,10,11,10,7,3,1],
+                    [0,1,2,4,4,4,2,1,0]
+                ]*/
         // console.log('Информация из конструктора ширина и высота', this._widthImage, this._heightImage)
     }
 
@@ -1374,7 +1429,11 @@ var Filters = function () {
                     if (r[i][j] <= 0) {
                         r[i][j] = 0;
                     } else {
-                        r[i][j] = r[i][j] >= 255 ? 255 : r[i][j];
+                        // if( r[i][j]* r[i][j+1] < 0 || r[i][j]* r[i+1][j+1] < 0 || r[i][j]* r[i+1][j] < 0)
+                        r[i][j] = r[i][j] >= 255 ? 255 : r[i][j]; //(r[i][j]>80)? 255 : 0;
+                        /*else {
+                            r[i][j] = 0
+                        }*/
                         //r[i][j] = ( r[i][j]/80 >= 255)? 255 : 0;
                     }
                     /*
