@@ -52,6 +52,52 @@ export default class Filters{
             [0,1,2,1,0],
             [0,0,1,0,0]
         ]
+
+        this.masks = {
+            '3': [
+                    [0,1,0],
+                    [1,-4,1],
+                    [0,1,0]
+                ],
+            '5': [
+                [0,0,1,0,0],
+                [0,1,2,1,0],
+                [1,2,-16,2,1],
+                [0,1,2,1,0],
+                [0,0,1,0,0]
+            ],
+            '7': [
+                [0,0,1,0,0],
+                [0,1,2,1,0],
+                [1,2,-16,2,1],
+                [0,1,2,1,0],
+                [0,0,1,0,0]
+            ],
+            '9':[
+                [0,1,2,4,4,4,2,1,0],
+                [1,3,7,10,11,10,7,3,1],
+                [2,7,11,6,1,6,11,7,2],
+                [4,10,6,-24,-48,-24,6,10,4],
+                [4,11,1,-48,-83,-48,1,11,4],
+                [4,10,6,-24,-48,-24,6,10,4],
+                [2,7,11,6,1,6,11,7,2],
+                [1,3,7,10,11,10,7,3,1],
+                [0,1,2,4,4,4,2,1,0]
+            ],
+            '11':[
+                [0,0,0,-1,-1,-2,-1,-1,0,0,0],
+                [0,0,-2,-4,-8,-9,-8,-4,-2,0,0],
+                [0,-2,-7,-15,-22,-23,-22,-15,-7,-2,0],
+                [-1,-4,-15,-24,-14,-1,-14,-24,-15,-4,-1],
+                [-1,-8,-22,-14,52,103,52,-14,-22,-8,-1],
+                [-2,-9,-23,-1,103,180,103,-1,-23,-9,-2],
+                [-1,-8,-22,-14,52,103,52,-14,-22,-8,-1],
+                [-1,-4,-15,-24,-14,-1,-14,-24,-15,-4,-1],
+                [0,-2,-7,-15,-22,-23,-22,-15,-7,-2,0],
+                [0,0,-2,-4,-8,-9,-8,-4,-2,0,0],
+                [0,0,0,-1,-1,-2,-1,-1,0,0,0]
+            ]
+        }
 /*
         this.LoG_mask = [
             [0,1,2,4,4,4,2,1,0],
@@ -136,12 +182,13 @@ export default class Filters{
             }
         }
     }
-    overlayMask(x,y){
-        let centerMask = (this.LoG_mask.length-1)/2;
+    overlayMask(x,y,maskSize){
+        let mask = this.masks[maskSize];
+        let centerMask = (mask.length-1)/2;
         let relay = 0;
 
-        for(let i=0; i < this.LoG_mask.length; i++){
-            for(let j = 0; j < this.LoG_mask.length; j++){
+        for(let i=0; i < mask.length; i++){
+            for(let j = 0; j < mask.length; j++){
 
                 let infoAboutPixel = this.getCurrentPixel(x-centerMask+j,y-centerMask+i);
                 let R,G,B,A;
@@ -156,7 +203,7 @@ export default class Filters{
 
                 //console.log( [R,G,B,A])
                 let bright = 0.299*R + 0.587*G + 0.114*B;
-                relay += bright*this.LoG_mask[i][j];
+                relay += bright*mask[i][j];
             }
         }
         return relay;
@@ -171,13 +218,13 @@ export default class Filters{
             }
            // console.log('GetInformPixels',r)
     }
-    LoGfilter(){
+    LoGfilter(maskSize){
         let i,j;
         let r = [];
         for( i = 0; i < this._widthImage; i++){
           r[i] = [];
             for( j = 0; j < this._heightImage; j++){
-                let response = this.overlayMask(i,j);
+                let response = this.overlayMask(i,j,maskSize);
                // this.setCurrentPixel(i,j,[r,r,r,255])
             r[i][j] = Math.round(response);
             }
