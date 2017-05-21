@@ -7,8 +7,9 @@
 /******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
 /******/ 		for(;i < chunkIds.length; i++) {
 /******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId])
+/******/ 			if(installedChunks[chunkId]) {
 /******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
 /******/ 			installedChunks[chunkId] = 0;
 /******/ 		}
 /******/ 		for(moduleId in moreModules) {
@@ -17,53 +18,62 @@
 /******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
-/******/ 		while(resolves.length)
+/******/ 		while(resolves.length) {
 /******/ 			resolves.shift()();
-
+/******/ 		}
+/******/
 /******/ 	};
-
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
 /******/ 		2: 0
 /******/ 	};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
+/******/
 /******/ 	// This file contains only the entry chunk.
 /******/ 	// The chunk loading function for additional chunks
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		if(installedChunks[chunkId] === 0)
+/******/ 		if(installedChunks[chunkId] === 0) {
 /******/ 			return Promise.resolve();
-
-/******/ 		// an Promise means "currently loading".
+/******/ 		}
+/******/
+/******/ 		// a Promise means "currently loading".
 /******/ 		if(installedChunks[chunkId]) {
 /******/ 			return installedChunks[chunkId][2];
 /******/ 		}
+/******/
+/******/ 		// setup Promise in chunk cache
+/******/ 		var promise = new Promise(function(resolve, reject) {
+/******/ 			installedChunks[chunkId] = [resolve, reject];
+/******/ 		});
+/******/ 		installedChunks[chunkId][2] = promise;
+/******/
 /******/ 		// start chunk loading
 /******/ 		var head = document.getElementsByTagName('head')[0];
 /******/ 		var script = document.createElement('script');
@@ -71,7 +81,7 @@
 /******/ 		script.charset = 'utf-8';
 /******/ 		script.async = true;
 /******/ 		script.timeout = 120000;
-
+/******/
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
@@ -84,29 +94,26 @@
 /******/ 			clearTimeout(timeout);
 /******/ 			var chunk = installedChunks[chunkId];
 /******/ 			if(chunk !== 0) {
-/******/ 				if(chunk) chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
+/******/ 				if(chunk) {
+/******/ 					chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
+/******/ 				}
 /******/ 				installedChunks[chunkId] = undefined;
 /******/ 			}
 /******/ 		};
-
-/******/ 		var promise = new Promise(function(resolve, reject) {
-/******/ 			installedChunks[chunkId] = [resolve, reject];
-/******/ 		});
-/******/ 		installedChunks[chunkId][2] = promise;
-
 /******/ 		head.appendChild(script);
+/******/
 /******/ 		return promise;
 /******/ 	};
-
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -117,7 +124,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -126,18 +133,18 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/static/";
-
+/******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -540,15 +547,15 @@ function pulling(el) {
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var process = __webpack_require__(18);
-var exif = __webpack_require__(11);
-var toArray = __webpack_require__(10);
-var rotate = __webpack_require__(19);
-var resize = __webpack_require__(14);
-var urlToImage = __webpack_require__(15);
+var process = __webpack_require__(19);
+var exif = __webpack_require__(12);
+var toArray = __webpack_require__(11);
+var rotate = __webpack_require__(20);
+var resize = __webpack_require__(15);
+var urlToImage = __webpack_require__(16);
 var size = {
-  'image/png': __webpack_require__(17),
-  'image/jpeg': __webpack_require__(16)
+  'image/png': __webpack_require__(18),
+  'image/jpeg': __webpack_require__(17)
 };
 
 module.exports = fixOrientation;
@@ -635,24 +642,34 @@ var Controller = function () {
         this.view = view;
 
         view.bindUploadImage(this.uploadImage.bind(this));
-        view.bindStartFiltering(this.processingImage.bind(this));
+        view.bindStartFiltering(this.processingImage2.bind(this));
+        view.bindUploadLogoImage(this.uploadLogoImage.bind(this));
+        view.bindStartGetting(this.processingImage3.bind(this));
     }
 
     _createClass(Controller, [{
-        key: 'uploadImage',
-        value: function uploadImage(evt) {
+        key: 'uploadLogoImage',
+        value: function uploadLogoImage(evt) {
             var _this = this;
 
-            //this.view.loadSpin()
+            this.store.loadLogoImage(evt).then(function (picture) {
+                _this.view.render('add-item-logo-image', picture);
+                console.log('LOGO PICTURE', picture);
+            });
+        }
+    }, {
+        key: 'uploadImage',
+        value: function uploadImage(evt) {
+            var _this2 = this;
+
             this.store.loadImage(evt).then(function (picture) {
-                //this.store.makeImpression()
-                _this.view.render('add-item-image', picture);
+                _this2.view.render('add-item-image', picture);
             });
         }
     }, {
         key: 'processingImage',
         value: function processingImage() {
-            var _this2 = this;
+            var _this3 = this;
 
             //console.log('to arg controller',data)
             /* let pixels = this.store.processingImage(data);
@@ -664,13 +681,13 @@ var Controller = function () {
                 "func": 'processingImage',
                 'infoPixel': this.store.gitImageSmall,
                 'options': {
-                    sizeMatr: formData.get('matrSize'),
+                    sizeMatr: 5,
                     typeFilter: 'Log-filter'
                 }
             }).then(function (d) {
                 console.log('worker thread', d);
 
-                _this2.view.render('add-item-image', d);
+                _this3.view.render('add-item-image', d);
                 //this.view.render('afterFilter', d.resposne);
                 //return Promise.resolve();
             });
@@ -686,9 +703,88 @@ var Controller = function () {
             })*/
         }
     }, {
+        key: 'processingImage3',
+        value: function processingImage3() {
+            var _this4 = this;
+
+            //console.log('to arg controller',data)
+            /* let pixels = this.store.processingImage(data);
+             this.view.render('afterFilter', pixels);*/
+            //console.log('main Thread',data);
+            // console.log('обьект с настройками',this.view.getSettings());
+            var formData = this.view.getSettings();
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var img = ctx.createImageData(200, 200);
+            var imageData = img.data;
+
+            this.store.processingImageWorker({
+                "func": 'gettigLogo',
+                'infoPixel': this.store.gitImageSmall,
+                'options': {
+                    sizeMatr: 5,
+                    typeFilter: 'Log-filter',
+                    canvas: img
+                }
+            }).then(function (d) {
+                console.log('{Хееййййй вот то что пришло из воркера при потпытке лго', d);
+
+                _this4.view.render('add-item-image', d);
+                //this.view.render('afterFilter', d.resposne);
+                //return Promise.resolve();
+            });
+            /*.then(()=>{
+             return this.store.processingImageWorker({
+             "func":'gistogrammPrepare',
+             'infoPixel':data
+             })
+             })
+             .then((d)=>{
+             console.log('gistogramm is',d.resposne);
+             console.log('Hello world ')
+             })*/
+        }
+    }, {
+        key: 'processingImage2',
+        value: function processingImage2() {
+            var _this5 = this;
+
+            //console.log('to arg controller',data)
+            /* let pixels = this.store.processingImage(data);
+             this.view.render('afterFilter', pixels);*/
+            //console.log('main Thread',data);
+            // console.log('обьект с настройками',this.view.getSettings());
+            var formData = this.view.getSettings();
+            this.store.processingImageWorker({
+                "func": 'processingImage2',
+                'infoPixel': this.store.gitImageSmall,
+                'infoPixelLogo': this.store.gitImageLogoFull,
+                'options': {
+                    sizeMatr: 5,
+                    typeFilter: 'Log-filter'
+                }
+            }).then(function (d) {
+                console.log('worker thread', d);
+
+                _this5.view.render('add-item-image', d);
+                //this.view.render('afterFilter', d.resposne);
+                //return Promise.resolve();
+            });
+            /*.then(()=>{
+             return this.store.processingImageWorker({
+             "func":'gistogrammPrepare',
+             'infoPixel':data
+             })
+             })
+             .then((d)=>{
+             console.log('gistogramm is',d.resposne);
+             console.log('Hello world ')
+             })*/
+        }
+    }, {
         key: 'getGistogrammInfo',
         value: function getGistogrammInfo(data) {
-            var _this3 = this;
+            var _this6 = this;
 
             console.log(data);
             this.store.processingImageWorker({
@@ -697,7 +793,7 @@ var Controller = function () {
             }).then(function (d) {
                 //console.log('gistogramm is', d)
                 Object.assign(d, { sizing: {} });
-                _this3.view.renderLineChart(d);
+                _this6.view.renderLineChart(d);
             });
         }
     }]);
@@ -724,7 +820,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _helpers = __webpack_require__(1);
 
-var _filters = __webpack_require__(8);
+var _filters = __webpack_require__(9);
 
 var _filters2 = _interopRequireDefault(_filters);
 
@@ -751,20 +847,18 @@ var Store = function () {
     }
 
     _createClass(Store, [{
-        key: 'loadImage',
-        value: function loadImage(evt) {
+        key: 'loadLogoImage',
+        value: function loadLogoImage(evt) {
             var _this2 = this;
 
             evt.preventDefault();
             var path = evt.type == "change" ? evt.target.files : evt.dataTransfer.files;
-
             var sizing = {};
             var image = null;
             return (0, _helpers.fileSelect)(path).then(function (_ref) {
                 var data = _ref.data,
                     file = _ref.file;
 
-                // console.log(file)
                 sizing.systemInfo = {};
                 Object.assign(sizing.systemInfo, {
                     name: file.name,
@@ -775,12 +869,50 @@ var Store = function () {
                 });
                 return (0, _helpers.createImage)(data);
             }).then(function (picture) {
-                _this2.gitImageFull = (0, _helpers.convertTo)('imageData', picture);
+                _this2.gitImageLogoFull = (0, _helpers.convertTo)('imageData', picture);
+                console.log('IMAGE DATA LOGO IMAGE', _this2.gitImageLogoFull);
                 sizing.sizeFull = {};
                 Object.assign(sizing.sizeFull, {
                     caption: 'Image size before resizing',
-                    width: _this2.gitImageFull.width,
-                    height: _this2.gitImageFull.height
+                    width: _this2.gitImageLogoFull.width,
+                    height: _this2.gitImageLogoFull.height
+                });
+
+                var smIMG = (0, _helpers.convertTo)('resizeImg', picture);
+                console.log('LOGO INFO', sizing);
+                return (0, _helpers.createImage)(smIMG);
+            });
+        }
+    }, {
+        key: 'loadImage',
+        value: function loadImage(evt) {
+            var _this3 = this;
+
+            evt.preventDefault();
+            var path = evt.type == "change" ? evt.target.files : evt.dataTransfer.files;
+
+            var sizing = {};
+            var image = null;
+            return (0, _helpers.fileSelect)(path).then(function (_ref2) {
+                var data = _ref2.data,
+                    file = _ref2.file;
+
+                sizing.systemInfo = {};
+                Object.assign(sizing.systemInfo, {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    lastMod: file.lastModifiedDate
+
+                });
+                return (0, _helpers.createImage)(data);
+            }).then(function (picture) {
+                _this3.gitImageFull = (0, _helpers.convertTo)('imageData', picture);
+                sizing.sizeFull = {};
+                Object.assign(sizing.sizeFull, {
+                    caption: 'Image size before resizing',
+                    width: _this3.gitImageFull.width,
+                    height: _this3.gitImageFull.height
                 });
 
                 var smIMG = (0, _helpers.convertTo)('resizeImg', picture);
@@ -789,17 +921,16 @@ var Store = function () {
                 // console.log(picture)
                 image = picture;
                 sizing.size = {};
-                _this2.gitImageSmall = (0, _helpers.convertTo)('imageData', picture);
+                _this3.gitImageSmall = (0, _helpers.convertTo)('imageData', picture);
                 Object.assign(sizing.size, {
                     caption: 'Image size after resizing',
-                    width: _this2.gitImageSmall.width,
-                    height: _this2.gitImageSmall.height
+                    width: _this3.gitImageSmall.width,
+                    height: _this3.gitImageSmall.height
                 });
-                return _this2.ImageWorker({
+                return _this3.ImageWorker({
                     "func": 'gistogrammPrepare',
-                    'infoPixel': _this2.gitImageSmall
+                    'infoPixel': _this3.gitImageSmall
                 });
-                //return Promise.resolve({picture,sizing});
             }).then(function (data) {
                 //console.log(data)
                 return Promise.resolve({ picture: image, sizing: sizing, data: data });
@@ -815,7 +946,7 @@ var Store = function () {
     }, {
         key: 'processingImageWorker',
         value: function processingImageWorker(data) {
-            var _this3 = this;
+            var _this4 = this;
 
             var res = {};
             return this.ImageWorker(data).then(function (d) {
@@ -823,7 +954,7 @@ var Store = function () {
                 res.picture = {
                     src: (0, _helpers.convertTo)("URL", d)
                 };
-                return _this3.ImageWorker({
+                return _this4.ImageWorker({
                     "func": 'gistogrammPrepare',
                     'infoPixel': d
                 });
@@ -833,16 +964,67 @@ var Store = function () {
             });
         }
     }, {
+        key: 'storeKey',
+        value: function storeKey(key, secretImage) {
+            var imgData = this.getBase64Image(secretImage);
+            localStorage.setItem(key, imgData);
+            console.log(imgData, key);
+        }
+    }, {
+        key: 'getStoreKey',
+        value: function getStoreKey(key) {
+            var dataImage = "data:image/png;base64," + localStorage.getItem(key);
+            var canvas = document.createElement('canvas');
+
+            var ctx = canvas.getContext("2d");
+
+            var image = new Image();
+            image.src = dataImage;
+            return new Promise(function (resolve, reject) {
+                image.onload = function () {
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+                    ctx.drawImage(image, 0, 0);
+                    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    resolve(data);
+                };
+            });
+        }
+    }, {
+        key: 'getBase64Image',
+        value: function getBase64Image(img) {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            console.log(img);
+            var ctx = canvas.getContext("2d");
+            ctx.putImageData(img, 0, 0);
+
+            var dataURL = canvas.toDataURL("image/png");
+
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+    }, {
         key: 'ImageWorker',
         value: function ImageWorker(data) {
-            var _this4 = this;
+            var _this5 = this;
 
             return new Promise(function (resolve, reject) {
-                _this4.worker.postMessage(data);
-                _this4.worker.onmessage = function (e) {
+                _this5.worker.postMessage(data);
+                _this5.worker.onmessage = function (e) {
                     if (data.func == e.data.func) {
-                        console.log('То что пришло из воркера', e.data);
-                        resolve(e.data.resposne);
+                        if (data.func == 'processingImage2') {
+                            console.log('KEYYYYYYYYY!!!!!::', e.data.key);
+                            _this5.storeKey(e.data.key, e.data.resposneKeyImage);
+                        }
+                        if (data.func == "gettigLogo") {
+                            _this5.getStoreKey(e.data.resposne).then(function (data) {
+                                resolve(data);
+                            });
+                        } else {
+                            console.log('То что пришло из воркера', e.data);
+                            resolve(e.data.resposne);
+                        }
                     }
                 };
             });
@@ -870,15 +1052,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-__webpack_require__(13);
+__webpack_require__(14);
 
-var _template = __webpack_require__(7);
+var _template = __webpack_require__(8);
 
 var _template2 = _interopRequireDefault(_template);
 
 var _helpers = __webpack_require__(1);
 
-var _helpers2 = __webpack_require__(9);
+var _helpers2 = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -893,13 +1075,14 @@ var View = function () {
         // this.thief = new ColorThief();
 
         this.loadSpinner = (0, _helpers.qs)('.loading-spin');
-
+        this.startGetting = (0, _helpers.qs)('.getLogoFormImage');
         this.imagesBlock = (0, _helpers.qs)('.filter-blocks');
         this.startEffect = (0, _helpers.qs)(".cntrls-filter__start-effect");
 
         this.uploadButton = (0, _helpers.qs)(".input-file");
+        this.uploadLogoButton = (0, _helpers.qs)('.input-logo');
         this.uploadFiled = (0, _helpers.qs)(".cntrls-filter__dropdown-file");
-
+        this.logoItemBlock = (0, _helpers.qs)('.logo-item-block');
         this.itemsBlock = (0, _helpers.qs)('.filter-items');
         this.settingForm = (0, _helpers.qs)('.setting-block__form');
 
@@ -917,8 +1100,6 @@ var View = function () {
         key: 'getSettings',
         value: function getSettings() {
             var formData = new FormData(this.settingForm);
-            console.log(this.settingForm);
-            console.log('THis is data from formData', formData.get('matrSize'));
             return formData;
         }
     }, {
@@ -927,22 +1108,6 @@ var View = function () {
             var _this = this;
 
             var activeViewButton = (0, _helpers.qs)('.button-view-style_active');
-
-            /* this.imagesBlock.addEventListener('click',(e)=>{
-                 let currentBut = closest(e.target, '.button-view-style');
-                 if(!currentBut) return;
-                 if(currentBut.dataset.type == 'block'){
-                     this.imagesBlock.classList.remove('filter-block_item-image_full-width')
-                 }
-                 else if(currentBut.dataset.type == 'list'){
-                     this.imagesBlock.classList.add('filter-block_item-image_full-width')
-                 }
-                 if(!(activeViewButton == currentBut)){
-                     activeViewButton.classList.remove('button-view-style_active')
-                     currentBut.classList.add('button-view-style_active')
-                     activeViewButton = currentBut
-                 }
-             })*/
 
             (0, _helpers.$bubble)(this.imagesBlock, 'click', '.button-view-style', function (_ref) {
                 var matchTarget = _ref.matchTarget;
@@ -968,13 +1133,6 @@ var View = function () {
                 details.classList.add('item__details-block_active');
             });
 
-            /*$delegate(this.imagesBlock,'.item__details','click',({target})=>{
-                let item = closest(target,'.filter__item')
-                item.style.flexBasis = '100%'
-                let details = qs('.item__details-block',item)
-                  details.classList.add('item__details-block_active')
-                        //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-            })*/
             (0, _helpers.$bubble)(this.imagesBlock, 'click', '.details__close', function (_ref3) {
                 var matchTarget = _ref3.matchTarget;
 
@@ -984,14 +1142,6 @@ var View = function () {
                 console.log(details);
                 details.classList.remove('item__details-block_active');
             });
-            /* $delegate(this.imagesBlock,'.details__close','click',({target})=>{
-                 let details = closest(target,'.item__details-block')
-                 let item = closest(target,'.filter__item')
-                 item.style.flexBasis = ''
-                 console.log(details);
-                 details.classList.remove('item__details-block_active')
-                 //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-             })*/
         }
     }, {
         key: 'bindUploadImage',
@@ -1011,12 +1161,32 @@ var View = function () {
             }, true);
         }
     }, {
-        key: 'bindStartFiltering',
-        value: function bindStartFiltering(handler) {
+        key: 'bindUploadLogoImage',
+        value: function bindUploadLogoImage(handler) {
             var _this3 = this;
 
+            this.uploadLogoButton.addEventListener('change', function (e) {
+                _this3.render('clearDropDownLogoZone', null);
+                handler(e);
+            });
+        }
+    }, {
+        key: 'bindStartFiltering',
+        value: function bindStartFiltering(handler) {
+            var _this4 = this;
+
             this.startEffect.addEventListener('click', function (e) {
-                _this3.loadSpinner.classList.add('loading-spin_active');
+                _this4.loadSpinner.classList.add('loading-spin_active');
+                handler(e);
+            });
+        }
+    }, {
+        key: 'bindStartGetting',
+        value: function bindStartGetting(handler) {
+            var _this5 = this;
+
+            this.startGetting.addEventListener('click', function (e) {
+                _this5.loadSpinner.classList.add('loading-spin_active');
                 handler(e);
             });
         }
@@ -1029,43 +1199,38 @@ var View = function () {
     }, {
         key: 'render',
         value: function render(type, picture) {
-            var _this4 = this;
+            var _this6 = this;
 
             console.log(picture);
             var types = {
                 'clearDropDownZone': function clearDropDownZone() {
-                    console.log('clear!!!!');
-                    _this4.itemsBlock.innerHTML = '';
-                    _this4.loadSpinner.classList.add('loading-spin_active');
+                    _this6.itemsBlock.innerHTML = '';
+                    _this6.loadSpinner.classList.add('loading-spin_active');
+                },
+                'clearDropDownLogoZone': function clearDropDownLogoZone() {
+                    _this6.logoItemBlock.innerHTML = '';
+                },
+                'add-item-logo-image': function addItemLogoImage() {
+                    _this6.logoItemBlock.appendChild(picture);
                 },
                 'add-item-image': function addItemImage() {
                     console.log('View data has type is ', picture);
-                    _this4.disabledDropdownZone();
-                    //Обрезаем изображение сжимем его.
-                    //let ratioImg = getRatioImage(picture)
+                    _this6.disabledDropdownZone();
                     var colors = null;
-                    /*if(!!picture['picture'].alt){
-                        colors = this.thief.getColor(picture['picture'])
-                    }
-                    else{
-                        colors = [0,0,0];
-                    }*/
                     colors = [0, 0, 0];
                     picture.background = 'rgb(' + colors[0] + ',' + colors[1] + ',' + colors[2] + ')';
-                    var DOM_token = _this4.temp.getDomImage(picture);
+                    var DOM_token = _this6.temp.getDomImage(picture);
 
-                    if (_this4.itemsBlock.childNodes.length > 1) {
-                        var el = _this4.itemsBlock.lastChild;
-                        _this4.itemsBlock.removeChild(el);
+                    if (_this6.itemsBlock.childNodes.length > 1) {
+                        var el = _this6.itemsBlock.lastChild;
+                        _this6.itemsBlock.removeChild(el);
                     }
-                    _this4.loadSpinner.classList.remove('loading-spin_active');
-                    var d = _this4.itemsBlock.insertAdjacentHTML('beforeend', DOM_token);
-                    var c = (0, _helpers.qs)('.myChart', _this4.itemsBlock.lastChild);
-                    //console.log('The color of IMAGE', )
+                    _this6.loadSpinner.classList.remove('loading-spin_active');
+                    var d = _this6.itemsBlock.insertAdjacentHTML('beforeend', DOM_token);
+                    var c = (0, _helpers.qs)('.myChart', _this6.itemsBlock.lastChild);
                     setTimeout(function () {
-                        _this4.initLineChart(c, picture.data);
+                        _this6.initLineChart(c, picture.data);
                     }, 0);
-                    // this.itemsBlock.insertAdjacentHTML('beforeend',DOM_token)
                 }
             };
 
@@ -1147,6 +1312,38 @@ exports.default = View;
 "use strict";
 
 
+var _controller = __webpack_require__(3);
+
+var _controller2 = _interopRequireDefault(_controller);
+
+var _view = __webpack_require__(5);
+
+var _view2 = _interopRequireDefault(_view);
+
+var _store = __webpack_require__(4);
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var store = new _store2.default();
+var view = new _view2.default();
+
+new _controller2.default(store, view);
+
+var Chart = void 0;
+
+__webpack_require__.e/* require.ensure */(0).then((function () {
+    Chart = __webpack_require__(0);
+}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -1203,7 +1400,7 @@ var Template = function () {
 exports.default = Template;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1220,13 +1417,16 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Filters = function () {
-    function Filters(imageData) {
+    function Filters(imageData, logoMark) {
         _classCallCheck(this, Filters);
 
         this.imageData = imageData;
         this._data = imageData.data;
         this._widthImage = imageData.width;
         this._heightImage = imageData.height;
+        this.logoMark = logoMark;
+        console.log('НАША ШИРИНА !!!!', this.imageData);
+        if (logoMark) this._dataLogo = logoMark.data;
 
         /*  this.LoG_mask = [
             [0,1,1,2,2,2,1,1,0],
@@ -1333,10 +1533,25 @@ var Filters = function () {
     }, {
         key: 'getCurrentPixel',
         value: function getCurrentPixel(x, y) {
+
             var correctPixel = (x + y * this._widthImage) * 4;
             var d = this._data;
 
             return [d[correctPixel], d[correctPixel + 1], d[correctPixel + 2], d[correctPixel + 3]];
+        }
+    }, {
+        key: 'getCurrentPixelLogo',
+        value: function getCurrentPixelLogo(x, y) {
+            var correctPixel = (x + y * this.logoMark.width) * 4;
+            var d = this._dataLogo;
+            return [d[correctPixel], d[correctPixel + 1], d[correctPixel + 2], d[correctPixel + 3]];
+        }
+    }, {
+        key: 'getCurrentPixelLogoByNumber',
+        value: function getCurrentPixelLogoByNumber(N) {
+            var index = N * 4;
+            var d = this._dataLogo;
+            return d[index];
         }
     }, {
         key: 'setCurrentPixel',
@@ -1349,9 +1564,162 @@ var Filters = function () {
             d[correctPixel + 3] = data[3];
         }
     }, {
+        key: 'setCurrentPixelBlueEd',
+        value: function setCurrentPixelBlueEd(x, y, index) {
+            var correctPixel = (x + y * this._widthImage) * 4;
+            var d = this._data;
+
+            var _getCurrentPixel = this.getCurrentPixel(x, y),
+                _getCurrentPixel2 = _slicedToArray(_getCurrentPixel, 4),
+                r = _getCurrentPixel2[0],
+                g = _getCurrentPixel2[1],
+                b = _getCurrentPixel2[2],
+                a = _getCurrentPixel2[3];
+
+            var bright = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            d[correctPixel + 2] = index ? d[correctPixel + 2] + 30 : d[correctPixel + 2] - 30;
+        }
+    }, {
+        key: 'setCurrentPixelLogo',
+        value: function setCurrentPixelLogo(x, y, data) {
+            var correctPixel = (x + y * this.logoMark.width) * 4;
+            var d = this._dataLogo;
+            d[correctPixel] = data[0];
+            d[correctPixel + 1] = data[1];
+            d[correctPixel + 2] = data[2];
+            d[correctPixel + 3] = data[3];
+        }
+    }, {
         key: 'getImageData',
         value: function getImageData() {
             return this.imageData;
+        }
+    }, {
+        key: 'setCustomPixel',
+        value: function setCustomPixel(n, obj, data) {
+            var correctPixel = n * 4;
+            var d = obj;
+            d[correctPixel] = data * 255;
+            d[correctPixel + 1] = data * 255;
+            d[correctPixel + 2] = data * 255;
+            d[correctPixel + 3] = 255;
+        }
+    }, {
+        key: 'getLogoFromImage',
+        value: function getLogoFromImage(img) {
+            var imageData = img.data;
+            var image = this.imageData;
+            var counter = 0;
+            var logoCounter = 0;
+            for (var i = 2; i < image.width - 2; i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var j = 2 + counter; j < image.height - 2; j = j + 3) {
+                    var flag = this.getNewLOGOPIXEL(i, j);
+                    //console.log('flag',flag)
+                    if (flag > 0) {
+                        this.setCustomPixel(logoCounter, imageData, 1);
+                    } else {
+                        this.setCustomPixel(logoCounter, imageData, 0);
+                    }
+
+                    logoCounter++;
+                    if (logoCounter > 200 * 200) return img;
+                }
+                counter++;
+            }
+            return img;
+        }
+    }, {
+        key: 'getNewLOGOPIXEL',
+        value: function getNewLOGOPIXEL(x, y) {
+            var value = 0;
+            for (var i = 1; i <= 2; i++) {
+                value = value + this.getCurrentPixel(x, y + i)[2] + this.getCurrentPixel(x, y - i)[2] + this.getCurrentPixel(x + i, y)[2] + this.getCurrentPixel(x - i, y)[2];
+            }
+            return this.getCurrentPixel(x, y)[2] - value / (4 * 2);
+        }
+    }, {
+        key: 'insertLogoIntoImage',
+        value: function insertLogoIntoImage() {
+            var logo = this.logoMark;
+            var image = this.imageData;
+            var key = 0;
+            // binary logo
+            for (var i = 0; i < logo.width; i++) {
+                for (var j = 0; j < logo.height; j++) {
+                    var _getCurrentPixelLogo = this.getCurrentPixelLogo(i, j),
+                        _getCurrentPixelLogo2 = _slicedToArray(_getCurrentPixelLogo, 4),
+                        R = _getCurrentPixelLogo2[0],
+                        G = _getCurrentPixelLogo2[1],
+                        B = _getCurrentPixelLogo2[2],
+                        A = _getCurrentPixelLogo2[3];
+
+                    var bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    key = key + bright;
+                    if (bright >= 180) {
+                        this.setCurrentPixelLogo(i, j, [255, 255, 255, 255]);
+                    } else {
+                        this.setCurrentPixelLogo(i, j, [0, 0, 0, 255]);
+                    }
+                }
+            }
+
+            var counter = 0;
+            var logoCounter = 0;
+            var imageKey = 0;
+            for (var _i = 2; _i < image.width - 2; _i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var _j = 2 + counter; _j < image.height - 2; _j = _j + 3) {
+                    var _getCurrentPixel3 = this.getCurrentPixel(_i, _j),
+                        _getCurrentPixel4 = _slicedToArray(_getCurrentPixel3, 4),
+                        R = _getCurrentPixel4[0],
+                        G = _getCurrentPixel4[1],
+                        B = _getCurrentPixel4[2],
+                        A = _getCurrentPixel4[3];
+
+                    var _bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    imageKey = imageKey + _bright * 100;
+                    var logoPixel = this.getCurrentPixelLogoByNumber(logoCounter);
+                    logoCounter++;
+                    //if(!logoPixel) return this;
+                    this.setCurrentPixelBlueEd(_i, _j, logoPixel);
+                }
+                counter++;
+            }
+            key = imageKey;
+            return [logo, key];
+        }
+    }, {
+        key: 'customSerialize',
+        value: function customSerialize() {
+            var image = this.imageData;
+            var counter = 0;
+            var logoCounter = 0;
+            var imageKey = 0;
+            for (var i = 2; i < image.width - 2; i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var j = 2 + counter; j < image.height - 2; j = j + 3) {
+                    var _getCurrentPixel5 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel6 = _slicedToArray(_getCurrentPixel5, 4),
+                        R = _getCurrentPixel6[0],
+                        G = _getCurrentPixel6[1],
+                        B = _getCurrentPixel6[2],
+                        A = _getCurrentPixel6[3];
+
+                    var bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    imageKey = imageKey + bright * 100;
+                }
+                counter++;
+            }
+
+            return imageKey;
         }
     }, {
         key: 'customFilter',
@@ -1389,16 +1757,16 @@ var Filters = function () {
                         B = _infoAboutPixel[2];
                         A = _infoAboutPixel[3];
                     } else {
-                        var _getCurrentPixel = this.getCurrentPixel(x, y);
+                        var _getCurrentPixel7 = this.getCurrentPixel(x, y);
                         //console.log('from getPxel',this.getCurrentPixel(x,y));
 
 
-                        var _getCurrentPixel2 = _slicedToArray(_getCurrentPixel, 4);
+                        var _getCurrentPixel8 = _slicedToArray(_getCurrentPixel7, 4);
 
-                        R = _getCurrentPixel2[0];
-                        G = _getCurrentPixel2[1];
-                        B = _getCurrentPixel2[2];
-                        A = _getCurrentPixel2[3];
+                        R = _getCurrentPixel8[0];
+                        G = _getCurrentPixel8[1];
+                        B = _getCurrentPixel8[2];
+                        A = _getCurrentPixel8[3];
                     }
 
                     //console.log( [R,G,B,A])
@@ -1521,12 +1889,12 @@ var Filters = function () {
             for (var i = 0; i < this._widthImage; i++) {
                 brightnessMatrix[i] = [];
                 for (var j = 0; j < this._heightImage; j++) {
-                    var _getCurrentPixel3 = this.getCurrentPixel(i, j),
-                        _getCurrentPixel4 = _slicedToArray(_getCurrentPixel3, 4),
-                        R = _getCurrentPixel4[0],
-                        G = _getCurrentPixel4[1],
-                        B = _getCurrentPixel4[2],
-                        A = _getCurrentPixel4[3];
+                    var _getCurrentPixel9 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel10 = _slicedToArray(_getCurrentPixel9, 4),
+                        R = _getCurrentPixel10[0],
+                        G = _getCurrentPixel10[1],
+                        B = _getCurrentPixel10[2],
+                        A = _getCurrentPixel10[3];
 
                     var brightness = 0.299 * R + 0.587 * G + 0.114 * B;
                     brightnessMatrix[i][j] = Math.floor(brightness);
@@ -1541,19 +1909,19 @@ var Filters = function () {
             var ar = [];
             for (var i = 0; i < this._widthImage; i++) {
                 for (var j = 0; j < this._heightImage; j++) {
-                    var _getCurrentPixel5 = this.getCurrentPixel(i, j),
-                        _getCurrentPixel6 = _slicedToArray(_getCurrentPixel5, 4),
-                        R = _getCurrentPixel6[0],
-                        G = _getCurrentPixel6[1],
-                        B = _getCurrentPixel6[2],
-                        A = _getCurrentPixel6[3];
+                    var _getCurrentPixel11 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel12 = _slicedToArray(_getCurrentPixel11, 4),
+                        R = _getCurrentPixel12[0],
+                        G = _getCurrentPixel12[1],
+                        B = _getCurrentPixel12[2],
+                        A = _getCurrentPixel12[3];
 
                     var bright = Math.floor(0.299 * R + 0.587 * G + 0.114 * B);
                     ar[bright] = ar[bright] ? ar[bright] + 1 : 1;
                 }
             }
-            for (var _i = 0; _i <= 255; _i++) {
-                ar[_i] = ar[_i] ? ar[_i] : 0;
+            for (var _i2 = 0; _i2 <= 255; _i2++) {
+                ar[_i2] = ar[_i2] ? ar[_i2] : 0;
             }
             return ar;
         }
@@ -1565,7 +1933,7 @@ var Filters = function () {
 exports.default = Filters;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1898,7 +2266,7 @@ function getAverageRGB(imgEl) {
 }
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 
@@ -1934,7 +2302,7 @@ function mime(uri) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -1942,7 +2310,7 @@ function mime(uri) {
  * Module dependencies.
  */
 
-var ExifReader = __webpack_require__(12).ExifReader;
+var ExifReader = __webpack_require__(13).ExifReader;
 
 /**
  * Parse EXIF tags in `buf`.
@@ -1960,7 +2328,7 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -3174,13 +3542,13 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = resize;
@@ -3195,7 +3563,7 @@ function resize (canvas, o) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = urlToImage;
@@ -3209,7 +3577,7 @@ function urlToImage (url, fn) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 
@@ -3282,7 +3650,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 
@@ -3320,7 +3688,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -3493,6 +3861,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -3506,7 +3878,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 
@@ -3523,38 +3895,6 @@ module.exports = function(ctx, o){
   ctx.translate(-x, -y);
 };
 
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _controller = __webpack_require__(3);
-
-var _controller2 = _interopRequireDefault(_controller);
-
-var _view = __webpack_require__(5);
-
-var _view2 = _interopRequireDefault(_view);
-
-var _store = __webpack_require__(4);
-
-var _store2 = _interopRequireDefault(_store);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var store = new _store2.default();
-var view = new _view2.default();
-
-new _controller2.default(store, view);
-
-var Chart = void 0;
-
-__webpack_require__.e/* require.ensure */(0).then((function () {
-    Chart = __webpack_require__(0);
-}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 
 /***/ })
 /******/ ]);

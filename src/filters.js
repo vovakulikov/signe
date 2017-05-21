@@ -1,10 +1,13 @@
 export default class Filters{
-    constructor(imageData){
+    constructor(imageData, logoMark){
         this.imageData = imageData;
         this._data = imageData.data;
         this._widthImage = imageData.width;
         this._heightImage = imageData.height;
-
+        this.logoMark = logoMark;
+        console.log('НАША ШИРИНА !!!!',this.imageData);
+        if(logoMark)
+            this._dataLogo = logoMark.data;
 
         /*  this.LoG_mask = [
             [0,1,1,2,2,2,1,1,0],
@@ -152,12 +155,23 @@ export default class Filters{
 
     }
     getCurrentPixel(x,y){
+
         var correctPixel = (x+y*this._widthImage)*4;
         let d = this._data;
 
 
         return [d[correctPixel],d[correctPixel+1],d[correctPixel+2],d[correctPixel+3]]
 
+    }
+    getCurrentPixelLogo(x,y) {
+        var correctPixel = (x+y*this.logoMark.width)*4;
+        let d =  this._dataLogo;
+        return [d[correctPixel],d[correctPixel+1],d[correctPixel+2],d[correctPixel+3]]
+    }
+    getCurrentPixelLogoByNumber(N) {
+        let index = N*4;
+        let d =  this._dataLogo;
+        return d[index];
     }
     setCurrentPixel(x,y,data){
         var correctPixel = (x+y*this._widthImage)*4;
@@ -168,10 +182,126 @@ export default class Filters{
         d[correctPixel+3] = data[3];
     }
 
+    setCurrentPixelBlueEd(x,y,index){
+        var correctPixel = (x+y*this._widthImage)*4;
+        let d = this._data;
+        let [r,g,b,a] = this.getCurrentPixel(x,y);
+        const bright = 0.299*r + 0.587*g + 0.114*b;
+
+        d[correctPixel+2] = (index)? d[correctPixel+2] + 30:  d[correctPixel+2] - 30 ;
+    }
+    setCurrentPixelLogo(x,y,data){
+        var correctPixel = (x+y*this.logoMark.width)*4;
+        let d =  this._dataLogo;
+        d[correctPixel] = data[0];
+        d[correctPixel+1] = data[1];
+        d[correctPixel+2] = data[2];
+        d[correctPixel+3] = data[3];
+    }
     getImageData(){
         return this.imageData
     }
+    setCustomPixel(n, obj, data){
+        var correctPixel = (n)*4;
+        let d = obj;
+        d[correctPixel] = data*255;
+        d[correctPixel+1] = data*255;
+        d[correctPixel+2] = data*255;
+        d[correctPixel+3] = 255;
+    }
+    getLogoFromImage(img) {
+        var imageData = img.data;
+        const image = this.imageData;
+        let counter = 0;
+        let logoCounter = 0;
+        for(let i = 2; i < (image.width-2); i++){
+            if(counter === 3){
+                counter = 0;
+            }
+            for(let j = 2+counter; j < (image.height-2); j=j+3){
+                let flag = this.getNewLOGOPIXEL(i,j);
+                //console.log('flag',flag)
+                if (flag>0){
+                    this.setCustomPixel(logoCounter,imageData,1);
+                } else {
+                    this.setCustomPixel(logoCounter,imageData,0);
+                }
 
+                logoCounter++;
+                if(logoCounter>(200*200)) return img;
+            }
+            counter++;
+        }
+        return img;
+    }
+    getNewLOGOPIXEL (x,y) {
+        let value = 0;
+        for (let i = 1; i <= 2; i++){
+            value = value + this.getCurrentPixel(x,y+i)[2]
+                          + this.getCurrentPixel(x,y-i)[2]
+                          + this.getCurrentPixel(x+i,y)[2]
+                          + this.getCurrentPixel(x-i,y)[2]
+        }
+        return (this.getCurrentPixel(x,y)[2] - (value/(4*2)));
+    }
+    insertLogoIntoImage () {
+        const logo = this.logoMark;
+        const image = this.imageData;
+        let key = 0;
+        // binary logo
+        for(let i = 0; i < logo.width; i++) {
+            for(let j = 0; j < logo.height; j++){
+                let [R,G,B,A] = this.getCurrentPixelLogo(i,j);
+                const bright = 0.299*R + 0.587*G + 0.114*B;
+                key = key + bright;
+                if (bright >= 180 ) {
+                    this.setCurrentPixelLogo(i, j, [255, 255, 255, 255])
+                } else {
+                    this.setCurrentPixelLogo(i, j, [0,0,0, 255]);
+                }
+            }
+        }
+
+        let counter = 0;
+        let logoCounter = 0;
+        let imageKey = 0
+        for(let i = 2; i < (image.width-2); i++){
+            if(counter === 3){
+                counter = 0;
+            }
+            for(let j = 2+counter; j < (image.height-2); j=j+3){
+                let [R,G,B,A] = this.getCurrentPixel(i,j);
+                const bright = 0.299*R + 0.587*G + 0.114*B;
+                imageKey = imageKey + bright*100;
+                let logoPixel = this.getCurrentPixelLogoByNumber(logoCounter);
+                logoCounter++;
+                //if(!logoPixel) return this;
+                this.setCurrentPixelBlueEd(i,j,logoPixel);
+            }
+            counter++;
+        }
+        key = imageKey;
+        return [logo, key];
+    }
+    customSerialize() {
+        const image = this.imageData;
+        let counter = 0;
+        let logoCounter = 0;
+        let imageKey = 0
+        for(let i = 2; i < (image.width-2); i++){
+            if(counter === 3){
+                counter = 0;
+            }
+            for(let j = 2+counter; j < (image.height-2); j=j+3){
+                let [R,G,B,A] = this.getCurrentPixel(i,j);
+                const bright = 0.299*R + 0.587*G + 0.114*B;
+                imageKey = imageKey + bright*100;
+            }
+            counter++;
+        }
+
+        return imageKey;
+    }
     customFilter(callback){
         let cb = callback.bind(this);
         for(let i =0; i < this._widthImage; i++) {

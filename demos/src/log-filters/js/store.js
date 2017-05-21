@@ -19,7 +19,38 @@ export default class Store {
         this.gitImageFull = null;
     }
 
+    loadLogoImage(evt){
+        evt.preventDefault();
+        let path = (evt.type == "change") ? evt.target.files : evt.dataTransfer.files
+        let sizing = {}
+        let image = null;
+        return fileSelect(path)
+            .then(({data,file})=>{
+                sizing.systemInfo = {};
+                Object.assign( sizing.systemInfo,{
+                    name:file.name,
+                    size:file.size,
+                    type:file.type,
+                    lastMod: file.lastModifiedDate
 
+                })
+                return createImage(data);
+            })
+            .then(picture =>{
+                this.gitImageLogoFull = convertTo('imageData',picture);
+                console.log('IMAGE DATA LOGO IMAGE',this.gitImageLogoFull);
+                sizing.sizeFull={};
+                Object.assign(sizing.sizeFull,{
+                    caption: 'Image size before resizing',
+                    width:this.gitImageLogoFull.width,
+                    height:this.gitImageLogoFull.height
+                })
+
+                let smIMG = convertTo('resizeImg',picture);
+                console.log('LOGO INFO',sizing)
+                return createImage(smIMG);
+            })
+    }
     loadImage(evt){
         evt.preventDefault();
         let path = (evt.type == "change") ? evt.target.files : evt.dataTransfer.files
@@ -28,7 +59,6 @@ export default class Store {
         let image = null;
         return fileSelect(path)
             .then(({data,file})=>{
-            // console.log(file)
                 sizing.systemInfo = {};
                 Object.assign( sizing.systemInfo,{
                     name:file.name,
@@ -65,7 +95,6 @@ export default class Store {
                     "func":'gistogrammPrepare',
                     'infoPixel': this.gitImageSmall
                 })
-                //return Promise.resolve({picture,sizing});
             })
             .then(data=>{
                 //console.log(data)
@@ -83,7 +112,7 @@ export default class Store {
         let res = {};
         return this.ImageWorker(data)
             .then(d=>{
-                console.log('tttrrrr',d)
+                console.log('tttrrrr',d);
                 res.picture = {
                     src: convertTo("URL",d)
                 }
@@ -98,13 +127,64 @@ export default class Store {
             })
 
     }
+    storeKey(key, secretImage){
+        const imgData = this.getBase64Image(secretImage);
+        localStorage.setItem(key, imgData);
+        console.log(imgData,key)
+    }
+    getStoreKey(key) {
+        var dataImage = "data:image/png;base64," + localStorage.getItem(key);
+        const canvas = document.createElement('canvas');
+
+        var ctx = canvas.getContext("2d");
+
+        var image = new Image();
+        image.src = dataImage
+        return new Promise((resolve, reject) => {
+            image.onload = function() {
+                canvas.width = image.width;
+                canvas.height = image.height;
+                ctx.drawImage(image, 0, 0);
+                let data = ctx.getImageData(0,0,canvas.width,canvas.height)
+                resolve(data);
+            };
+        })
+
+    }
+
+    getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        console.log(img)
+        var ctx = canvas.getContext("2d");
+        ctx.putImageData(img, 0, 0);
+
+        var dataURL = canvas.toDataURL("image/png");
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+
     ImageWorker(data){
         return new Promise((resolve,reject)=>{
             this.worker.postMessage(data);
             this.worker.onmessage = (e)=>{
                 if(data.func == e.data.func){
-                    console.log('То что пришло из воркера',e.data)
-                    resolve(e.data.resposne);
+                    if(data.func == 'processingImage2'){
+                        console.log('KEYYYYYYYYY!!!!!::',e.data.key)
+                        this.storeKey(e.data.key, e.data.resposneKeyImage)
+                    }
+                    if(data.func == "gettigLogo") {
+                        this.getStoreKey(e.data.resposne)
+                            .then(data => {
+                                resolve(data);
+                            })
+                    } else {
+                        console.log('То что пришло из воркера',e.data)
+                        resolve(e.data.resposne);
+                    }
+
+
                 }
             }
         })

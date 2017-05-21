@@ -8,16 +8,22 @@ export default class Controller {
         this.view = view;
 
         view.bindUploadImage(this.uploadImage.bind(this));
-        view.bindStartFiltering(this.processingImage.bind(this));
+        view.bindStartFiltering(this.processingImage2.bind(this));
+        view.bindUploadLogoImage(this.uploadLogoImage.bind(this));
+        view.bindStartGetting(this.processingImage3.bind(this));
 
-
+    }
+    uploadLogoImage(evt){
+        this.store.loadLogoImage(evt)
+            .then((picture)=>{
+                this.view.render('add-item-logo-image',picture);
+                console.log('LOGO PICTURE', picture)
+            })
     }
 
     uploadImage(evt){
-        //this.view.loadSpin()
         this.store.loadImage(evt)
             .then((picture)=>{
-                //this.store.makeImpression()
                 this.view.render('add-item-image',picture);
             })
 
@@ -34,7 +40,7 @@ export default class Controller {
             "func":'processingImage',
             'infoPixel':this.store.gitImageSmall,
             'options':{
-                sizeMatr: formData.get('matrSize'),
+                sizeMatr: 5,
                 typeFilter: 'Log-filter'
             }
         })
@@ -55,6 +61,83 @@ export default class Controller {
                console.log('gistogramm is',d.resposne);
                console.log('Hello world ')
            })*/
+
+
+    }
+    processingImage3(){
+        //console.log('to arg controller',data)
+        /* let pixels = this.store.processingImage(data);
+         this.view.render('afterFilter', pixels);*/
+        //console.log('main Thread',data);
+        // console.log('обьект с настройками',this.view.getSettings());
+        let formData =  this.view.getSettings()
+        var canvas = document.createElement('canvas')
+        var ctx = canvas.getContext('2d');
+        var img = ctx.createImageData(200, 200);
+        var imageData = img.data;
+
+        this.store.processingImageWorker({
+            "func":'gettigLogo',
+            'infoPixel':this.store.gitImageSmall,
+            'options':{
+                sizeMatr: 5,
+                typeFilter: 'Log-filter',
+                canvas: img
+            }
+        })
+            .then(d=>{
+                console.log('{Хееййййй вот то что пришло из воркера при потпытке лго',d)
+
+                this.view.render('add-item-image',d);
+                //this.view.render('afterFilter', d.resposne);
+                //return Promise.resolve();
+            })
+        /*.then(()=>{
+         return this.store.processingImageWorker({
+         "func":'gistogrammPrepare',
+         'infoPixel':data
+         })
+         })
+         .then((d)=>{
+         console.log('gistogramm is',d.resposne);
+         console.log('Hello world ')
+         })*/
+
+
+    }
+    processingImage2(){
+        //console.log('to arg controller',data)
+        /* let pixels = this.store.processingImage(data);
+         this.view.render('afterFilter', pixels);*/
+        //console.log('main Thread',data);
+        // console.log('обьект с настройками',this.view.getSettings());
+        let formData =  this.view.getSettings()
+        this.store.processingImageWorker({
+            "func":'processingImage2',
+            'infoPixel':this.store.gitImageSmall,
+            'infoPixelLogo': this.store.gitImageLogoFull,
+            'options':{
+                sizeMatr: 5,
+                typeFilter: 'Log-filter'
+            }
+        })
+            .then(d=>{
+                console.log('worker thread',d)
+
+                this.view.render('add-item-image',d);
+                //this.view.render('afterFilter', d.resposne);
+                //return Promise.resolve();
+            })
+        /*.then(()=>{
+         return this.store.processingImageWorker({
+         "func":'gistogrammPrepare',
+         'infoPixel':data
+         })
+         })
+         .then((d)=>{
+         console.log('gistogramm is',d.resposne);
+         console.log('Hello world ')
+         })*/
 
 
     }

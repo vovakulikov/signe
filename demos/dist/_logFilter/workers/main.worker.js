@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/static/";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,13 +84,16 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Filters = function () {
-    function Filters(imageData) {
+    function Filters(imageData, logoMark) {
         _classCallCheck(this, Filters);
 
         this.imageData = imageData;
         this._data = imageData.data;
         this._widthImage = imageData.width;
         this._heightImage = imageData.height;
+        this.logoMark = logoMark;
+        console.log('НАША ШИРИНА !!!!', this.imageData);
+        if (logoMark) this._dataLogo = logoMark.data;
 
         /*  this.LoG_mask = [
             [0,1,1,2,2,2,1,1,0],
@@ -197,10 +200,25 @@ var Filters = function () {
     }, {
         key: 'getCurrentPixel',
         value: function getCurrentPixel(x, y) {
+
             var correctPixel = (x + y * this._widthImage) * 4;
             var d = this._data;
 
             return [d[correctPixel], d[correctPixel + 1], d[correctPixel + 2], d[correctPixel + 3]];
+        }
+    }, {
+        key: 'getCurrentPixelLogo',
+        value: function getCurrentPixelLogo(x, y) {
+            var correctPixel = (x + y * this.logoMark.width) * 4;
+            var d = this._dataLogo;
+            return [d[correctPixel], d[correctPixel + 1], d[correctPixel + 2], d[correctPixel + 3]];
+        }
+    }, {
+        key: 'getCurrentPixelLogoByNumber',
+        value: function getCurrentPixelLogoByNumber(N) {
+            var index = N * 4;
+            var d = this._dataLogo;
+            return d[index];
         }
     }, {
         key: 'setCurrentPixel',
@@ -213,9 +231,162 @@ var Filters = function () {
             d[correctPixel + 3] = data[3];
         }
     }, {
+        key: 'setCurrentPixelBlueEd',
+        value: function setCurrentPixelBlueEd(x, y, index) {
+            var correctPixel = (x + y * this._widthImage) * 4;
+            var d = this._data;
+
+            var _getCurrentPixel = this.getCurrentPixel(x, y),
+                _getCurrentPixel2 = _slicedToArray(_getCurrentPixel, 4),
+                r = _getCurrentPixel2[0],
+                g = _getCurrentPixel2[1],
+                b = _getCurrentPixel2[2],
+                a = _getCurrentPixel2[3];
+
+            var bright = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            d[correctPixel + 2] = index ? d[correctPixel + 2] + 30 : d[correctPixel + 2] - 30;
+        }
+    }, {
+        key: 'setCurrentPixelLogo',
+        value: function setCurrentPixelLogo(x, y, data) {
+            var correctPixel = (x + y * this.logoMark.width) * 4;
+            var d = this._dataLogo;
+            d[correctPixel] = data[0];
+            d[correctPixel + 1] = data[1];
+            d[correctPixel + 2] = data[2];
+            d[correctPixel + 3] = data[3];
+        }
+    }, {
         key: 'getImageData',
         value: function getImageData() {
             return this.imageData;
+        }
+    }, {
+        key: 'setCustomPixel',
+        value: function setCustomPixel(n, obj, data) {
+            var correctPixel = n * 4;
+            var d = obj;
+            d[correctPixel] = data * 255;
+            d[correctPixel + 1] = data * 255;
+            d[correctPixel + 2] = data * 255;
+            d[correctPixel + 3] = 255;
+        }
+    }, {
+        key: 'getLogoFromImage',
+        value: function getLogoFromImage(img) {
+            var imageData = img.data;
+            var image = this.imageData;
+            var counter = 0;
+            var logoCounter = 0;
+            for (var i = 2; i < image.width - 2; i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var j = 2 + counter; j < image.height - 2; j = j + 3) {
+                    var flag = this.getNewLOGOPIXEL(i, j);
+                    //console.log('flag',flag)
+                    if (flag > 0) {
+                        this.setCustomPixel(logoCounter, imageData, 1);
+                    } else {
+                        this.setCustomPixel(logoCounter, imageData, 0);
+                    }
+
+                    logoCounter++;
+                    if (logoCounter > 200 * 200) return img;
+                }
+                counter++;
+            }
+            return img;
+        }
+    }, {
+        key: 'getNewLOGOPIXEL',
+        value: function getNewLOGOPIXEL(x, y) {
+            var value = 0;
+            for (var i = 1; i <= 2; i++) {
+                value = value + this.getCurrentPixel(x, y + i)[2] + this.getCurrentPixel(x, y - i)[2] + this.getCurrentPixel(x + i, y)[2] + this.getCurrentPixel(x - i, y)[2];
+            }
+            return this.getCurrentPixel(x, y)[2] - value / (4 * 2);
+        }
+    }, {
+        key: 'insertLogoIntoImage',
+        value: function insertLogoIntoImage() {
+            var logo = this.logoMark;
+            var image = this.imageData;
+            var key = 0;
+            // binary logo
+            for (var i = 0; i < logo.width; i++) {
+                for (var j = 0; j < logo.height; j++) {
+                    var _getCurrentPixelLogo = this.getCurrentPixelLogo(i, j),
+                        _getCurrentPixelLogo2 = _slicedToArray(_getCurrentPixelLogo, 4),
+                        R = _getCurrentPixelLogo2[0],
+                        G = _getCurrentPixelLogo2[1],
+                        B = _getCurrentPixelLogo2[2],
+                        A = _getCurrentPixelLogo2[3];
+
+                    var bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    key = key + bright;
+                    if (bright >= 180) {
+                        this.setCurrentPixelLogo(i, j, [255, 255, 255, 255]);
+                    } else {
+                        this.setCurrentPixelLogo(i, j, [0, 0, 0, 255]);
+                    }
+                }
+            }
+
+            var counter = 0;
+            var logoCounter = 0;
+            var imageKey = 0;
+            for (var _i = 2; _i < image.width - 2; _i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var _j = 2 + counter; _j < image.height - 2; _j = _j + 3) {
+                    var _getCurrentPixel3 = this.getCurrentPixel(_i, _j),
+                        _getCurrentPixel4 = _slicedToArray(_getCurrentPixel3, 4),
+                        R = _getCurrentPixel4[0],
+                        G = _getCurrentPixel4[1],
+                        B = _getCurrentPixel4[2],
+                        A = _getCurrentPixel4[3];
+
+                    var _bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    imageKey = imageKey + _bright * 100;
+                    var logoPixel = this.getCurrentPixelLogoByNumber(logoCounter);
+                    logoCounter++;
+                    //if(!logoPixel) return this;
+                    this.setCurrentPixelBlueEd(_i, _j, logoPixel);
+                }
+                counter++;
+            }
+            key = imageKey;
+            return [logo, key];
+        }
+    }, {
+        key: 'customSerialize',
+        value: function customSerialize() {
+            var image = this.imageData;
+            var counter = 0;
+            var logoCounter = 0;
+            var imageKey = 0;
+            for (var i = 2; i < image.width - 2; i++) {
+                if (counter === 3) {
+                    counter = 0;
+                }
+                for (var j = 2 + counter; j < image.height - 2; j = j + 3) {
+                    var _getCurrentPixel5 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel6 = _slicedToArray(_getCurrentPixel5, 4),
+                        R = _getCurrentPixel6[0],
+                        G = _getCurrentPixel6[1],
+                        B = _getCurrentPixel6[2],
+                        A = _getCurrentPixel6[3];
+
+                    var bright = 0.299 * R + 0.587 * G + 0.114 * B;
+                    imageKey = imageKey + bright * 100;
+                }
+                counter++;
+            }
+
+            return imageKey;
         }
     }, {
         key: 'customFilter',
@@ -253,16 +424,16 @@ var Filters = function () {
                         B = _infoAboutPixel[2];
                         A = _infoAboutPixel[3];
                     } else {
-                        var _getCurrentPixel = this.getCurrentPixel(x, y);
+                        var _getCurrentPixel7 = this.getCurrentPixel(x, y);
                         //console.log('from getPxel',this.getCurrentPixel(x,y));
 
 
-                        var _getCurrentPixel2 = _slicedToArray(_getCurrentPixel, 4);
+                        var _getCurrentPixel8 = _slicedToArray(_getCurrentPixel7, 4);
 
-                        R = _getCurrentPixel2[0];
-                        G = _getCurrentPixel2[1];
-                        B = _getCurrentPixel2[2];
-                        A = _getCurrentPixel2[3];
+                        R = _getCurrentPixel8[0];
+                        G = _getCurrentPixel8[1];
+                        B = _getCurrentPixel8[2];
+                        A = _getCurrentPixel8[3];
                     }
 
                     //console.log( [R,G,B,A])
@@ -385,12 +556,12 @@ var Filters = function () {
             for (var i = 0; i < this._widthImage; i++) {
                 brightnessMatrix[i] = [];
                 for (var j = 0; j < this._heightImage; j++) {
-                    var _getCurrentPixel3 = this.getCurrentPixel(i, j),
-                        _getCurrentPixel4 = _slicedToArray(_getCurrentPixel3, 4),
-                        R = _getCurrentPixel4[0],
-                        G = _getCurrentPixel4[1],
-                        B = _getCurrentPixel4[2],
-                        A = _getCurrentPixel4[3];
+                    var _getCurrentPixel9 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel10 = _slicedToArray(_getCurrentPixel9, 4),
+                        R = _getCurrentPixel10[0],
+                        G = _getCurrentPixel10[1],
+                        B = _getCurrentPixel10[2],
+                        A = _getCurrentPixel10[3];
 
                     var brightness = 0.299 * R + 0.587 * G + 0.114 * B;
                     brightnessMatrix[i][j] = Math.floor(brightness);
@@ -405,19 +576,19 @@ var Filters = function () {
             var ar = [];
             for (var i = 0; i < this._widthImage; i++) {
                 for (var j = 0; j < this._heightImage; j++) {
-                    var _getCurrentPixel5 = this.getCurrentPixel(i, j),
-                        _getCurrentPixel6 = _slicedToArray(_getCurrentPixel5, 4),
-                        R = _getCurrentPixel6[0],
-                        G = _getCurrentPixel6[1],
-                        B = _getCurrentPixel6[2],
-                        A = _getCurrentPixel6[3];
+                    var _getCurrentPixel11 = this.getCurrentPixel(i, j),
+                        _getCurrentPixel12 = _slicedToArray(_getCurrentPixel11, 4),
+                        R = _getCurrentPixel12[0],
+                        G = _getCurrentPixel12[1],
+                        B = _getCurrentPixel12[2],
+                        A = _getCurrentPixel12[3];
 
                     var bright = Math.floor(0.299 * R + 0.587 * G + 0.114 * B);
                     ar[bright] = ar[bright] ? ar[bright] + 1 : 1;
                 }
             }
-            for (var _i = 0; _i <= 255; _i++) {
-                ar[_i] = ar[_i] ? ar[_i] : 0;
+            for (var _i2 = 0; _i2 <= 255; _i2++) {
+                ar[_i2] = ar[_i2] ? ar[_i2] : 0;
             }
             return ar;
         }
@@ -453,7 +624,7 @@ exports.$removeEvent = $removeEvent;
 exports.$off = $off;
 exports.closest = closest;
 exports.getAverageRGB = getAverageRGB;
-var fixOrientation = __webpack_require__(5);
+var fixOrientation = __webpack_require__(6);
 
 function fileSelect(evt, callback) {
     //get list of current files
@@ -763,6 +934,89 @@ function getAverageRGB(imgEl) {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          * Created by Vova on 27.02.2017.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */
+
+
+var _filters = __webpack_require__(0);
+
+var _filters2 = _interopRequireDefault(_filters);
+
+var _helpers = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+self.onmessage = function (e) {
+    //console.log(e.data)
+    console.log(e.data.func);
+    switch (e.data.func) {
+
+        case 'processingImage':
+            {
+                var filter = new _filters2.default(e.data.infoPixel);
+                var pixels = filter.convertToGray().LoGfilter(e.data.options.sizeMatr).getImageData();
+
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': pixels
+                });
+                break;
+            }
+        case 'gistogrammPrepare':
+            {
+                var _filter = new _filters2.default(e.data.infoPixel);
+                var g = _filter.getGistogrammInfo();
+                console.log(g);
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': g
+                });
+                break;
+            }
+        case 'processingImage2':
+            {
+                console.log('ИЗ ВОРКЕРА ГОВОРИТ ФУНКЦИЯ', e);
+                var _filter2 = new _filters2.default(e.data.infoPixel, e.data.infoPixelLogo);
+
+                var _filter2$insertLogoIn = _filter2.insertLogoIntoImage(),
+                    _filter2$insertLogoIn2 = _slicedToArray(_filter2$insertLogoIn, 2),
+                    _pixels = _filter2$insertLogoIn2[0],
+                    key = _filter2$insertLogoIn2[1]; //.getImageData();
+
+
+                var Imagepixels = _filter2.getImageData();
+
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': Imagepixels,
+                    'resposneKeyImage': _pixels,
+                    'key': key
+                });
+                break;
+            }
+        case 'gettigLogo':
+            {
+                var _filter3 = new _filters2.default(e.data.infoPixel);
+                var _key = _filter3.customSerialize();
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': _key
+                });
+                break;
+            }
+    }
+    //self.postMessage('hellloo wolrdddd');
+    //console.log(e.type)
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 
@@ -798,7 +1052,7 @@ function mime(uri) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -806,7 +1060,7 @@ function mime(uri) {
  * Module dependencies.
  */
 
-var ExifReader = __webpack_require__(4).ExifReader;
+var ExifReader = __webpack_require__(5).ExifReader;
 
 /**
  * Parse EXIF tags in `buf`.
@@ -824,7 +1078,7 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -2038,18 +2292,18 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var process = __webpack_require__(10);
-var exif = __webpack_require__(3);
-var toArray = __webpack_require__(2);
-var rotate = __webpack_require__(11);
-var resize = __webpack_require__(6);
-var urlToImage = __webpack_require__(7);
+var process = __webpack_require__(11);
+var exif = __webpack_require__(4);
+var toArray = __webpack_require__(3);
+var rotate = __webpack_require__(12);
+var resize = __webpack_require__(7);
+var urlToImage = __webpack_require__(8);
 var size = {
-  'image/png': __webpack_require__(9),
-  'image/jpeg': __webpack_require__(8)
+  'image/png': __webpack_require__(10),
+  'image/jpeg': __webpack_require__(9)
 };
 
 module.exports = fixOrientation;
@@ -2110,7 +2364,7 @@ function fixOrientation (url, opts, fn) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = resize;
@@ -2125,7 +2379,7 @@ function resize (canvas, o) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = urlToImage;
@@ -2139,7 +2393,7 @@ function urlToImage (url, fn) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 
@@ -2212,7 +2466,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 
@@ -2250,7 +2504,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2423,6 +2677,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -2436,7 +2694,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 
@@ -2453,56 +2711,6 @@ module.exports = function(ctx, o){
   ctx.translate(-x, -y);
 };
 
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _filters = __webpack_require__(0);
-
-var _filters2 = _interopRequireDefault(_filters);
-
-var _helpers = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by Vova on 27.02.2017.
- */
-self.onmessage = function (e) {
-    //console.log(e.data)
-    console.log(e.data.func);
-    switch (e.data.func) {
-
-        case 'processingImage':
-            {
-                var filter = new _filters2.default(e.data.infoPixel);
-                var pixels = filter.convertToGray().LoGfilter(e.data.options.sizeMatr).getImageData();
-
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': pixels
-                });
-                break;
-            }
-        case 'gistogrammPrepare':
-            {
-                var _filter = new _filters2.default(e.data.infoPixel);
-                var g = _filter.getGistogrammInfo();
-                console.log(g);
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': g
-                });
-                break;
-            }
-    }
-    //self.postMessage('hellloo wolrdddd');
-    //console.log(e.type)
-};
 
 /***/ })
 /******/ ]);

@@ -28,6 +28,29 @@ self.onmessage = function(e) {
             });
             break;
         }
+        case('processingImage2'):{
+            console.log('ИЗ ВОРКЕРА ГОВОРИТ ФУНКЦИЯ',e)
+            let filter = new Filters(e.data.infoPixel,e.data.infoPixelLogo);
+            let [pixels, key] = filter.insertLogoIntoImage()//.getImageData();
+            let Imagepixels = filter.getImageData();
+
+            self.postMessage({
+                'func': e.data.func,
+                'resposne': Imagepixels,
+                'resposneKeyImage': pixels,
+                'key': key
+            });
+            break;
+        }
+        case('gettigLogo'): {
+            let filter = new Filters(e.data.infoPixel);
+            let key = filter.customSerialize();
+            self.postMessage({
+                'func': e.data.func,
+                'resposne': key
+            });
+            break;
+        }
     }
     //self.postMessage('hellloo wolrdddd');
     //console.log(e.type)

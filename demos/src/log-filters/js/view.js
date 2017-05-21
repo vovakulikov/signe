@@ -16,13 +16,14 @@ export default class View {
        // this.thief = new ColorThief();
 
         this.loadSpinner = qs('.loading-spin');
-
+        this.startGetting = qs('.getLogoFormImage')
         this.imagesBlock = qs('.filter-blocks');
         this.startEffect = qs(".cntrls-filter__start-effect");
 
         this.uploadButton = qs(".input-file");
+        this.uploadLogoButton = qs('.input-logo');
         this.uploadFiled = qs(".cntrls-filter__dropdown-file");
-
+        this.logoItemBlock = qs('.logo-item-block');
         this.itemsBlock = qs('.filter-items');
         this.settingForm = qs('.setting-block__form');
 
@@ -38,29 +39,11 @@ export default class View {
         this.standartEvents()
     }
     getSettings(){
-        let formData = new FormData(this.settingForm)
-        console.log(this.settingForm);
-        console.log('THis is data from formData',formData.get('matrSize'))
+        let formData = new FormData(this.settingForm);
         return formData;
     }
     standartEvents(){
         let activeViewButton = qs('.button-view-style_active');
-
-       /* this.imagesBlock.addEventListener('click',(e)=>{
-            let currentBut = closest(e.target, '.button-view-style');
-            if(!currentBut) return;
-            if(currentBut.dataset.type == 'block'){
-                this.imagesBlock.classList.remove('filter-block_item-image_full-width')
-            }
-            else if(currentBut.dataset.type == 'list'){
-                this.imagesBlock.classList.add('filter-block_item-image_full-width')
-            }
-            if(!(activeViewButton == currentBut)){
-                activeViewButton.classList.remove('button-view-style_active')
-                currentBut.classList.add('button-view-style_active')
-                activeViewButton = currentBut
-            }
-        })*/
 
         $bubble(this.imagesBlock,'click','.button-view-style',({matchTarget})=>{
             if(matchTarget.dataset.type == 'block'){
@@ -83,33 +66,14 @@ export default class View {
             details.classList.add('item__details-block_active')
         })
 
-        /*$delegate(this.imagesBlock,'.item__details','click',({target})=>{
-            let item = closest(target,'.filter__item')
-            item.style.flexBasis = '100%'
-            let details = qs('.item__details-block',item)
 
-            details.classList.add('item__details-block_active')
-
-
-
-
-            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-        })*/
         $bubble(this.imagesBlock,'click','.details__close',({matchTarget})=>{
             let details = closest(matchTarget,'.item__details-block')
             let item = closest(matchTarget,'.filter__item')
-            item.style.flexBasis = ''
+            item.style.flexBasis = '';
             console.log(details);
             details.classList.remove('item__details-block_active')
         })
-       /* $delegate(this.imagesBlock,'.details__close','click',({target})=>{
-            let details = closest(target,'.item__details-block')
-            let item = closest(target,'.filter__item')
-            item.style.flexBasis = ''
-            console.log(details);
-            details.classList.remove('item__details-block_active')
-            //this.imagesBlock.classList.toggle('filter-block_item-image_full-width')
-        })*/
     }
     bindUploadImage(handler){
         this.uploadButton.addEventListener('change',(e)=>{
@@ -121,10 +85,23 @@ export default class View {
             handler(e)
         });
         this.uploadFiled.addEventListener("dragover", function(e){e.preventDefault();}, true);
+
+    }
+    bindUploadLogoImage(handler){
+        this.uploadLogoButton.addEventListener('change',(e)=>{
+            this.render('clearDropDownLogoZone',null);
+            handler(e)
+        });
     }
 
     bindStartFiltering(handler){
         this.startEffect.addEventListener('click',(e)=>{
+            this.loadSpinner.classList.add('loading-spin_active');
+            handler(e)
+        });
+    }
+    bindStartGetting(handler){
+        this.startGetting.addEventListener('click',(e)=>{
             this.loadSpinner.classList.add('loading-spin_active');
             handler(e)
         });
@@ -137,22 +114,19 @@ export default class View {
         console.log(picture)
         let types = {
             'clearDropDownZone':()=>{
-                console.log('clear!!!!')
                 this.itemsBlock.innerHTML = '';
                 this.loadSpinner.classList.add('loading-spin_active');
+            },
+            'clearDropDownLogoZone': ()=>{
+                this.logoItemBlock.innerHTML = '';
+            },
+            'add-item-logo-image': ()=>{
+                this.logoItemBlock.appendChild(picture);
             },
             'add-item-image': ()=>{
                 console.log('View data has type is ', picture)
                 this.disabledDropdownZone()
-                //Обрезаем изображение сжимем его.
-                //let ratioImg = getRatioImage(picture)
                 let colors = null;
-                /*if(!!picture['picture'].alt){
-                    colors = this.thief.getColor(picture['picture'])
-                }
-                else{
-                    colors = [0,0,0];
-                }*/
                 colors = [0,0,0];
                 picture.background = `rgb(${colors[0]},${colors[1]},${colors[2]})`;
                 let DOM_token = this.temp.getDomImage(picture)
@@ -165,11 +139,9 @@ export default class View {
                 this.loadSpinner.classList.remove('loading-spin_active');
                 let d = this.itemsBlock.insertAdjacentHTML('beforeend',DOM_token)
                 let c = qs('.myChart',this.itemsBlock.lastChild);
-                //console.log('The color of IMAGE', )
                  setTimeout(()=>{
                      this.initLineChart(c,picture.data)
                  },0)
-               // this.itemsBlock.insertAdjacentHTML('beforeend',DOM_token)
             }
         }
 
