@@ -7,9 +7,8 @@
 /******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
 /******/ 		for(;i < chunkIds.length; i++) {
 /******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId]) {
+/******/ 			if(installedChunks[chunkId])
 /******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
 /******/ 			installedChunks[chunkId] = 0;
 /******/ 		}
 /******/ 		for(moduleId in moreModules) {
@@ -18,62 +17,53 @@
 /******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
-/******/ 		while(resolves.length) {
+/******/ 		while(resolves.length)
 /******/ 			resolves.shift()();
-/******/ 		}
-/******/
+
 /******/ 	};
-/******/
+
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
 /******/ 		2: 0
 /******/ 	};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+
 /******/ 	// This file contains only the entry chunk.
 /******/ 	// The chunk loading function for additional chunks
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		if(installedChunks[chunkId] === 0) {
+/******/ 		if(installedChunks[chunkId] === 0)
 /******/ 			return Promise.resolve();
-/******/ 		}
-/******/
-/******/ 		// a Promise means "currently loading".
+
+/******/ 		// an Promise means "currently loading".
 /******/ 		if(installedChunks[chunkId]) {
 /******/ 			return installedChunks[chunkId][2];
 /******/ 		}
-/******/
-/******/ 		// setup Promise in chunk cache
-/******/ 		var promise = new Promise(function(resolve, reject) {
-/******/ 			installedChunks[chunkId] = [resolve, reject];
-/******/ 		});
-/******/ 		installedChunks[chunkId][2] = promise;
-/******/
 /******/ 		// start chunk loading
 /******/ 		var head = document.getElementsByTagName('head')[0];
 /******/ 		var script = document.createElement('script');
@@ -81,7 +71,7 @@
 /******/ 		script.charset = 'utf-8';
 /******/ 		script.async = true;
 /******/ 		script.timeout = 120000;
-/******/
+
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
@@ -94,26 +84,29 @@
 /******/ 			clearTimeout(timeout);
 /******/ 			var chunk = installedChunks[chunkId];
 /******/ 			if(chunk !== 0) {
-/******/ 				if(chunk) {
-/******/ 					chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
-/******/ 				}
+/******/ 				if(chunk) chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
 /******/ 				installedChunks[chunkId] = undefined;
 /******/ 			}
 /******/ 		};
+
+/******/ 		var promise = new Promise(function(resolve, reject) {
+/******/ 			installedChunks[chunkId] = [resolve, reject];
+/******/ 		});
+/******/ 		installedChunks[chunkId][2] = promise;
+
 /******/ 		head.appendChild(script);
-/******/
 /******/ 		return promise;
 /******/ 	};
-/******/
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -124,7 +117,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -133,18 +126,18 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/static/";
-/******/
+
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -547,15 +540,15 @@ function pulling(el) {
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var process = __webpack_require__(19);
-var exif = __webpack_require__(12);
-var toArray = __webpack_require__(11);
-var rotate = __webpack_require__(20);
-var resize = __webpack_require__(15);
-var urlToImage = __webpack_require__(16);
+var process = __webpack_require__(18);
+var exif = __webpack_require__(11);
+var toArray = __webpack_require__(10);
+var rotate = __webpack_require__(19);
+var resize = __webpack_require__(14);
+var urlToImage = __webpack_require__(15);
 var size = {
-  'image/png': __webpack_require__(18),
-  'image/jpeg': __webpack_require__(17)
+  'image/png': __webpack_require__(17),
+  'image/jpeg': __webpack_require__(16)
 };
 
 module.exports = fixOrientation;
@@ -820,7 +813,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _helpers = __webpack_require__(1);
 
-var _filters = __webpack_require__(9);
+var _filters = __webpack_require__(8);
 
 var _filters2 = _interopRequireDefault(_filters);
 
@@ -1052,15 +1045,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-__webpack_require__(14);
+__webpack_require__(13);
 
-var _template = __webpack_require__(8);
+var _template = __webpack_require__(7);
 
 var _template2 = _interopRequireDefault(_template);
 
 var _helpers = __webpack_require__(1);
 
-var _helpers2 = __webpack_require__(10);
+var _helpers2 = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1312,38 +1305,6 @@ exports.default = View;
 "use strict";
 
 
-var _controller = __webpack_require__(3);
-
-var _controller2 = _interopRequireDefault(_controller);
-
-var _view = __webpack_require__(5);
-
-var _view2 = _interopRequireDefault(_view);
-
-var _store = __webpack_require__(4);
-
-var _store2 = _interopRequireDefault(_store);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var store = new _store2.default();
-var view = new _view2.default();
-
-new _controller2.default(store, view);
-
-var Chart = void 0;
-
-__webpack_require__.e/* require.ensure */(0).then((function () {
-    Chart = __webpack_require__(0);
-}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -1400,7 +1361,7 @@ var Template = function () {
 exports.default = Template;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1933,7 +1894,7 @@ var Filters = function () {
 exports.default = Filters;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2266,7 +2227,7 @@ function getAverageRGB(imgEl) {
 }
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 
@@ -2302,7 +2263,7 @@ function mime(uri) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -2310,7 +2271,7 @@ function mime(uri) {
  * Module dependencies.
  */
 
-var ExifReader = __webpack_require__(13).ExifReader;
+var ExifReader = __webpack_require__(12).ExifReader;
 
 /**
  * Parse EXIF tags in `buf`.
@@ -2328,7 +2289,7 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -3542,13 +3503,13 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = resize;
@@ -3563,7 +3524,7 @@ function resize (canvas, o) {
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = urlToImage;
@@ -3577,7 +3538,7 @@ function urlToImage (url, fn) {
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 
@@ -3650,7 +3611,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
 
@@ -3688,7 +3649,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -3861,10 +3822,6 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -3878,7 +3835,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports) {
 
 
@@ -3895,6 +3852,38 @@ module.exports = function(ctx, o){
   ctx.translate(-x, -y);
 };
 
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _controller = __webpack_require__(3);
+
+var _controller2 = _interopRequireDefault(_controller);
+
+var _view = __webpack_require__(5);
+
+var _view2 = _interopRequireDefault(_view);
+
+var _store = __webpack_require__(4);
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var store = new _store2.default();
+var view = new _view2.default();
+
+new _controller2.default(store, view);
+
+var Chart = void 0;
+
+__webpack_require__.e/* require.ensure */(0).then((function () {
+    Chart = __webpack_require__(0);
+}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 
 /***/ })
 /******/ ]);

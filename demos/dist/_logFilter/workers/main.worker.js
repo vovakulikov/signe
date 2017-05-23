@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/static/";
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -624,7 +624,7 @@ exports.$removeEvent = $removeEvent;
 exports.$off = $off;
 exports.closest = closest;
 exports.getAverageRGB = getAverageRGB;
-var fixOrientation = __webpack_require__(6);
+var fixOrientation = __webpack_require__(5);
 
 function fileSelect(evt, callback) {
     //get list of current files
@@ -934,89 +934,6 @@ function getAverageRGB(imgEl) {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          * Created by Vova on 27.02.2017.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */
-
-
-var _filters = __webpack_require__(0);
-
-var _filters2 = _interopRequireDefault(_filters);
-
-var _helpers = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-self.onmessage = function (e) {
-    //console.log(e.data)
-    console.log(e.data.func);
-    switch (e.data.func) {
-
-        case 'processingImage':
-            {
-                var filter = new _filters2.default(e.data.infoPixel);
-                var pixels = filter.convertToGray().LoGfilter(e.data.options.sizeMatr).getImageData();
-
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': pixels
-                });
-                break;
-            }
-        case 'gistogrammPrepare':
-            {
-                var _filter = new _filters2.default(e.data.infoPixel);
-                var g = _filter.getGistogrammInfo();
-                console.log(g);
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': g
-                });
-                break;
-            }
-        case 'processingImage2':
-            {
-                console.log('ИЗ ВОРКЕРА ГОВОРИТ ФУНКЦИЯ', e);
-                var _filter2 = new _filters2.default(e.data.infoPixel, e.data.infoPixelLogo);
-
-                var _filter2$insertLogoIn = _filter2.insertLogoIntoImage(),
-                    _filter2$insertLogoIn2 = _slicedToArray(_filter2$insertLogoIn, 2),
-                    _pixels = _filter2$insertLogoIn2[0],
-                    key = _filter2$insertLogoIn2[1]; //.getImageData();
-
-
-                var Imagepixels = _filter2.getImageData();
-
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': Imagepixels,
-                    'resposneKeyImage': _pixels,
-                    'key': key
-                });
-                break;
-            }
-        case 'gettigLogo':
-            {
-                var _filter3 = new _filters2.default(e.data.infoPixel);
-                var _key = _filter3.customSerialize();
-                self.postMessage({
-                    'func': e.data.func,
-                    'resposne': _key
-                });
-                break;
-            }
-    }
-    //self.postMessage('hellloo wolrdddd');
-    //console.log(e.type)
-};
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 
@@ -1052,7 +969,7 @@ function mime(uri) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -1060,7 +977,7 @@ function mime(uri) {
  * Module dependencies.
  */
 
-var ExifReader = __webpack_require__(5).ExifReader;
+var ExifReader = __webpack_require__(4).ExifReader;
 
 /**
  * Parse EXIF tags in `buf`.
@@ -1078,7 +995,7 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 (function() {
@@ -2292,18 +2209,18 @@ module.exports = function(buf){
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var process = __webpack_require__(11);
-var exif = __webpack_require__(4);
-var toArray = __webpack_require__(3);
-var rotate = __webpack_require__(12);
-var resize = __webpack_require__(7);
-var urlToImage = __webpack_require__(8);
+var process = __webpack_require__(10);
+var exif = __webpack_require__(3);
+var toArray = __webpack_require__(2);
+var rotate = __webpack_require__(11);
+var resize = __webpack_require__(6);
+var urlToImage = __webpack_require__(7);
 var size = {
-  'image/png': __webpack_require__(10),
-  'image/jpeg': __webpack_require__(9)
+  'image/png': __webpack_require__(9),
+  'image/jpeg': __webpack_require__(8)
 };
 
 module.exports = fixOrientation;
@@ -2364,7 +2281,7 @@ function fixOrientation (url, opts, fn) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = resize;
@@ -2379,7 +2296,7 @@ function resize (canvas, o) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = urlToImage;
@@ -2393,7 +2310,7 @@ function urlToImage (url, fn) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 
@@ -2466,7 +2383,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 
@@ -2504,7 +2421,7 @@ function size(buf) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -2677,10 +2594,6 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -2694,7 +2607,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 
@@ -2711,6 +2624,89 @@ module.exports = function(ctx, o){
   ctx.translate(-x, -y);
 };
 
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          * Created by Vova on 27.02.2017.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */
+
+
+var _filters = __webpack_require__(0);
+
+var _filters2 = _interopRequireDefault(_filters);
+
+var _helpers = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+self.onmessage = function (e) {
+    //console.log(e.data)
+    console.log(e.data.func);
+    switch (e.data.func) {
+
+        case 'processingImage':
+            {
+                var filter = new _filters2.default(e.data.infoPixel);
+                var pixels = filter.convertToGray().LoGfilter(e.data.options.sizeMatr).getImageData();
+
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': pixels
+                });
+                break;
+            }
+        case 'gistogrammPrepare':
+            {
+                var _filter = new _filters2.default(e.data.infoPixel);
+                var g = _filter.getGistogrammInfo();
+                console.log(g);
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': g
+                });
+                break;
+            }
+        case 'processingImage2':
+            {
+                console.log('ИЗ ВОРКЕРА ГОВОРИТ ФУНКЦИЯ', e);
+                var _filter2 = new _filters2.default(e.data.infoPixel, e.data.infoPixelLogo);
+
+                var _filter2$insertLogoIn = _filter2.insertLogoIntoImage(),
+                    _filter2$insertLogoIn2 = _slicedToArray(_filter2$insertLogoIn, 2),
+                    _pixels = _filter2$insertLogoIn2[0],
+                    key = _filter2$insertLogoIn2[1]; //.getImageData();
+
+
+                var Imagepixels = _filter2.getImageData();
+
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': Imagepixels,
+                    'resposneKeyImage': _pixels,
+                    'key': key
+                });
+                break;
+            }
+        case 'gettigLogo':
+            {
+                var _filter3 = new _filters2.default(e.data.infoPixel);
+                var _key = _filter3.customSerialize();
+                self.postMessage({
+                    'func': e.data.func,
+                    'resposne': _key
+                });
+                break;
+            }
+    }
+    //self.postMessage('hellloo wolrdddd');
+    //console.log(e.type)
+};
 
 /***/ })
 /******/ ]);

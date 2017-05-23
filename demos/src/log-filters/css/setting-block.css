@@ -8,22 +8,50 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+.cntrls-filter__setting img {
+    max-width: 100%;
 }
 .cntrl__take-file{
-    margin-bottom: 10px;
+    width:100%;
 }
-.input-file{
+.logo-item-block:empty{
+        margin: 0px;
+}
+.logo-item-block {
+        max-width: 50%;
+    margin: 20px 20px 0px 0px;
+}
+.pd{
+        padding-top: 20px;
+}
+input, .input-file{
     border: none;
     background: rgb(187, 187, 187);
+    width: 220px;
 }
-
-.input-file::-webkit-file-upload-button{
+.wr{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+input[type=file]::-webkit-file-upload-button, .input-file::-webkit-file-upload-button{
     background: gainsboro;
     border: none;
     padding: 7px 5px;
     cursor:pointer
+}
+.label__file{
+
+    display: block;
+    padding: 20px 0px 5px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: sans-serif;
 }
 .setting_checkbox{
     display: none;

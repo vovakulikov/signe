@@ -17,7 +17,7 @@
 }
 
 
-.controll-button{
+button, .controll-button{
     background: gainsboro;
     border: none;
     padding: 7px 5px;
